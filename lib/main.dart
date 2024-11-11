@@ -1,99 +1,116 @@
-import 'package:aandm/constants/theme.dart';
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    home: FlappyBirdGame(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class FlappyBirdGame extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: appTheme,
-      home: const MyHomePage(title: 'A & M'),
-    );
-  }
+  _FlappyBirdGameState createState() => _FlappyBirdGameState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class _FlappyBirdGameState extends State<FlappyBirdGame> {
+  static const double gravity = 1.1;
+  static const double jumpStrength = -15;
+  static const double birdWidth = 50;
+  static const double birdHeight = 50;
+  static const double pipeWidth = 60;
+  static const double pipeGap = 250;
 
-  final String title;
+  double birdY = 0;
+  double birdVelocity = 0;
+  double pipeX = 0;
+  double pipeHeight = 0;
+  bool gameStarted = false;
+  Timer? gameTimer;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  void startGame() {
+    gameStarted = true;
+    birdY = 0;
+    birdVelocity = 0;
+    pipeX = MediaQuery.of(context).size.width;
+    pipeHeight =
+        Random().nextDouble() * (MediaQuery.of(context).size.height - pipeGap);
+    gameTimer = Timer.periodic(Duration(milliseconds: 16), (timer) {
+      setState(() {
+        birdVelocity += gravity;
+        birdY += birdVelocity;
+        pipeX -= 2.5;
 
-class _MyHomePageState extends State<MyHomePage> {
-  int seconds = 0;
-  int buttonPressCounter = 0;
-  @override
-  void initState() {
-    super.initState();
-    seconds = getSecondsUntilNextFriday();
-  }
+        if (pipeX < -pipeWidth) {
+          pipeX = MediaQuery.of(context).size.width;
+          pipeHeight = Random().nextDouble() *
+              (MediaQuery.of(context).size.height - pipeGap);
+        }
 
-  incrementCounter() {
-    setState(() {
-      buttonPressCounter++;
+        if (birdY > MediaQuery.of(context).size.height - birdHeight ||
+            birdY < 0) {
+          gameTimer?.cancel();
+          gameStarted = false;
+        }
+      });
     });
   }
 
-  int getSecondsUntilNextFriday() {
-    //this should get the number of seconds from now until the next friday at 6pm
-    int secondsDiff = 0;
-    DateTime now = DateTime.now();
-    if (now.weekday <= 5) {
-      var dayDiff = 5 - now.weekday;
-      secondsDiff = DateTime(now.year, now.month, now.weekday + dayDiff, 18, 00)
-          .difference(now)
-          .inSeconds;
-    } else if (now.weekday == 5) {
-      secondsDiff = DateTime(now.year, now.month, now.weekday, 18, 00)
-          .difference(now)
-          .inSeconds;
-    } else if (now.weekday > 5) {
-      var dayDiff = (now.weekday + 5) % 7;
-      secondsDiff = DateTime(now.year, now.month, now.day + dayDiff, 18, 00)
-          .difference(now)
-          .inSeconds;
-    }
-    return secondsDiff;
+  void jump() {
+    setState(() {
+      birdVelocity = jumpStrength;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {
-                incrementCounter();
-              },
-              color: Colors.black,
-              tooltip: "I love my gf",
-            ),
-          ),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("I love my girlfriend $buttonPressCounter times",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    )),
+    return GestureDetector(
+      onTap: () {
+        if (gameStarted) {
+          jump();
+        } else {
+          startGame();
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            AnimatedContainer(
+              alignment: Alignment(
+                  0, birdY / (MediaQuery.of(context).size.height / 2)),
+              duration: Duration(milliseconds: 0),
+              child: Container(
+                width: birdWidth,
+                height: birdHeight,
+                child: Image.asset('lib/assets/matteo.jpeg'),
               ),
-            ],
-          ),
-        ));
+            ),
+            AnimatedContainer(
+              alignment: Alignment(
+                  pipeX / (MediaQuery.of(context).size.width / 2) - 1, 1),
+              duration: const Duration(milliseconds: 0),
+              child: Column(
+                children: [
+                  Container(
+                    width: pipeWidth,
+                    height: pipeHeight,
+                    color: Colors.green,
+                  ),
+                  SizedBox(height: pipeGap),
+                  Container(
+                    width: pipeWidth,
+                    height: MediaQuery.of(context).size.height -
+                        pipeHeight -
+                        pipeGap,
+                    color: Colors.green,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
