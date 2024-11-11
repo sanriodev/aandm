@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:aandm/constants/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,34 +37,19 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     seconds = getSecondsUntilNextFriday();
-  }
-
-  incrementCounter() {
-    setState(() {
-      buttonPressCounter++;
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        seconds--;
+      });
     });
   }
 
   int getSecondsUntilNextFriday() {
-    //this should get the number of seconds from now until the next friday at 6pm
-    int secondsDiff = 0;
     DateTime now = DateTime.now();
-    if (now.weekday <= 5) {
-      var dayDiff = 5 - now.weekday;
-      secondsDiff = DateTime(now.year, now.month, now.weekday + dayDiff, 18, 00)
-          .difference(now)
-          .inSeconds;
-    } else if (now.weekday == 5) {
-      secondsDiff = DateTime(now.year, now.month, now.weekday, 18, 00)
-          .difference(now)
-          .inSeconds;
-    } else if (now.weekday > 5) {
-      var dayDiff = (now.weekday + 5) % 7;
-      secondsDiff = DateTime(now.year, now.month, now.day + dayDiff, 18, 00)
-          .difference(now)
-          .inSeconds;
-    }
-    return secondsDiff;
+    DateTime nextFriday = now.add(Duration(days: (5 - now.weekday + 7) % 7));
+    nextFriday =
+        DateTime(nextFriday.year, nextFriday.month, nextFriday.day, 18, 0, 0);
+    return nextFriday.difference(now).inSeconds;
   }
 
   @override
@@ -74,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: IconButton(
               icon: const Icon(Icons.favorite),
               onPressed: () {
-                incrementCounter();
+                Fluttertoast.showToast(msg: "I miss you too darling!");
               },
               color: Colors.black,
               tooltip: "I love my gf",
@@ -85,12 +73,38 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("I love my girlfriend $buttonPressCounter times",
-                    style: const TextStyle(
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                    "I love you so much. and I miss you every second! \nLuckily we will see each other again in about",
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                     )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                    "${(seconds / 60 / 60 / 24).toStringAsFixed(1)} days",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("${(seconds / 60 / 60).toStringAsFixed(1)} hours",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("${(seconds / 60).toStringAsFixed(0)} minutes",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("${seconds.toStringAsFixed(0)} seconds",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22)),
               ),
             ],
           ),
