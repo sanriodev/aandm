@@ -1,6 +1,7 @@
 import 'package:aandm/constants/theme.dart';
 import 'package:aandm/models/countdown_values.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
+          leading: ElevatedButton(onPressed: () {
+            Fluttertoast.showToast(msg: "I love my girl so much");
+          },
+          child: const Text("press me")),
         ),
         body: Center(
           child: Column(
@@ -80,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text('$seconds seconds.'),
               ),
+              const Padding(padding: EdgeInsets.all(8.0), child: Text("I love my girlfriend so much omg!!!", style: TextStyle(fontWeight: FontWeight.bold,)),)
             ],
           ),
         ));
