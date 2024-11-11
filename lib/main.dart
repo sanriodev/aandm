@@ -45,18 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-
-
-//make dart code not compile to test lint
-  asdasd
-    asd
-    asd
-    as
-    d
-
-
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
