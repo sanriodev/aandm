@@ -7,15 +7,16 @@ ThemeData appTheme = ThemeData(
       primarySwatch: Colors.blue,
       accentColor: Colors.purple,
       backgroundColor: Colors.white38),
-  scaffoldBackgroundColor: Colors.purple[100],
+  scaffoldBackgroundColor: Colors.blue[100],
   textTheme: const TextTheme(
     displayMedium: TextStyle(color: Colors.black87),
     displayLarge: TextStyle(color: Colors.black54),
     displaySmall: TextStyle(color: Colors.black54),
   ),
-  appBarTheme: AppBarTheme(
-    backgroundColor: Colors.blue[300],
-    titleTextStyle: const TextStyle(color: Colors.black54),
+  appBarTheme: const AppBarTheme(
+    foregroundColor: Colors.red,
+    backgroundColor: Colors.red,
+    titleTextStyle: TextStyle(color: Colors.black),
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: Colors.blue[200],

@@ -68,49 +68,30 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
-          leading: ElevatedButton(
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(Icons.favorite),
               onPressed: () {
                 incrementCounter();
               },
-              child: const Icon(Icons.heart_broken_outlined)),
+              color: Colors.black,
+              tooltip: "I love my gf",
+            ),
+          ),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('I miss you so much. I can\'t wait to see you.'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('We will see each other again in about:'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${seconds / 60 / 60 / 24} days.'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${seconds / 60 / 60} hours.'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${seconds / 60} minutes.'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('$seconds seconds.'),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("I love my girlfriend $buttonPressCounter times",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     )),
-              )
+              ),
             ],
           ),
         ));
