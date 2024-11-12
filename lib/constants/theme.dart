@@ -13,10 +13,10 @@ ThemeData appTheme = ThemeData(
     displayLarge: TextStyle(color: Colors.black54),
     displaySmall: TextStyle(color: Colors.black54),
   ),
-  appBarTheme: const AppBarTheme(
-    foregroundColor: Colors.red,
-    backgroundColor: Colors.red,
-    titleTextStyle: TextStyle(color: Colors.black),
+  appBarTheme: AppBarTheme(
+    foregroundColor: Colors.purple[200],
+    backgroundColor: Colors.purple[200],
+    titleTextStyle: const TextStyle(color: Colors.black),
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: Colors.blue[200],
@@ -25,4 +25,11 @@ ThemeData appTheme = ThemeData(
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Colors.purple[200],
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+    minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
+    backgroundColor: WidgetStatePropertyAll(Colors.purple[200]),
+    foregroundColor: const WidgetStatePropertyAll(Colors.black),
+    textStyle: const WidgetStatePropertyAll(TextStyle(fontSize: 16)),
+  )),
 );

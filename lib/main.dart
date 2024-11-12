@@ -1,6 +1,7 @@
-import 'dart:async';
-
 import 'package:aandm/constants/theme.dart';
+import 'package:aandm/screens/timer_screen.dart';
+import 'package:aandm/screens/to_do_screen.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -31,83 +32,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int seconds = 0;
-  int buttonPressCounter = 0;
-  @override
-  void initState() {
-    super.initState();
-    seconds = getSecondsUntilNextFriday();
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        seconds--;
-      });
-    });
-  }
-
-  int getSecondsUntilNextFriday() {
-    DateTime now = DateTime.now();
-    DateTime nextFriday = now.add(Duration(days: (5 - now.weekday + 7) % 7));
-    nextFriday =
-        DateTime(nextFriday.year, nextFriday.month, nextFriday.day, 18, 0, 0);
-    return nextFriday.difference(now).inSeconds;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {
-                Fluttertoast.showToast(msg: "I miss you too darling!");
-              },
-              color: Colors.black,
-              tooltip: "I love my gf",
-            ),
+      appBar: AppBar(
+        title: const Text("A and M"),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Fluttertoast.showToast(msg: "I miss you too darling!");
+            },
+            color: Colors.black,
+            tooltip: "I love my gf",
           ),
         ),
-        body: Center(
+      ),
+      body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                    "I love you so much. and I miss you every second! \nLuckily we will see each other again in about",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                    "${(seconds / 60 / 60 / 24).toStringAsFixed(1)} days",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 22)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text("${(seconds / 60 / 60).toStringAsFixed(1)} hours",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 22)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text("${(seconds / 60).toStringAsFixed(0)} minutes",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 22)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text("${seconds.toStringAsFixed(0)} seconds",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 22)),
-              ),
-            ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              navigateToScreen(context, const TimerScreen(), true);
+            },
+            child: const Text("Timer Screen"),
           ),
-        ));
+          ElevatedButton(
+              onPressed: () {
+                navigateToScreen(context, const ToDoScreen(), true);
+              },
+              child: const Text("To-Do List")),
+        ],
+      )),
+    );
   }
 }
