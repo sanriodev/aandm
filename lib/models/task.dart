@@ -11,12 +11,5 @@ class Task {
   @HiveField(2)
   bool isDone;
 
-  @HiveField(3)
-  String? description;
-
-  Task(
-      {required this.title,
-      required this.content,
-      required this.isDone,
-      this.description});
+  Task({required this.title, required this.content, required this.isDone});
 }

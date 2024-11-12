@@ -38,4 +38,18 @@ ThemeData appTheme = ThemeData(
       backgroundColor: WidgetStatePropertyAll(Colors.purple[100]),
     ),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Colors.black26, width: 2.5),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Colors.black45, width: 2.5),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Colors.black26, width: 2.5),
+    ),
+  ),
 );

@@ -9,7 +9,6 @@ class TaskAdapter extends TypeAdapter<Task> {
   Task read(BinaryReader reader) {
     return Task(
       title: reader.readString(),
-      description: reader.readString(),
       content: reader.readString(),
       isDone: reader.readBool(),
     );
@@ -18,7 +17,6 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   void write(BinaryWriter writer, Task obj) {
     writer.writeString(obj.title);
-    writer.writeString(obj.description ?? '');
     writer.writeString(obj.content);
     writer.writeBool(obj.isDone);
   }

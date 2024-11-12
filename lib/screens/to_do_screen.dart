@@ -11,6 +11,9 @@ class ToDoScreen extends StatefulWidget {
 
 class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> tasks = [];
+  String title = 'Titel';
+  String content = 'Inhalt';
+
   @override
   void initState() {
     setState(() {
@@ -130,7 +133,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ToDo List",
+        title: const Text("To-Do List",
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 24,
@@ -150,19 +153,54 @@ class _ToDoScreenState extends State<ToDoScreen> {
       body: Column(
         children: <Widget>[
           Expanded(child: getAllListItems()),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30),
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                    onPressed: () {
-                      createNewItem(Task(
-                          title: 'cooler test',
-                          content: 'ich mache einen super tollen test',
-                          isDone: false));
-                    },
-                    child: const Text("Create new Item"))),
-          )
+          Divider(
+            thickness: 4,
+            color: Colors.blue[200],
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Card(
+              child: Column(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: TextField(
+                        controller: TextEditingController(text: title),
+                        onChanged: (value) {
+                          title = value;
+                        },
+                        onTap: () {
+                          setState(() {
+                            title = '';
+                          });
+                        },
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: TextField(
+                        controller: TextEditingController(text: content),
+                        onChanged: (value) {
+                          content = value;
+                        },
+                        onTap: () {
+                          setState(() {
+                            content = '';
+                          });
+                        },
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          createNewItem(Task(
+                              title: title, content: content, isDone: false));
+                        },
+                        child: const Text("Create new Item")),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
