@@ -43,7 +43,7 @@ class _TimerScreenState extends State<TimerScreen> {
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () {
                 Navigator.of(context).pop();
               },
