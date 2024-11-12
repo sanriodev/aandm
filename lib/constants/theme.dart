@@ -32,4 +32,10 @@ ThemeData appTheme = ThemeData(
     foregroundColor: const WidgetStatePropertyAll(Colors.black),
     textStyle: const WidgetStatePropertyAll(TextStyle(fontSize: 16)),
   )),
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: const WidgetStatePropertyAll(Colors.black),
+      backgroundColor: WidgetStatePropertyAll(Colors.purple[100]),
+    ),
+  ),
 );
