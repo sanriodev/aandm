@@ -1,6 +1,4 @@
 import 'package:aandm/constants/theme.dart';
-import 'package:aandm/models/adapter/task_adapter.dart';
-import 'package:aandm/models/adapter/task_list_adapter.dart';
 import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/timer_screen.dart';
@@ -215,9 +213,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
                         onPressed: () {
-                          createNewItem(TaskList(
-                              name: collectionName,
-                              tasks: HiveList(Hive.box<Task>('tasks'))));
+                          createNewItem(TaskList(collectionName,
+                              HiveList(Hive.box<Task>('tasks'))));
                         },
                         child: const Text("Create new List")),
                   )

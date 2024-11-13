@@ -12,19 +12,26 @@ class ToDoScreen extends StatefulWidget {
 
 class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> tasks = [];
+  late TaskList list;
   String title = 'Titel';
   String content = 'Inhalt';
 
   @override
   void initState() {
     setState(() {
-      tasks = getTasks(widget.list);
+      list = getTaskList(widget.list.key);
+      tasks = getTasks(list);
     });
     super.initState();
   }
 
+  TaskList getTaskList(int key) {
+    final box = Hive.box<TaskList>('taskLists');
+    return box.get(key)!;
+  }
+
   List<Task> getTasks(TaskList list) {
-    final List<Task> tasks = [];
+/*     final List<Task> tasks = [];
     final box = Hive.box<Task>('tasks');
     final taskKeys = list.tasks.keys;
     for (var key in taskKeys) {
@@ -33,12 +40,15 @@ class _ToDoScreenState extends State<ToDoScreen> {
         tasks.add(value);
       }
     }
-    return tasks;
+    return tasks; */
+    return list.tasks;
   }
 
   createNewItem(Task data) {
     final box = Hive.box<Task>('tasks');
+    widget.list.tasks = HiveList(box);
     box.add(data);
+    widget.list.tasks.add(data);
     setState(() {
       tasks.add(data);
     });
@@ -201,8 +211,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
                         onPressed: () {
-                          createNewItem(Task(
-                              title: title, content: content, isDone: false));
+                          createNewItem(Task(title, content, false));
                         },
                         child: const Text("Create new Item")),
                   )
