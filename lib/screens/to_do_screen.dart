@@ -5,57 +5,34 @@ import 'package:hive/hive.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key, required this.list});
-  final TaskList list;
+  final TaskListWithTasks list;
   @override
   State<ToDoScreen> createState() => _ToDoScreenState();
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> tasks = [];
-  late TaskList list;
   String title = 'Titel';
   String content = 'Inhalt';
 
   @override
   void initState() {
     setState(() {
-      list = getTaskList(widget.list.key);
-      tasks = getTasks(list);
+      tasks = widget.list.tasks;
     });
     super.initState();
   }
 
-  TaskList getTaskList(int key) {
-    final box = Hive.box<TaskList>('taskLists');
-    return box.get(key)!;
-  }
-
-  HiveList<Task> getTasks(TaskList list) {
-/*     final List<Task> tasks = [];
+  List<Task> getTasks(TaskList list) {
     final box = Hive.box<Task>('tasks');
-    final taskKeys = list.tasks.keys;
-    for (var key in taskKeys) {
-      var value = box.get(key);
-      if (value != null) {
-        tasks.add(value);
-      }
-    }
-    return tasks; */
-    if (list.tasks == null) {
-      list.tasks = HiveList(Hive.box<Task>('tasks'));
-      list.save();
-      return list.tasks!;
-    } else {
-      return list.tasks!;
-    }
+    return box.values
+        .where((element) => element.taskListId == list.id)
+        .toList();
   }
 
   createNewItem(Task data) {
     final box = Hive.box<Task>('tasks');
     box.add(data);
-    widget.list.tasks = HiveList(box);
-    widget.list.tasks?.add(data);
-    widget.list.save();
     setState(() {
       tasks.add(data);
     });
@@ -65,7 +42,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     final box = Hive.box<Task>('tasks');
     box.deleteAt(index);
     setState(() {
-      tasks = getTasks(widget.list);
+      tasks = getTasks(widget.list.taskList);
     });
   }
 
@@ -139,7 +116,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                             task!.isDone = value!;
                             box.putAt(index, task);
                             setState(() {
-                              tasks = getTasks(widget.list);
+                              tasks = getTasks(widget.list.taskList);
                             });
                           },
                           activeColor: Colors.purple[200],
@@ -218,7 +195,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
                         onPressed: () {
-                          createNewItem(Task(title, content, false));
+                          createNewItem(Task(
+                              title, content, false, widget.list.taskList.id));
                         },
                         child: const Text("Create new Item")),
                   )

@@ -42,25 +42,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<TaskList> taskLists = [];
+  List<TaskListWithTasks> taskLists = [];
   String collectionName = 'Name der Liste';
 
   @override
   void initState() {
     super.initState();
-    taskLists = getTaskLists();
+    taskLists = getTaskListsAndTasks();
   }
 
-  List<TaskList> getTaskLists() {
+  List<TaskListWithTasks> getTaskListsAndTasks() {
     final box = Hive.box<TaskList>('taskLists');
-    return box.values.toList();
+    final taskBox = Hive.box<Task>('tasks');
+    final List<TaskList> taskLists = box.values.toList();
+
+    final List<TaskListWithTasks> res = [];
+
+    final List<Task> tasks = taskBox.values.toList();
+
+    for (final taskList in taskLists) {
+      res.add(TaskListWithTasks(taskList,
+          tasks.where((item) => item.taskListId == taskList.id).toList()));
+    }
+
+    return res;
   }
 
   createNewItem(TaskList data) {
     final box = Hive.box<TaskList>('taskLists');
     box.add(data);
     setState(() {
-      taskLists.add(data);
+      taskLists.add(TaskListWithTasks(data, []));
     });
   }
 
@@ -68,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final box = Hive.box<TaskList>('taskLists');
     box.deleteAt(index);
     setState(() {
-      taskLists = getTaskLists();
+      taskLists = getTaskListsAndTasks();
     });
   }
 
@@ -98,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(
-                            taskLists[index].name,
+                            taskLists[index].taskList.name,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -113,21 +125,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                 right: 10,
                               ),
                               child: Text(
-                                  "Anzahl: ${taskLists[index].tasks?.length}"),
+                                  "Anzahl: ${taskLists[index].tasks.length}"),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
                               ),
                               child: Text(
-                                  "fertig: ${taskLists[index].tasks?.where((item) => item.isDone).length}"),
+                                  "fertig: ${taskLists[index].tasks.where((item) => item.isDone).length}"),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
                               ),
                               child: Text(
-                                  "offen: ${taskLists[index].tasks?.where((item) => !item.isDone).length}"),
+                                  "offen: ${taskLists[index].tasks.where((item) => !item.isDone).length}"),
                             ),
                           ],
                         )
@@ -215,6 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () {
                           createNewItem(TaskList(
                             collectionName,
+                            taskLists.length + 1,
                           ));
                         },
                         child: const Text("Create new List")),

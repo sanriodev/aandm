@@ -11,7 +11,10 @@ class Task extends HiveObject {
   @HiveField(2)
   bool isDone = false;
 
-  Task(this.title, this.content, this.isDone);
+  @HiveField(3)
+  int taskListId;
+
+  Task(this.title, this.content, this.isDone, this.taskListId);
 }
 
 class TaskAdapter extends TypeAdapter<Task> {
@@ -20,12 +23,15 @@ class TaskAdapter extends TypeAdapter<Task> {
 
   @override
   Task read(BinaryReader reader) {
-    return Task(reader.read(), reader.read(), reader.readBool());
+    return Task(reader.readString(), reader.readString(), reader.readBool(),
+        reader.readInt());
   }
 
   @override
   void write(BinaryWriter writer, Task obj) {
-    writer.write(obj.title);
-    writer.write(obj.content);
+    writer.writeString(obj.title);
+    writer.writeString(obj.content);
+    writer.writeBool(obj.isDone);
+    writer.writeInt(obj.taskListId);
   }
 }

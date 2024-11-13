@@ -7,9 +7,9 @@ class TaskList extends HiveObject {
   String name;
 
   @HiveField(1)
-  HiveList<Task>? tasks;
+  int id;
 
-  TaskList(this.name);
+  TaskList(this.name, this.id);
 }
 
 class TaskListAdapter extends TypeAdapter<TaskList> {
@@ -18,12 +18,19 @@ class TaskListAdapter extends TypeAdapter<TaskList> {
 
   @override
   TaskList read(BinaryReader reader) {
-    return TaskList(reader.read());
+    return TaskList(reader.readString(), reader.readInt());
   }
 
   @override
   void write(BinaryWriter writer, TaskList obj) {
-    writer.write(obj.name);
-    writer.write(obj.tasks);
+    writer.writeString(obj.name);
+    writer.writeInt(obj.id);
   }
+}
+
+class TaskListWithTasks {
+  final TaskList taskList;
+  final List<Task> tasks;
+
+  TaskListWithTasks(this.taskList, this.tasks);
 }
