@@ -1,10 +1,11 @@
 import 'package:aandm/models/task.dart';
+import 'package:aandm/models/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class ToDoScreen extends StatefulWidget {
-  const ToDoScreen({super.key});
-
+  const ToDoScreen({super.key, required this.list});
+  final TaskList list;
   @override
   State<ToDoScreen> createState() => _ToDoScreenState();
 }
@@ -17,14 +18,22 @@ class _ToDoScreenState extends State<ToDoScreen> {
   @override
   void initState() {
     setState(() {
-      tasks = getTasks();
+      tasks = getTasks(widget.list);
     });
     super.initState();
   }
 
-  List<Task> getTasks() {
+  List<Task> getTasks(TaskList list) {
+    final List<Task> tasks = [];
     final box = Hive.box<Task>('tasks');
-    return box.values.toList();
+    final taskKeys = list.tasks.keys;
+    for (var key in taskKeys) {
+      var value = box.get(key);
+      if (value != null) {
+        tasks.add(value);
+      }
+    }
+    return tasks;
   }
 
   createNewItem(Task data) {
@@ -39,7 +48,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     final box = Hive.box<Task>('tasks');
     box.deleteAt(index);
     setState(() {
-      tasks = getTasks();
+      tasks = getTasks(widget.list);
     });
   }
 
@@ -113,7 +122,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                             task!.isDone = value!;
                             box.putAt(index, task);
                             setState(() {
-                              tasks = getTasks();
+                              tasks = getTasks(widget.list);
                             });
                           },
                           activeColor: Colors.purple[200],
