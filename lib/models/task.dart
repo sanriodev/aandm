@@ -7,10 +7,11 @@ class Task extends HiveObject {
 
   @HiveField(1)
   String content;
-  Task(this.title, this.content, this.isDone);
 
   @HiveField(2)
   bool isDone = false;
+
+  Task(this.title, this.content, this.isDone);
 }
 
 class TaskAdapter extends TypeAdapter<Task> {
@@ -26,6 +27,5 @@ class TaskAdapter extends TypeAdapter<Task> {
   void write(BinaryWriter writer, Task obj) {
     writer.write(obj.title);
     writer.write(obj.content);
-    writer.writeBool(obj.isDone);
   }
 }

@@ -30,7 +30,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     return box.get(key)!;
   }
 
-  List<Task> getTasks(TaskList list) {
+  HiveList<Task> getTasks(TaskList list) {
 /*     final List<Task> tasks = [];
     final box = Hive.box<Task>('tasks');
     final taskKeys = list.tasks.keys;
@@ -41,14 +41,21 @@ class _ToDoScreenState extends State<ToDoScreen> {
       }
     }
     return tasks; */
-    return list.tasks;
+    if (list.tasks == null) {
+      list.tasks = HiveList(Hive.box<Task>('tasks'));
+      list.save();
+      return list.tasks!;
+    } else {
+      return list.tasks!;
+    }
   }
 
   createNewItem(Task data) {
     final box = Hive.box<Task>('tasks');
-    widget.list.tasks = HiveList(box);
     box.add(data);
-    widget.list.tasks.add(data);
+    widget.list.tasks = HiveList(box);
+    widget.list.tasks?.add(data);
+    widget.list.save();
     setState(() {
       tasks.add(data);
     });

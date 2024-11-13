@@ -1,5 +1,3 @@
-// ..
-
 import 'package:aandm/models/task.dart';
 import 'package:hive/hive.dart';
 
@@ -9,9 +7,9 @@ class TaskList extends HiveObject {
   String name;
 
   @HiveField(1)
-  HiveList<Task> tasks;
+  HiveList<Task>? tasks;
 
-  TaskList(this.name, this.tasks);
+  TaskList(this.name);
 }
 
 class TaskListAdapter extends TypeAdapter<TaskList> {
@@ -20,7 +18,7 @@ class TaskListAdapter extends TypeAdapter<TaskList> {
 
   @override
   TaskList read(BinaryReader reader) {
-    return TaskList(reader.read(), reader.read());
+    return TaskList(reader.read());
   }
 
   @override

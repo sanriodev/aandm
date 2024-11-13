@@ -110,24 +110,24 @@ class _MyHomePageState extends State<MyHomePage> {
                             Padding(
                               padding: const EdgeInsets.only(
                                 left: 4,
-                                right: 20,
+                                right: 10,
                               ),
                               child: Text(
-                                  "Anzahl: ${taskLists[index].tasks.length}"),
+                                  "Anzahl: ${taskLists[index].tasks?.length}"),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
+                                horizontal: 10,
                               ),
                               child: Text(
-                                  "fertig: ${taskLists[index].tasks.where((item) => item.isDone).length}"),
+                                  "fertig: ${taskLists[index].tasks?.where((item) => item.isDone).length}"),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
+                                horizontal: 10,
                               ),
                               child: Text(
-                                  "offen: ${taskLists[index].tasks.where((item) => !item.isDone).length}"),
+                                  "offen: ${taskLists[index].tasks?.where((item) => !item.isDone).length}"),
                             ),
                           ],
                         )
@@ -213,8 +213,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
                         onPressed: () {
-                          createNewItem(TaskList(collectionName,
-                              HiveList(Hive.box<Task>('tasks'))));
+                          createNewItem(TaskList(
+                            collectionName,
+                          ));
                         },
                         child: const Text("Create new List")),
                   )
