@@ -30,7 +30,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
         .toList();
   }
 
-  createNewItem(Task data) {
+  void createNewItem(Task data) {
     final box = Hive.box<Task>('tasks');
     box.add(data);
     setState(() {
@@ -38,7 +38,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     });
   }
 
-  deleteItem(int index) {
+  void deleteItem(int index) {
     final box = Hive.box<Task>('tasks');
     box.deleteAt(index);
     setState(() {
@@ -52,7 +52,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
         itemBuilder: (BuildContext context, int index) {
           return Card(
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(

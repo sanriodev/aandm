@@ -28,6 +28,3 @@ jobs:
 
       - name: Run Flutter Analyze
         run: flutter analyze
-
-      - name: Run Dart Format Check
-        run: flutter analyze --fatal-warnings .

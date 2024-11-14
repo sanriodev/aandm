@@ -4,9 +4,7 @@ ThemeData appTheme = ThemeData(
   primaryColor: Colors.blue[200],
   secondaryHeaderColor: Colors.purple[200],
   colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: Colors.blue,
-      accentColor: Colors.purple,
-      backgroundColor: Colors.white38),
+      accentColor: Colors.purple, backgroundColor: Colors.white38),
   scaffoldBackgroundColor: Colors.blue[100],
   textTheme: const TextTheme(
     displayMedium: TextStyle(color: Colors.black87),
