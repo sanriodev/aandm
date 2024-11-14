@@ -40,6 +40,7 @@ dependencies:
   lint: ^2.3.0
   accordion: ^2.6.0
   getwidget: ^4.0.0
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    taskLists = getTaskListsAndTasks();
+    getTaskListsAndTasks();
   }
 
-  List<TaskListWithTasks> getTaskListsAndTasks() {
+  void getTaskListsAndTasks() {
     final box = Hive.box<TaskList>('taskLists');
     final taskBox = Hive.box<Task>('tasks');
     final List<TaskList> taskLists = box.values.toList();
@@ -65,8 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
       res.add(TaskListWithTasks(taskList,
           tasks.where((item) => item.taskListId == taskList.id).toList()));
     }
-
-    return res;
+    setState(() {
+      this.taskLists = res;
+    });
   }
 
   void createNewItem(TaskList data) {
@@ -80,9 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void deleteItem(int index) {
     final box = Hive.box<TaskList>('taskLists');
     box.deleteAt(index);
-    setState(() {
-      taskLists = getTaskListsAndTasks();
-    });
+    getTaskListsAndTasks();
   }
 
   ListView getAllListItems() {
@@ -112,80 +112,89 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("A and M",
-            style: TextStyle(
+    return VisibilityDetector(
+      key: const Key('listViewVis'),
+      onVisibilityChanged: (info) {
+        if (info.visibleFraction > 0) {
+          getTaskListsAndTasks();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("A and M",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold)),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () {
+                  Fluttertoast.showToast(msg: "I miss you too darling!");
+                },
                 color: Colors.black,
-                fontSize: 24,
-                fontWeight: FontWeight.bold)),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {
-                Fluttertoast.showToast(msg: "I miss you too darling!");
-              },
-              color: Colors.black,
-              tooltip: "I love my gf",
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.timer_outlined),
-              onPressed: () {
-                navigateToScreen(context, const TimerScreen(), true);
-              },
-              color: Colors.black,
-              tooltip: "I love my gf",
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(child: getAllListItems()),
-          Divider(
-            thickness: 4,
-            color: Colors.blue[200],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Card(
-              child: Column(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: TextField(
-                        controller: TextEditingController(text: collectionName),
-                        onChanged: (value) {
-                          collectionName = value;
-                        },
-                        onTap: () {
-                          setState(() {
-                            collectionName = '';
-                          });
-                        },
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          final newIncrementedId = _getIncrement(taskLists);
-                          createNewItem(TaskList(
-                            collectionName,
-                            newIncrementedId,
-                          ));
-                        },
-                        child: const Text("Create new List")),
-                  )
-                ],
+                tooltip: "I love my gf",
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.timer_outlined),
+                onPressed: () {
+                  navigateToScreen(context, const TimerScreen(), true);
+                },
+                color: Colors.black,
+                tooltip: "I love my gf",
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(child: getAllListItems()),
+            Divider(
+              thickness: 4,
+              color: Colors.blue[200],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Card(
+                child: Column(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: TextField(
+                          controller:
+                              TextEditingController(text: collectionName),
+                          onChanged: (value) {
+                            collectionName = value;
+                          },
+                          onTap: () {
+                            setState(() {
+                              collectionName = '';
+                            });
+                          },
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            final newIncrementedId = _getIncrement(taskLists);
+                            createNewItem(TaskList(
+                              collectionName,
+                              newIncrementedId,
+                            ));
+                          },
+                          child: const Text("Create new List")),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
