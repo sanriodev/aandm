@@ -38,6 +38,8 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.1.5
   lint: ^2.3.0
+  accordion: ^2.6.0
+  getwidget: ^4.0.0
 
 dev_dependencies:
   flutter_test:
