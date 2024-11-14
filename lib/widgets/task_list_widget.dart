@@ -27,12 +27,7 @@ class TaskListWidget extends StatelessWidget {
       children: [
         TaskListAccordionSection(
             headerBackgroundColor: Colors.purple.shade400,
-            isOpen: true,
-            leftHeaderIcon: const Icon(
-              Icons.circle,
-              color: Colors.green,
-              size: 20,
-            ),
+            isOpen: false,
             header: Row(
               children: [
                 Padding(
@@ -53,11 +48,47 @@ class TaskListWidget extends StatelessWidget {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Einträge gesamt: $totalTaks"),
-                      Text("Einträge abgeschlossen: $completedTasks"),
-                      Text("Einträge offen: $openTasks"),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              color: Colors.purple,
+                              size: 15,
+                            ),
+                            Text("Einträge gesamt: $totalTaks"),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              color: Colors.green,
+                              size: 15,
+                            ),
+                            Text("Einträge abgeschlossen: $completedTasks"),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              color: Colors.red,
+                              size: 15,
+                            ),
+                            Text("Einträge offen: $openTasks"),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -69,17 +100,19 @@ class TaskListWidget extends StatelessWidget {
                           child: GFProgressBar(
                             width: 100,
                             radius: 100,
-                            percentage: 0.80,
+                            percentage: (completedTasks / totalTaks).isNaN
+                                ? 0
+                                : (completedTasks / totalTaks),
                             lineHeight: 100,
                             circleWidth: 10,
                             type: GFProgressType.circular,
                             backgroundColor: Colors.black26,
                             progressBarColor: Colors.purple.shade400,
-                            child: const Text("80%"),
+                            child: Text(
+                                "${((completedTasks / totalTaks).isNaN ? 0 : (completedTasks / totalTaks)) * 100}%"),
                           ),
                         ),
                       ),
-                      const Text("Abgeschlossen"),
                     ],
                   ),
                 ],
