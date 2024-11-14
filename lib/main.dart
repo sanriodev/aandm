@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return res;
   }
 
-  createNewItem(TaskList data) {
+  void createNewItem(TaskList data) {
     final box = Hive.box<TaskList>('taskLists');
     box.add(data);
     setState(() {
@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  deleteItem(int index) {
+  void deleteItem(int index) {
     final box = Hive.box<TaskList>('taskLists');
     box.deleteAt(index);
     setState(() {
@@ -99,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: Card(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
@@ -225,9 +224,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
                         onPressed: () {
+                          final newIncrementedId = _getIncrement(taskLists);
                           createNewItem(TaskList(
                             collectionName,
-                            taskLists.length + 1,
+                            newIncrementedId,
                           ));
                         },
                         child: const Text("Create new List")),
@@ -239,5 +239,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  int _getIncrement(List<TaskListWithTasks> taskLists) {
+    var max = 0;
+    if (taskLists.isEmpty) {
+      return 1;
+    }
+    for (var i = 0; i < taskLists.length; i++) {
+      if (taskLists[i].taskList.id > max) {
+        max = taskLists[i].taskList.id;
+      }
+    }
+    return max + 1;
   }
 }
