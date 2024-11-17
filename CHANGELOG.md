@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/sanriodev/aandm/compare/v1.0.0...v1.1.0) (2024-11-17)
+
+
+### Features
+
+* color mode ([8e78b4f](https://github.com/sanriodev/aandm/commit/8e78b4f97d3e301ae1d4ac8bd5581b7b09f63409))
+
 ## 1.0.0 (2024-11-17)
 
 
