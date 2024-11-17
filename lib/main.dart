@@ -1,4 +1,4 @@
-import 'package:aandm/constants/theme.dart';
+import 'package:aandm/ui/theme.dart';
 import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/timer_screen.dart';
@@ -22,14 +22,31 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.system;
+  void changeTheme(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'A & M',
-      theme: appTheme,
+      themeMode: _themeMode,
+      theme: appThemeLight,
+      darkTheme: appThemeDark,
       home: const MyHomePage(title: 'A & M'),
     );
   }
@@ -122,10 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("A and M",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -134,8 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Fluttertoast.showToast(msg: "I miss you too darling!");
                 },
-                color: Colors.black,
-                tooltip: "I love my gf",
               ),
             ),
             Padding(
@@ -145,27 +157,44 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   navigateToScreen(context, const TimerScreen(), true);
                 },
-                color: Colors.black,
-                tooltip: "I love my gf",
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.settings_brightness),
+                onPressed: () {
+                  if (MyApp.of(context)!._themeMode == ThemeMode.dark) {
+                    MyApp.of(context)!._themeMode = ThemeMode.light;
+                    setState(() {
+                      MyApp.of(context)!.changeTheme(ThemeMode.light);
+                    });
+                  } else {
+                    MyApp.of(context)!._themeMode = ThemeMode.dark;
+                    setState(() {
+                      MyApp.of(context)!.changeTheme(ThemeMode.dark);
+                    });
+                  }
+                  setState(() {});
+                },
               ),
             ),
           ],
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(child: getAllListItems()),
-            Divider(
-              thickness: 4,
-              color: Colors.blue[200],
-            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Card(
+                margin: EdgeInsets.zero,
                 child: Column(
                   children: [
                     Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: TextField(
+                          style: const TextStyle(color: Colors.grey),
                           controller:
                               TextEditingController(text: collectionName),
                           onChanged: (value) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
 import 'package:getwidget/types/gf_progress_type.dart';
 
-class TaskListWidget extends StatelessWidget {
+class TaskListWidget extends StatefulWidget {
   final String taskListName;
   final int totalTaks;
   final int completedTasks;
@@ -22,6 +22,11 @@ class TaskListWidget extends StatelessWidget {
       this.onTap});
 
   @override
+  State<TaskListWidget> createState() => _TaskListWidgetState();
+}
+
+class _TaskListWidgetState extends State<TaskListWidget> {
+  @override
   Widget build(BuildContext context) {
     return TaskListAccordion(
       children: [
@@ -33,16 +38,16 @@ class TaskListWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(12),
                   child: IconButton(
-                      icon: const Icon(Icons.delete), onPressed: onDeletePress),
+                      icon: const Icon(Icons.delete),
+                      onPressed: widget.onDeletePress),
                 ),
                 Text(
-                  taskListName,
-                  style: TextStyle(color: Colors.white),
+                  widget.taskListName,
                 ),
               ],
             ),
             content: InkWell(
-              onTap: onTap,
+              onTap: widget.onTap,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -59,7 +64,7 @@ class TaskListWidget extends StatelessWidget {
                               color: Colors.purple,
                               size: 15,
                             ),
-                            Text("Einträge gesamt: $totalTaks"),
+                            Text("Einträge gesamt: ${widget.totalTaks}"),
                           ],
                         ),
                       ),
@@ -72,7 +77,8 @@ class TaskListWidget extends StatelessWidget {
                               color: Colors.green,
                               size: 15,
                             ),
-                            Text("Einträge abgeschlossen: $completedTasks"),
+                            Text(
+                                "Einträge abgeschlossen: ${widget.completedTasks}"),
                           ],
                         ),
                       ),
@@ -85,7 +91,7 @@ class TaskListWidget extends StatelessWidget {
                               color: Colors.red,
                               size: 15,
                             ),
-                            Text("Einträge offen: $openTasks"),
+                            Text("Einträge offen: ${widget.openTasks}"),
                           ],
                         ),
                       ),
@@ -100,16 +106,18 @@ class TaskListWidget extends StatelessWidget {
                           child: GFProgressBar(
                             width: 100,
                             radius: 100,
-                            percentage: (completedTasks / totalTaks).isNaN
-                                ? 0
-                                : (completedTasks / totalTaks),
+                            percentage:
+                                (widget.completedTasks / widget.totalTaks).isNaN
+                                    ? 0
+                                    : (widget.completedTasks /
+                                        widget.totalTaks),
                             lineHeight: 100,
                             circleWidth: 10,
                             type: GFProgressType.circular,
                             backgroundColor: Colors.black26,
                             progressBarColor: Colors.purple.shade400,
                             child: Text(
-                                "${((completedTasks / totalTaks).isNaN ? 0 : (completedTasks / totalTaks)) * 100}%"),
+                                "${((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks)) * 100}%"),
                           ),
                         ),
                       ),

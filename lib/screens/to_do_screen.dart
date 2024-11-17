@@ -162,11 +162,13 @@ class _ToDoScreenState extends State<ToDoScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Card(
+              margin: EdgeInsets.zero,
               child: Column(
                 children: [
                   Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: TextField(
+                        style: const TextStyle(color: Colors.grey),
                         controller: TextEditingController(text: title),
                         onChanged: (value) {
                           title = value;
@@ -180,6 +182,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: TextField(
+                        style: const TextStyle(color: Colors.grey),
                         controller: TextEditingController(text: content),
                         onChanged: (value) {
                           content = value;
