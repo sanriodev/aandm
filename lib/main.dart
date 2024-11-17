@@ -194,6 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: TextField(
+                          style: const TextStyle(color: Colors.grey),
                           controller:
                               TextEditingController(text: collectionName),
                           onChanged: (value) {
