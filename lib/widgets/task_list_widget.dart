@@ -109,15 +109,15 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                             percentage:
                                 (widget.completedTasks / widget.totalTaks).isNaN
                                     ? 0
-                                    : (widget.completedTasks /
-                                        widget.totalTaks),
+                                    : (widget.completedTasks / widget.totalTaks)
+                                        .ceilToDouble(),
                             lineHeight: 100,
                             circleWidth: 10,
                             type: GFProgressType.circular,
                             backgroundColor: Colors.black26,
                             progressBarColor: Colors.purple.shade400,
                             child: Text(
-                                "${((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks)) * 100}%"),
+                                "${((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks).ceilToDouble()) * 100}%"),
                           ),
                         ),
                       ),
