@@ -25,7 +25,9 @@ class _TimerScreenState extends State<TimerScreen> {
 
   int getSecondsUntilNextFriday() {
     final DateTime now = DateTime.now();
-    DateTime nextFriday = now.add(Duration(days: (5 - now.weekday + 7) % 7));
+    final nextFrDuration = Duration(
+        days: ((5 - now.weekday + 7) % 7 > 0 ? (5 - now.weekday + 7) % 7 : 7));
+    DateTime nextFriday = now.add(nextFrDuration);
     nextFriday =
         DateTime(nextFriday.year, nextFriday.month, nextFriday.day, 18);
     return nextFriday.difference(now).inSeconds;
