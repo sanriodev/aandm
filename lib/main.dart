@@ -98,8 +98,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void deleteItem(int index) {
     final box = Hive.box<TaskList>('taskLists');
+    final taskToDelete = taskLists[index];
+    deleteItemsForList(taskToDelete.taskList.id);
     box.deleteAt(index);
     getTaskListsAndTasks();
+  }
+
+  void deleteItemsForList(int taskListId) {
+    final box = Hive.box<Task>('tasks');
+    final itemsToDelete = box.values
+        .where((element) => element.taskListId == taskListId)
+        .toList();
+    box.deleteAll(itemsToDelete.map((e) => e.key).toList());
   }
 
   ListView getAllListItems() {
