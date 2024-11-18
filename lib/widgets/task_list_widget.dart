@@ -2,7 +2,6 @@ import 'package:aandm/widgets/accordion/accordion_section.dart';
 import 'package:aandm/widgets/accordion/task_list_accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
-import 'package:getwidget/types/gf_progress_type.dart';
 
 class TaskListWidget extends StatefulWidget {
   final String taskListName;
@@ -48,80 +47,78 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             ),
             content: InkWell(
               onTap: widget.onTap,
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.circle,
-                              color: Colors.purple,
-                              size: 15,
-                            ),
-                            Text("Einträge gesamt: ${widget.totalTaks}"),
-                          ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.circle,
+                          color: Colors.purple,
+                          size: 15,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.circle,
-                              color: Colors.green,
-                              size: 15,
-                            ),
-                            Text(
-                                "Einträge abgeschlossen: ${widget.completedTasks}"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.circle,
-                              color: Colors.red,
-                              size: 15,
-                            ),
-                            Text("Einträge offen: ${widget.openTasks}"),
-                          ],
-                        ),
-                      ),
-                    ],
+                        Text("Einträge gesamt: ${widget.totalTaks}"),
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 120,
-                        width: 100,
-                        child: Align(
-                          child: GFProgressBar(
-                            width: 100,
-                            radius: 100,
-                            percentage:
-                                (widget.completedTasks / widget.totalTaks).isNaN
-                                    ? 0
-                                    : (widget.completedTasks / widget.totalTaks)
-                                        .ceilToDouble(),
-                            lineHeight: 100,
-                            circleWidth: 10,
-                            type: GFProgressType.circular,
-                            backgroundColor: Colors.black26,
-                            progressBarColor: Colors.purple.shade400,
-                            child: Text(
-                                "${((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks).ceilToDouble()) * 100}%"),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.circle,
+                          color: Colors.green,
+                          size: 15,
+                        ),
+                        Text(
+                            "Einträge abgeschlossen: ${widget.completedTasks}"),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.circle,
+                          color: Colors.red,
+                          size: 15,
+                        ),
+                        Text("Einträge offen: ${widget.openTasks}"),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                          child: Text(
+                            "Aktueller Fortschritt",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
-                      ),
-                    ],
+                        GFProgressBar(
+                          percentage:
+                              (widget.completedTasks / widget.totalTaks).isNaN
+                                  ? 0
+                                  : (widget.completedTasks / widget.totalTaks)
+                                      .ceilToDouble(),
+                          lineHeight: 20,
+                          backgroundColor: Colors.black26,
+                          progressBarColor: Colors.purple.shade400,
+                          child: Text(
+                              "${((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks).ceilToDouble()) * 100}%"),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

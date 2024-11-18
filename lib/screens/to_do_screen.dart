@@ -64,7 +64,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: Text(
                           "Titel",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                       Padding(
@@ -72,7 +75,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: Text(
                           tasks[index].title,
                           style: const TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 14),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                       const Padding(
@@ -80,7 +86,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: Text(
                           "Inhalt",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                       Padding(
@@ -88,7 +97,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: Text(
                           tasks[index].content,
                           style: const TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 14),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ],
@@ -119,7 +131,9 @@ class _ToDoScreenState extends State<ToDoScreen> {
                             });
                           },
                           activeColor: Colors.purple[200],
-                          checkColor: Colors.black,
+                          checkColor: Colors.grey[200],
+                          side:
+                              const BorderSide(color: Colors.grey, width: 1.5),
                         ),
                       ),
                     ],
@@ -155,10 +169,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
       body: Column(
         children: <Widget>[
           Expanded(child: getAllListItems()),
-          Divider(
-            thickness: 4,
-            color: Colors.blue[200],
-          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Card(
