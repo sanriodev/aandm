@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.1](https://github.com/sanriodev/aandm/compare/v1.1.0...v1.1.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* delete tasks on list delete ([327b0cb](https://github.com/sanriodev/aandm/commit/327b0cb29745e07f8b051273def10978f1d65879))
+* double representation ([c21f087](https://github.com/sanriodev/aandm/commit/c21f08709eaf61644e30c3afa1ce3a6b7e0cfca3))
+* double representation ([c9cdc5d](https://github.com/sanriodev/aandm/commit/c9cdc5dacf145dd58a7577a00870aba7facbbdda))
+* text colors on list items ([e9dd463](https://github.com/sanriodev/aandm/commit/e9dd463ac1a0b6c9a313f09284b77c9bfec77b28))
+* timer screen on fridays ([9317641](https://github.com/sanriodev/aandm/commit/9317641fe7f28397420eb16c2c3a1ef9907f7823))
+
 ## [1.1.0](https://github.com/sanriodev/aandm/compare/v1.0.0...v1.1.0) (2024-11-17)
 
 
