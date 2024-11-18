@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/sanriodev/aandm/compare/v1.1.1...v1.1.2) (2024-11-18)
+
+
+### Bug Fixes
+
+* timer should only return + 7 when the day is the same AND the time of day is after it ([f0ab76e](https://github.com/sanriodev/aandm/commit/f0ab76e35231719cf57d55c0c9a89004a56b3895))
+
 ## [1.1.1](https://github.com/sanriodev/aandm/compare/v1.1.0...v1.1.1) (2024-11-18)
 
 
