@@ -1,3 +1,4 @@
+import 'package:aandm/screens/notes_screen.dart';
 import 'package:aandm/ui/theme.dart';
 import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
@@ -148,15 +149,15 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("A and M",
+          title: const Text("A & M",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                icon: const Icon(Icons.favorite),
+                icon: const Icon(Icons.note),
                 onPressed: () {
-                  Fluttertoast.showToast(msg: "I miss you too darling!");
+                  navigateToScreen(context, NotesScreen(), true);
                 },
               ),
             ),
