@@ -7,15 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class TaskListScreen extends StatefulWidget {
-  const TaskListScreen({super.key, required this.title});
+class ToDoListScreen extends StatefulWidget {
+  const ToDoListScreen({super.key});
 
-  final String title;
   @override
-  State<TaskListScreen> createState() => _TaskListScreenState();
+  State<ToDoListScreen> createState() => _ToDoListScreenState();
 }
 
-class _TaskListScreenState extends State<TaskListScreen> {
+class _ToDoListScreenState extends State<ToDoListScreen> {
   List<TaskListWithTasks> taskLists = [];
   String collectionName = 'Name der Liste';
 
@@ -71,7 +70,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return ListView.builder(
         itemCount: taskLists.length,
         itemBuilder: (BuildContext context, int index) {
-          return NoteListWidget(
+          return TaskListWidget(
               onTap: () {
                 navigateToScreen(
                     context,
@@ -146,7 +145,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ElevatedButton(
                           onPressed: () {
-                            final newIncrementedId = _getIncrement(taskLists);
+                            final List<TaskList> taskListEntities =
+                                taskLists.map((e) => e.taskList).toList();
+                            final newIncrementedId =
+                                getIncrement<TaskList>(taskListEntities);
                             createNewItem(TaskList(
                               collectionName,
                               newIncrementedId,
@@ -162,18 +164,5 @@ class _TaskListScreenState extends State<TaskListScreen> {
         ),
       ),
     );
-  }
-
-  int _getIncrement(List<TaskListWithTasks> taskLists) {
-    var max = 0;
-    if (taskLists.isEmpty) {
-      return 1;
-    }
-    for (var i = 0; i < taskLists.length; i++) {
-      if (taskLists[i].taskList.id > max) {
-        max = taskLists[i].taskList.id;
-      }
-    }
-    return max + 1;
   }
 }

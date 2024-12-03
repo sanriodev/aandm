@@ -1,12 +1,15 @@
+import 'package:aandm/models/hive_interface.dart';
 import 'package:aandm/models/task.dart';
 import 'package:hive/hive.dart';
 
 @HiveType(typeId: 0)
-class TaskList extends HiveObject {
+class TaskList extends HiveObject with HiveModel {
   @HiveField(0)
   String name;
 
+  @override
   @HiveField(1)
+  // ignore: overridden_fields
   int id;
 
   TaskList(this.name, this.id);

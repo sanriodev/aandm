@@ -1,6 +1,7 @@
 import 'package:aandm/models/note.dart';
+import 'package:aandm/screens/notes_edit_screen.dart';
 import 'package:aandm/util/helpers.dart';
-import 'package:aandm/widgets/task_list_widget.dart';
+import 'package:aandm/widgets/note_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -49,20 +50,21 @@ class _NotesScreenState extends State<NotesScreen> {
     return ListView.builder(
         itemCount: notes.length,
         itemBuilder: (BuildContext context, int index) {
-          return NoteListWidget(
-              onTap: () {
-                navigateToScreen(
-                    context,
-                    NoteEditScreen(
-                      list: notes[index],
-                    ),
-                    true);
-              },
-              onDeletePress: () {
-                deleteItem(index);
-              },
-              noteName: notes[index].name,
-              noteContent: notes[index].content);
+          return NoteWidget(
+            onTap: () {
+              navigateToScreen(
+                  context,
+                  NotesEditScreen(
+                    id: notes[index].id,
+                  ),
+                  true);
+            },
+            onDeletePress: () {
+              deleteItem(index);
+            },
+            name: notes[index].name,
+            content: notes[index].content,
+          );
         });
   }
 
@@ -120,7 +122,9 @@ class _NotesScreenState extends State<NotesScreen> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ElevatedButton(
                           onPressed: () {
+                            final newIncrementedId = getIncrement<Note>(notes);
                             createNewItem(Note(
+                              newIncrementedId,
                               collectionName,
                               '',
                             ));
