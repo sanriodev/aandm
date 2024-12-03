@@ -13,7 +13,18 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Note'),
+        title: Text('Notiz bearbeiten'),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            color: Colors.black,
+            tooltip: "I love my gf",
+          ),
+        ),
       ),
       body: Center(
         child: Text('Edit your note here'),

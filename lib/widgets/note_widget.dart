@@ -1,5 +1,3 @@
-import 'package:aandm/widgets/accordion/accordion_section.dart';
-import 'package:aandm/widgets/accordion/task_list_accordion.dart';
 import 'package:flutter/material.dart';
 
 class NoteWidget extends StatefulWidget {
@@ -22,38 +20,78 @@ class NoteWidget extends StatefulWidget {
 class _NoteWidgetState extends State<NoteWidget> {
   @override
   Widget build(BuildContext context) {
-    return TaskListAccordion(
-      children: [
-        TaskListAccordionSection(
-            headerBackgroundColor: Colors.purple.shade400,
-            isOpen: false,
-            header: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: widget.onDeletePress),
-                ),
-                Text(
-                  widget.name,
-                ),
-              ],
-            ),
-            content: InkWell(
-              onTap: widget.onTap,
+    return InkWell(
+      onTap: widget.onTap,
+      child: Card(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.content,
-                    style: TextStyle(overflow: TextOverflow.ellipsis),
-                  )
+                  const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text(
+                      "Name",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text(
+                      widget.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text(
+                      "Inhaltsvorschau",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text(
+                      widget.content,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                          color: Colors.grey,
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
                 ],
               ),
-            )),
-      ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: widget.onDeletePress),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
