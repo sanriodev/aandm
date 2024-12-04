@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/sanriodev/aandm/compare/v1.1.1...v1.2.0) (2024-12-04)
+
+
+### Features
+
+* add design to Timer Screen ([c2db7ab](https://github.com/sanriodev/aandm/commit/c2db7abd4c148009cf6d05f04d26b741d3c9cfcd))
+* implement notes ([818f72d](https://github.com/sanriodev/aandm/commit/818f72dcbddbae5d01aaa10e1ef34c3c9c29848f))
+* remove unused func ([394c71b](https://github.com/sanriodev/aandm/commit/394c71b76eadd3cfc300bb5ba6beceeffd0132a2))
+* wip implement notes ([998bb8a](https://github.com/sanriodev/aandm/commit/998bb8a3e6e1df064fe1921a6178d02c9e0e8bd5))
+* wip implement notes ([b8a8ef8](https://github.com/sanriodev/aandm/commit/b8a8ef82402424998e6e0a89b9e0328cde832bbe))
+* wip implementing notes ([7d7c40e](https://github.com/sanriodev/aandm/commit/7d7c40eab59149e499b0b3f2d22fe04e5d8e5eca))
+
+
+### Bug Fixes
+
+* timer should only return + 7 when the day is the same AND the time of day is after it ([f0ab76e](https://github.com/sanriodev/aandm/commit/f0ab76e35231719cf57d55c0c9a89004a56b3895))
+
 ## [1.1.1](https://github.com/sanriodev/aandm/compare/v1.1.0...v1.1.1) (2024-11-18)
 
 
