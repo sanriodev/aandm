@@ -6,6 +6,7 @@ import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/timer_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/timer_preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
@@ -110,12 +111,11 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          ElevatedButton.icon(
-              onPressed: () {
-                navigateToScreen(context, TimerScreen(), true);
-              },
-              label: Text("Timer"),
-              icon: Icon(Icons.timer)),
+          TimerPreviewWidget(
+            onPressed: () {
+              navigateToScreen(context, TimerScreen(), true);
+            },
+          ),
           ElevatedButton.icon(
               onPressed: () {
                 navigateToScreen(context, ToDoListScreen(), true);
