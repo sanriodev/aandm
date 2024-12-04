@@ -1,3 +1,4 @@
+import 'package:aandm/models/hive_interface.dart';
 import 'package:flutter/material.dart';
 
 void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
@@ -16,4 +17,17 @@ void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
       );
     }
   });
+}
+
+int getIncrement<T extends HiveModel>(List<T> list) {
+  var max = 0;
+  if (list.isEmpty) {
+    return 1;
+  }
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].id > max) {
+      max = list[i].id;
+    }
+  }
+  return max + 1;
 }
