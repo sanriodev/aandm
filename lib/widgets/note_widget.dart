@@ -67,7 +67,7 @@ class _NoteWidgetState extends State<NoteWidget> {
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      widget.content,
+                      "${widget.content.length > 40 ? widget.content.substring(0, 40) : widget.content}...",
                       style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 14,

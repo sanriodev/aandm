@@ -129,7 +129,7 @@ class _NotesScreenState extends State<NotesScreen> {
                               '',
                             ));
                           },
-                          child: const Text("Create new List")),
+                          child: const Text("Neue Notiz")),
                     )
                   ],
                 ),

@@ -28,7 +28,9 @@ ThemeData appThemeLight = ThemeData(
     minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
     backgroundColor: WidgetStatePropertyAll(Colors.purple[200]),
     foregroundColor: const WidgetStatePropertyAll(Colors.black),
-    textStyle: const WidgetStatePropertyAll(TextStyle(fontSize: 16)),
+    textStyle: const WidgetStatePropertyAll(
+      TextStyle(fontSize: 16, color: Colors.black),
+    ),
   )),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
@@ -90,8 +92,9 @@ ThemeData appThemeDark = ThemeData(
       style: ButtonStyle(
     minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
     backgroundColor: WidgetStatePropertyAll(Colors.purple[800]),
-    foregroundColor: const WidgetStatePropertyAll(Colors.white),
-    textStyle: const WidgetStatePropertyAll(TextStyle(fontSize: 16)),
+    foregroundColor: const WidgetStatePropertyAll(Colors.black),
+    textStyle: const WidgetStatePropertyAll(
+        TextStyle(fontSize: 16, color: Colors.black)),
   )),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
