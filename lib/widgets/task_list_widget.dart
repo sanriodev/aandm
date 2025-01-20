@@ -40,9 +40,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       icon: const Icon(Icons.delete),
                       onPressed: widget.onDeletePress),
                 ),
-                Text(
-                  widget.taskListName,
-                ),
+                Text(widget.taskListName,
+                    style: Theme.of(context).primaryTextTheme.titleMedium),
               ],
             ),
             content: InkWell(
@@ -60,7 +59,9 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           color: Colors.purple,
                           size: 15,
                         ),
-                        Text("Einträge gesamt: ${widget.totalTaks}"),
+                        Text("Einträge gesamt: ${widget.totalTaks}",
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium),
                       ],
                     ),
                   ),
@@ -73,8 +74,9 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           color: Colors.green,
                           size: 15,
                         ),
-                        Text(
-                            "Einträge abgeschlossen: ${widget.completedTasks}"),
+                        Text("Einträge abgeschlossen: ${widget.completedTasks}",
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium),
                       ],
                     ),
                   ),
@@ -87,7 +89,9 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           color: Colors.red,
                           size: 15,
                         ),
-                        Text("Einträge offen: ${widget.openTasks}"),
+                        Text("Einträge offen: ${widget.openTasks}",
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium),
                       ],
                     ),
                   ),
@@ -96,13 +100,13 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Padding(
+                        Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                           child: Text(
                             "Aktueller Fortschritt",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium,
                           ),
                         ),
                         GFProgressBar(
@@ -114,7 +118,10 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           backgroundColor: Colors.black26,
                           progressBarColor: Colors.purple.shade400,
                           child: Text(
-                              "${(((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks)) * 100).toStringAsFixed(2)}%"),
+                              "${(((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks)) * 100).toStringAsFixed(2)}%",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodyMedium),
                         ),
                       ],
                     ),

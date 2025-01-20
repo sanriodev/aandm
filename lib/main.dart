@@ -22,6 +22,7 @@ void main() async {
   await Hive.openBox<TaskList>('taskLists');
   await Hive.openBox<Task>('tasks');
   await Hive.openBox<Note>('notes');
+  await Hive.openBox('theme');
   runApp(const MyApp());
 }
 
@@ -36,11 +37,39 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode? _themeMode;
+
   void changeTheme(ThemeMode themeMode) {
+    final themeBox = Hive.box('theme');
+    if (themeMode == ThemeMode.light) {
+      themeBox.put('theme', 'light');
+    } else if (themeMode == ThemeMode.dark) {
+      themeBox.put('theme', 'dark');
+    } else {
+      themeBox.put('theme', 'system');
+    }
     setState(() {
       _themeMode = themeMode;
     });
+  }
+
+  ThemeMode _getThemeMode() {
+    final theme = Hive.box('theme');
+    if (theme.get('theme') == null) {
+      theme.put('theme', 'system');
+      return ThemeMode.system;
+    }
+    if (theme.get('theme') == 'light') {
+      return ThemeMode.light;
+    } else {
+      return ThemeMode.dark;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _themeMode = _getThemeMode();
   }
 
   @override
@@ -73,8 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("A and M",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        title: Text("A and M",
+            style: Theme.of(context).primaryTextTheme.titleMedium),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -108,26 +137,42 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           TimerPreviewWidget(
+            themeMode: MyApp.of(context)!._themeMode!,
             onPressed: () {
               navigateToScreen(context, TimerScreen(), true);
             },
           ),
-          ElevatedButton.icon(
-              onPressed: () {
-                navigateToScreen(context, ToDoListScreen(), true);
-              },
-              label: Text("To-Do Listen"),
-              icon: Icon(Icons.list)),
-          ElevatedButton.icon(
-              onPressed: () {
-                navigateToScreen(context, NotesScreen(), true);
-              },
-              label: Text("Notizen"),
-              icon: Icon(Icons.note)),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: ElevatedButton.icon(
+                onPressed: () {
+                  navigateToScreen(context, ToDoListScreen(), true);
+                },
+                label: Text("To-Do Listen",
+                    style: Theme.of(context).primaryTextTheme.titleSmall),
+                icon: Icon(
+                  Icons.list,
+                  color: Theme.of(context).primaryIconTheme.color,
+                )),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: ElevatedButton.icon(
+                onPressed: () {
+                  navigateToScreen(context, NotesScreen(), true);
+                },
+                label: Text(
+                  "Notizen",
+                  style: Theme.of(context).primaryTextTheme.titleSmall,
+                ),
+                icon: Icon(
+                  Icons.note,
+                  color: Theme.of(context).primaryIconTheme.color,
+                )),
+          ),
         ],
       ),
     );

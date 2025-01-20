@@ -59,49 +59,29 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(4),
-                        child: Text(
-                          "Titel",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
-                        ),
+                        child: Text("Titel",
+                            style:
+                                Theme.of(context).primaryTextTheme.titleSmall),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4),
-                        child: Text(
-                          tasks[index].title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Text(
-                          "Inhalt",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
-                        ),
+                        child: Text(tasks[index].title,
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4),
-                        child: Text(
-                          tasks[index].content,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                        ),
+                        child: Text("Inhalt",
+                            style:
+                                Theme.of(context).primaryTextTheme.titleSmall),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(tasks[index].content,
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium),
                       ),
                     ],
                   ),
@@ -112,7 +92,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(Icons.delete,
+                            color: Theme.of(context).iconTheme.color),
                         onPressed: () {
                           deleteItem(index);
                         },
@@ -149,11 +130,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("To-Do List",
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 24,
-                fontWeight: FontWeight.bold)),
+        title: Text("To-Do List",
+            style: Theme.of(context).primaryTextTheme.titleMedium),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
@@ -178,7 +156,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: TextField(
-                        style: const TextStyle(color: Colors.grey),
+                        style: Theme.of(context).primaryTextTheme.bodyMedium,
                         controller: TextEditingController(text: title),
                         onChanged: (value) {
                           title = value;
@@ -192,7 +170,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: TextField(
-                        style: const TextStyle(color: Colors.grey),
+                        style: Theme.of(context).primaryTextTheme.bodyMedium,
                         controller: TextEditingController(text: content),
                         onChanged: (value) {
                           content = value;
@@ -206,11 +184,13 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
-                        onPressed: () {
-                          createNewItem(Task(
-                              title, content, false, widget.list.taskList.id));
-                        },
-                        child: const Text("Create new Item")),
+                      onPressed: () {
+                        createNewItem(Task(
+                            title, content, false, widget.list.taskList.id));
+                      },
+                      child: Text("Neuer Eintrag",
+                          style: Theme.of(context).primaryTextTheme.titleSmall),
+                    ),
                   )
                 ],
               ),

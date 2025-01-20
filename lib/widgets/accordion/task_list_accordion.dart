@@ -13,7 +13,7 @@ class TaskListAccordion extends StatelessWidget {
       headerBorderColor: Colors.blueGrey,
       headerBorderColorOpened: Colors.transparent,
       headerPadding: const EdgeInsets.symmetric(horizontal: 10),
-      contentBackgroundColor: Colors.white,
+      contentBackgroundColor: Theme.of(context).canvasColor,
       contentBorderColor: Colors.transparent,
       contentBorderWidth: 0,
       openAndCloseAnimation: true,

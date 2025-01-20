@@ -2,8 +2,10 @@ import 'package:aandm/models/note.dart';
 import 'package:aandm/screens/notes_edit_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/note_widget.dart';
+import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -16,11 +18,17 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
   List<Note> notes = [];
   String collectionName = 'Name der Notiz';
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     getNotes();
+    Future.delayed(Duration(milliseconds: 400), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   void getNotes() {
@@ -79,8 +87,8 @@ class _NotesScreenState extends State<NotesScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Notizen",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          title: Text("Notizen",
+              style: Theme.of(context).primaryTextTheme.titleMedium),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
@@ -96,7 +104,15 @@ class _NotesScreenState extends State<NotesScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(child: getAllListItems()),
+            if (isLoading)
+              Skeletonizer(
+                  effect: ShimmerEffect(
+                    baseColor: Theme.of(context).canvasColor,
+                    duration: const Duration(seconds: 3),
+                  ),
+                  enabled: isLoading,
+                  child: const SkeletonCard()),
+            Expanded(child: !isLoading ? getAllListItems() : Container()),
             Align(
               alignment: Alignment.bottomCenter,
               child: Card(
@@ -106,7 +122,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: TextField(
-                          style: const TextStyle(color: Colors.grey),
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
                           controller:
                               TextEditingController(text: collectionName),
                           onChanged: (value) {
@@ -121,15 +137,18 @@ class _NotesScreenState extends State<NotesScreen> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ElevatedButton(
-                          onPressed: () {
-                            final newIncrementedId = getIncrement<Note>(notes);
-                            createNewItem(Note(
-                              newIncrementedId,
-                              collectionName,
-                              '',
-                            ));
-                          },
-                          child: const Text("Neue Notiz")),
+                        onPressed: () {
+                          final newIncrementedId = getIncrement<Note>(notes);
+                          createNewItem(Note(
+                            newIncrementedId,
+                            collectionName,
+                            '',
+                          ));
+                        },
+                        child: Text("Neue Notiz",
+                            style:
+                                Theme.of(context).primaryTextTheme.titleSmall),
+                      ),
                     )
                   ],
                 ),

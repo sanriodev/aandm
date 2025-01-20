@@ -2,9 +2,11 @@ import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/to_do_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:aandm/widgets/task_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class ToDoListScreen extends StatefulWidget {
@@ -17,10 +19,15 @@ class ToDoListScreen extends StatefulWidget {
 class _ToDoListScreenState extends State<ToDoListScreen> {
   List<TaskListWithTasks> taskLists = [];
   String collectionName = 'Name der Liste';
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(milliseconds: 400), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
     getTaskListsAndTasks();
   }
 
@@ -102,12 +109,15 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("To-Do Listen",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          title: Text("To-Do Listen",
+              style: Theme.of(context).primaryTextTheme.titleMedium),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -119,7 +129,15 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(child: getAllListItems()),
+            if (isLoading)
+              Skeletonizer(
+                  effect: ShimmerEffect(
+                    baseColor: Theme.of(context).canvasColor,
+                    duration: const Duration(seconds: 3),
+                  ),
+                  enabled: isLoading,
+                  child: const SkeletonCard()),
+            Expanded(child: !isLoading ? getAllListItems() : Container()),
             Align(
               alignment: Alignment.bottomCenter,
               child: Card(
@@ -129,7 +147,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                     Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: TextField(
-                          style: const TextStyle(color: Colors.grey),
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
                           controller:
                               TextEditingController(text: collectionName),
                           onChanged: (value) {
@@ -154,7 +172,10 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                               newIncrementedId,
                             ));
                           },
-                          child: const Text("Create new List")),
+                          child: Text("Neue Liste",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleSmall)),
                     )
                   ],
                 ),
