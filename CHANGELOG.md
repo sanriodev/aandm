@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/sanriodev/aandm/compare/v1.3.0...v1.3.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* wrong color scheme ([632bd4b](https://github.com/sanriodev/aandm/commit/632bd4bd57314a8c9572446a3b068012bd934757))
+
 ## [1.3.0](https://github.com/sanriodev/aandm/compare/v1.2.0...v1.3.0) (2025-01-20)
 
 
