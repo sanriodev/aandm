@@ -100,7 +100,7 @@ ThemeData appThemeLight = ThemeData(
     color: Colors.purple[400],
   ),
   iconTheme: IconThemeData(color: Colors.purple[400]),
-  primaryIconTheme: IconThemeData(color: Colors.white),
+  primaryIconTheme: IconThemeData(color: Colors.black),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
@@ -147,7 +147,7 @@ ThemeData appThemeDark = ThemeData(
     iconTheme: IconThemeData(
       color: Colors.purple[800],
     ),
-    primaryIconTheme: IconThemeData(color: Colors.black),
+    primaryIconTheme: IconThemeData(color: Colors.white),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
       minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
