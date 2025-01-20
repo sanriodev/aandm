@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:one_clock/one_clock.dart';
 
 class TimerPreviewWidget extends StatefulWidget {
-  const TimerPreviewWidget({super.key, required this.onPressed});
-
+  const TimerPreviewWidget(
+      {super.key, required this.themeMode, required this.onPressed});
+  final ThemeMode themeMode;
   final VoidCallback onPressed;
 
   @override
@@ -15,7 +16,7 @@ class _TimerPreviewWidgetState extends State<TimerPreviewWidget> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      margin: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+      margin: const EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -26,22 +27,38 @@ class _TimerPreviewWidgetState extends State<TimerPreviewWidget> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
-              child: AnalogClock(
-                showAllNumbers: true,
-                tickColor: Colors.black,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 2.0,
+              child: widget.themeMode == ThemeMode.light
+                  ? AnalogClock(
+                      showAllNumbers: true,
+                      tickColor: Colors.black,
+                      hourHandColor: Colors.red,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 4.0,
+                          ),
+                          color: Colors.grey,
+                          shape: BoxShape.circle),
+                      width: 100.0,
+                      height: 100.0,
+                      showSecondHand: false,
+                      numberColor: Colors.black87,
+                      textScaleFactor: 1.6,
+                      showDigitalClock: false,
+                    )
+                  : AnalogClock.dark(
+                      hourHandColor: Colors.red,
+                      showAllNumbers: true,
+                      tickColor: Colors.white,
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 4.0, color: Colors.white),
+                          color: Colors.grey,
+                          shape: BoxShape.circle),
+                      width: 100.0,
+                      height: 100.0,
+                      showSecondHand: false,
+                      textScaleFactor: 1.6,
+                      showDigitalClock: false,
                     ),
-                    color: Colors.transparent,
-                    shape: BoxShape.circle),
-                width: 100.0,
-                height: 100.0,
-                showSecondHand: false,
-                numberColor: Colors.black87,
-                textScaleFactor: 1.6,
-                showDigitalClock: false,
-              ),
             ),
           ),
           Container(
@@ -60,8 +77,14 @@ class _TimerPreviewWidgetState extends State<TimerPreviewWidget> {
                 ),
               ),
               onPressed: widget.onPressed,
-              label: Text('Timer '),
-              icon: Icon(Icons.timer),
+              label: Text(
+                'Timer ',
+                style: Theme.of(context).primaryTextTheme.titleSmall,
+              ),
+              icon: Icon(
+                Icons.timer,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
             ),
           )
         ],

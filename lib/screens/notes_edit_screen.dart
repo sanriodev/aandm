@@ -41,7 +41,7 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notiz bearbeiten',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            style: Theme.of(context).primaryTextTheme.titleMedium),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(

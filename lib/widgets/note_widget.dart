@@ -31,48 +31,33 @@ class _NoteWidgetState extends State<NoteWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(4),
                     child: Text(
                       "Name",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                      style: Theme.of(context).primaryTextTheme.titleSmall,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
                       widget.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(4),
                     child: Text(
                       "Inhaltsvorschau",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                      style: Theme.of(context).primaryTextTheme.titleSmall,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
                       "${widget.content.length > 40 ? widget.content.substring(0, 40) : widget.content}...",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                          color: Colors.grey,
-                          overflow: TextOverflow.ellipsis),
+                      style: Theme.of(context).primaryTextTheme.bodyMedium!
+                        ..copyWith(overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ],
