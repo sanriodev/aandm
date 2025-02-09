@@ -96,7 +96,7 @@ class _NotesScreenState extends State<NotesScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              color: Colors.black,
+              color: Theme.of(context).primaryIconTheme.color,
               tooltip: "I love my gf",
             ),
           ),

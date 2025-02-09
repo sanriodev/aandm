@@ -51,7 +51,7 @@ class _TimerScreenState extends State<TimerScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              color: Colors.black,
+              color: Theme.of(context).primaryIconTheme.color,
               tooltip: "I love my gf",
             ),
           ),

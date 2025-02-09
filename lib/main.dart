@@ -109,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: const Icon(Icons.favorite),
+              color: Theme.of(context).primaryIconTheme.color,
               onPressed: () {
                 Fluttertoast.showToast(msg: "I miss you too darling!");
               },
@@ -118,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: const Icon(Icons.settings_brightness),
+              color: Theme.of(context).primaryIconTheme.color,
               onPressed: () {
                 if (MyApp.of(context)!._themeMode == ThemeMode.dark) {
                   MyApp.of(context)!._themeMode = ThemeMode.light;
