@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0](https://github.com/sanriodev/aandm/compare/v1.3.1...v1.4.0) (2025-02-09)
+
+
+### Features
+
+* icon colors for light and dark mode ([c55aa96](https://github.com/sanriodev/aandm/commit/c55aa96b2e8ba4b485a58f36b9b7d708766874dd))
+* new Icons ([5a90add](https://github.com/sanriodev/aandm/commit/5a90add671e43e297f8ba30e208e992994cbe3d5))
+* preview widgets for the other screens ([96112e9](https://github.com/sanriodev/aandm/commit/96112e9bad59e5ccc8aeef82d701e60115e5aee6))
+
 ## [1.3.1](https://github.com/sanriodev/aandm/compare/v1.3.0...v1.3.1) (2025-01-20)
 
 
