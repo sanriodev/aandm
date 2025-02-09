@@ -6,7 +6,9 @@ import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/timer_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/notes_preview_widget.dart';
 import 'package:aandm/widgets/timer_preview_widget.dart';
+import 'package:aandm/widgets/to_do_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
@@ -147,34 +149,17 @@ class _MyHomePageState extends State<MyHomePage> {
               navigateToScreen(context, TimerScreen(), true);
             },
           ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: ElevatedButton.icon(
-                onPressed: () {
-                  navigateToScreen(context, ToDoListScreen(), true);
-                },
-                label: Text("To-Do Listen",
-                    style: Theme.of(context).primaryTextTheme.titleSmall),
-                icon: Icon(
-                  Icons.list,
-                  color: Theme.of(context).primaryIconTheme.color,
-                )),
+          TodoPreviewWidget(
+            themeMode: MyApp.of(context)!._themeMode!,
+            onPressed: () {
+              navigateToScreen(context, ToDoListScreen(), true);
+            },
           ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: ElevatedButton.icon(
-                onPressed: () {
-                  navigateToScreen(context, NotesScreen(), true);
-                },
-                label: Text(
-                  "Notizen",
-                  style: Theme.of(context).primaryTextTheme.titleSmall,
-                ),
-                icon: Icon(
-                  Icons.note,
-                  color: Theme.of(context).primaryIconTheme.color,
-                )),
-          ),
+          NotesPreviewWidget(
+              themeMode: MyApp.of(context)!._themeMode!,
+              onPressed: () {
+                navigateToScreen(context, NotesScreen(), true);
+              }),
         ],
       ),
     );
