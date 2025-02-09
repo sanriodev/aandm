@@ -139,7 +139,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            color: Colors.black,
+            color: Theme.of(context).primaryIconTheme.color,
             tooltip: "I love my gf",
           ),
         ),

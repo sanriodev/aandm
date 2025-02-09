@@ -121,7 +121,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              color: Colors.black,
+              color: Theme.of(context).primaryIconTheme.color,
               tooltip: "I love my gf",
             ),
           ),

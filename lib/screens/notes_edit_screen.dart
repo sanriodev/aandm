@@ -50,7 +50,7 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
               _saveNote();
               Navigator.of(context).pop();
             },
-            color: Colors.black,
+            color: Theme.of(context).primaryIconTheme.color,
             tooltip: "I love my gf",
           ),
         ),
@@ -59,6 +59,7 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: const Icon(Icons.save),
+              color: Theme.of(context).primaryIconTheme.color,
               onPressed: () {
                 _saveNote();
               },
