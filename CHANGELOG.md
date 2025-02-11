@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/sanriodev/aandm/compare/v1.4.0...v1.5.0) (2025-02-11)
+
+
+### Features
+
+* cat facts and pictures ([37362db](https://github.com/sanriodev/aandm/commit/37362db597e9e70cad5febb81e8168eec8383967))
+* fixate build number and product version ([f082a14](https://github.com/sanriodev/aandm/commit/f082a14a0fb927e0afb9620173260926a594535b))
+
 ## [1.4.0](https://github.com/sanriodev/aandm/compare/v1.3.1...v1.4.0) (2025-02-09)
 
 
