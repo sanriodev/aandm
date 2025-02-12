@@ -10,7 +10,7 @@ class CatPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (catFacts.isNotEmpty) {
+    if (catFacts.isNotEmpty || catPictures.isNotEmpty) {
       return getPageView(context);
     } else {
       return Container();
@@ -31,7 +31,7 @@ class CatPreviewWidget extends StatelessWidget {
     return SizedBox(
       height: 320, // Overall height of the ListView
       child: ListView.builder(
-        itemCount: catFacts.length < catPictures.length
+        itemCount: catFacts.length > catPictures.length
             ? catFacts.length
             : catPictures.length,
         scrollDirection: Axis.horizontal,
@@ -50,7 +50,7 @@ class CatPreviewWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (catPictures[index].url != null)
+                  if (catPictures.elementAtOrNull(index)?.url != null)
                     SizedBox(
                       height: 200,
                       child: ClipRRect(
@@ -86,7 +86,9 @@ class CatPreviewWidget extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(4),
                               child: Text(
-                                '${catFacts[index].updatedAt.day.toString().padLeft(2, '0')}.${catFacts[index].updatedAt.month.toString().padLeft(2, '0')}.${catFacts[index].updatedAt.year}',
+                                catFacts.length > index
+                                    ? '${catFacts.elementAtOrNull(index)?.updatedAt.day.toString().padLeft(2, '0')}.${catFacts[index].updatedAt.month.toString().padLeft(2, '0')}.${catFacts[index].updatedAt.year}'
+                                    : '',
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .titleSmall,
@@ -97,7 +99,8 @@ class CatPreviewWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: Text(
-                            catFacts[index].text,
+                            catFacts.elementAtOrNull(index)?.text ??
+                                'Kein Fakt gefunden',
                             style: Theme.of(context).primaryTextTheme.bodySmall,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
