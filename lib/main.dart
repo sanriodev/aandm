@@ -113,12 +113,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> getCatData() async {
     final backend = Provider.of<Backend>(context, listen: false);
-    final pictures = await backend.getCatPictures();
-    final facts = await backend.getCatFacts();
-    setState(() {
-      catFacts = facts;
-      catPictures = pictures;
-    });
+    try {
+      final pictures = await backend.getCatPictures();
+      setState(() {
+        catPictures = pictures;
+      });
+    } catch (e) {
+      print(e);
+    }
+    try {
+      final facts = await backend.getCatFacts();
+      setState(() {
+        catFacts = facts;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -188,9 +198,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         navigateToScreen(context, NotesScreen(), true);
                       }),
-                  if (catFacts.isNotEmpty && catPictures.isNotEmpty)
-                    CatPreviewWidget(
-                        catFacts: catFacts, catPictures: catPictures),
+                  CatPreviewWidget(
+                      catFacts: catFacts, catPictures: catPictures),
                   SizedBox(
                     height: 25,
                   )
