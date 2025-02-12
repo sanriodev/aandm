@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/sanriodev/aandm/compare/v1.5.0...v1.5.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* nulalble ([ba204e3](https://github.com/sanriodev/aandm/commit/ba204e3fa9ce12b66331c091e9778c36f480008b))
+
 ## [1.5.0](https://github.com/sanriodev/aandm/compare/v1.4.0...v1.5.0) (2025-02-11)
 
 
