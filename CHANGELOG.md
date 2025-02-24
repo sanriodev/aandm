@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/sanriodev/aandm/compare/v1.5.1...v1.6.0) (2025-02-24)
+
+
+### Features
+
+* add gitkeep ([40950c0](https://github.com/sanriodev/aandm/commit/40950c03eee494ad1dec05955b0512890a978099))
+
 ## [1.5.1](https://github.com/sanriodev/aandm/compare/v1.5.0...v1.5.1) (2025-02-12)
 
 
