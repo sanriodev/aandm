@@ -1,5 +1,60 @@
 # Changelog
 
+## [1.5.1](https://github.com/sanriodev/aandm/compare/v1.5.0...v1.5.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* nulalble ([ba204e3](https://github.com/sanriodev/aandm/commit/ba204e3fa9ce12b66331c091e9778c36f480008b))
+
+## [1.5.0](https://github.com/sanriodev/aandm/compare/v1.4.0...v1.5.0) (2025-02-11)
+
+
+### Features
+
+* cat facts and pictures ([37362db](https://github.com/sanriodev/aandm/commit/37362db597e9e70cad5febb81e8168eec8383967))
+* fixate build number and product version ([f082a14](https://github.com/sanriodev/aandm/commit/f082a14a0fb927e0afb9620173260926a594535b))
+
+## [1.4.0](https://github.com/sanriodev/aandm/compare/v1.3.1...v1.4.0) (2025-02-09)
+
+
+### Features
+
+* icon colors for light and dark mode ([c55aa96](https://github.com/sanriodev/aandm/commit/c55aa96b2e8ba4b485a58f36b9b7d708766874dd))
+* new Icons ([5a90add](https://github.com/sanriodev/aandm/commit/5a90add671e43e297f8ba30e208e992994cbe3d5))
+* preview widgets for the other screens ([96112e9](https://github.com/sanriodev/aandm/commit/96112e9bad59e5ccc8aeef82d701e60115e5aee6))
+
+## [1.3.1](https://github.com/sanriodev/aandm/compare/v1.3.0...v1.3.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* wrong color scheme ([632bd4b](https://github.com/sanriodev/aandm/commit/632bd4bd57314a8c9572446a3b068012bd934757))
+
+## [1.3.0](https://github.com/sanriodev/aandm/compare/v1.2.0...v1.3.0) (2025-01-20)
+
+
+### Features
+
+* dark mode fixes etc ([67d40b7](https://github.com/sanriodev/aandm/commit/67d40b7b82d9e95e476173b304d6098187f42098))
+
+## [1.2.0](https://github.com/sanriodev/aandm/compare/v1.1.1...v1.2.0) (2024-12-04)
+
+
+### Features
+
+* add design to Timer Screen ([c2db7ab](https://github.com/sanriodev/aandm/commit/c2db7abd4c148009cf6d05f04d26b741d3c9cfcd))
+* implement notes ([818f72d](https://github.com/sanriodev/aandm/commit/818f72dcbddbae5d01aaa10e1ef34c3c9c29848f))
+* remove unused func ([394c71b](https://github.com/sanriodev/aandm/commit/394c71b76eadd3cfc300bb5ba6beceeffd0132a2))
+* wip implement notes ([998bb8a](https://github.com/sanriodev/aandm/commit/998bb8a3e6e1df064fe1921a6178d02c9e0e8bd5))
+* wip implement notes ([b8a8ef8](https://github.com/sanriodev/aandm/commit/b8a8ef82402424998e6e0a89b9e0328cde832bbe))
+* wip implementing notes ([7d7c40e](https://github.com/sanriodev/aandm/commit/7d7c40eab59149e499b0b3f2d22fe04e5d8e5eca))
+
+
+### Bug Fixes
+
+* timer should only return + 7 when the day is the same AND the time of day is after it ([f0ab76e](https://github.com/sanriodev/aandm/commit/f0ab76e35231719cf57d55c0c9a89004a56b3895))
+
 ## [1.1.1](https://github.com/sanriodev/aandm/compare/v1.1.0...v1.1.1) (2024-11-18)
 
 
