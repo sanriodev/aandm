@@ -2,6 +2,7 @@ import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/to_do_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:aandm/widgets/task_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -126,6 +127,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
             ),
           ),
         ),
+        endDrawer: AppDrawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[

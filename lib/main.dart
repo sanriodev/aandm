@@ -9,6 +9,7 @@ import 'package:aandm/models/task.dart';
 import 'package:aandm/models/task_list.dart';
 import 'package:aandm/screens/timer_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/cat_facts_widget.dart';
 import 'package:aandm/widgets/notes_preview_widget.dart';
 import 'package:aandm/widgets/timer_preview_widget.dart';
@@ -171,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+        endDrawer: AppDrawer(),
         body: RefreshIndicator(
             color: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).secondaryHeaderColor,
