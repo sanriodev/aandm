@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 class CatFactsApiModel {
   final String text;
   final DateTime updatedAt;
