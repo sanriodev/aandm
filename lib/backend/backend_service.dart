@@ -15,8 +15,8 @@ class Backend {
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData = await json.decode(utf8.decode(res.bodyBytes))
-          as List<Map<String, dynamic>>;
+      final jsonData =
+          await json.decode(utf8.decode(res.bodyBytes)) as List<dynamic>;
       final ret = jsonData.map((e) => CatFactsApiModel.fromJson(e)).toList();
 
       return ret;
@@ -36,8 +36,8 @@ class Backend {
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData = await json.decode(utf8.decode(res.bodyBytes))
-          as List<Map<String, dynamic>>;
+      final jsonData =
+          await json.decode(utf8.decode(res.bodyBytes)) as List<dynamic>;
       final ret = jsonData.map((e) => CatPictureApiModel.fromJson(e)).toList();
 
       return ret;
