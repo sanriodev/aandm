@@ -1,4 +1,5 @@
 import 'package:aandm/models/note.dart';
+import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -67,6 +68,7 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
           ),
         ],
       ),
+      endDrawer: AppDrawer(),
       body: Container(
         decoration: BoxDecoration(
           color: Colors.grey[400],

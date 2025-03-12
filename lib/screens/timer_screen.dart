@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 class TimerScreen extends StatefulWidget {
@@ -56,6 +57,7 @@ class _TimerScreenState extends State<TimerScreen> {
             ),
           ),
         ),
+        endDrawer: AppDrawer(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

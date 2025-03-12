@@ -1,75 +1,19 @@
 import 'package:flutter/material.dart';
 
 ThemeData appThemeLight = ThemeData(
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue[200]!),
+  dialogBackgroundColor: Colors.white,
   primaryColor: Colors.blue[200],
   canvasColor: Colors.grey[400],
   secondaryHeaderColor: Colors.purple[200],
-  colorScheme: ColorScheme.fromSwatch(
-      accentColor: Colors.purple, backgroundColor: Colors.white38),
   scaffoldBackgroundColor: Colors.blue[100],
-  textTheme: const TextTheme(
-    displayMedium: TextStyle(color: Colors.black87),
-    displayLarge: TextStyle(color: Colors.black54),
-    displaySmall: TextStyle(color: Colors.black54),
-  ),
   appBarTheme: AppBarTheme(
     foregroundColor: Colors.purple[200],
     backgroundColor: Colors.purple[200],
     titleTextStyle: const TextStyle(color: Colors.black),
   ),
-  primaryTextTheme: TextTheme(
-    titleLarge: TextStyle(
-      color: Colors.black,
-      fontSize: 23,
-      height: 1.2,
-      fontWeight: FontWeight.bold,
-    ),
-    titleMedium: TextStyle(
-      color: Colors.black,
-      fontSize: 20,
-      height: 1.1,
-      fontWeight: FontWeight.bold,
-    ),
-    titleSmall: TextStyle(
-      color: Colors.black,
-      fontSize: 14,
-    ),
-    displayLarge: TextStyle(
-      color: Colors.black,
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-    ),
-    displayMedium: TextStyle(
-      color: Colors.grey,
-      fontSize: 12,
-    ),
-    displaySmall: TextStyle(
-      color: Colors.black,
-      fontSize: 15,
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: TextStyle(
-      color: Colors.black,
-      fontSize: 30,
-      fontWeight: FontWeight.bold,
-    ),
-    bodySmall: TextStyle(
-      color: Colors.black,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    ),
-    labelLarge: TextStyle(
-      color: Colors.black,
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-    ),
-    labelMedium: TextStyle(
-      color: Colors.grey,
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-    ),
-    labelSmall: TextStyle(color: Colors.grey, fontSize: 12),
-  ),
+  primaryTextTheme: textThemeLight(),
+  textTheme: textThemeLight(),
   buttonTheme: ButtonThemeData(
     buttonColor: Colors.blue[200],
     textTheme: ButtonTextTheme.primary,
@@ -118,17 +62,15 @@ ThemeData appThemeLight = ThemeData(
 );
 
 ThemeData appThemeDark = ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue[900]!,
+      brightness: Brightness.dark,
+    ),
+    dialogBackgroundColor: Colors.black,
     primaryColor: Colors.blue[900],
     canvasColor: Colors.grey[800],
     secondaryHeaderColor: Colors.purple[800],
-    colorScheme: ColorScheme.fromSwatch(
-        accentColor: Colors.purple[800], backgroundColor: Colors.white10),
     scaffoldBackgroundColor: Colors.blue[800],
-    textTheme: const TextTheme(
-      displayMedium: TextStyle(color: Colors.black87),
-      displayLarge: TextStyle(color: Colors.black54),
-      displaySmall: TextStyle(color: Colors.black54),
-    ),
     appBarTheme: AppBarTheme(
       foregroundColor: Colors.purple[800],
       backgroundColor: Colors.purple[800],
@@ -181,59 +123,117 @@ ThemeData appThemeDark = ThemeData(
       ),
       labelStyle: TextStyle(color: Colors.white),
     ),
-    primaryTextTheme: TextTheme(
-      titleLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 23,
-        height: 1.2,
-        fontWeight: FontWeight.bold,
-      ),
-      titleMedium: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        height: 1.1,
-        fontWeight: FontWeight.bold,
-      ),
-      titleSmall: TextStyle(
-        color: Colors.white,
-        fontSize: 14,
-      ),
-      displayLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
-      displayMedium: TextStyle(
-        color: Colors.grey,
-        fontSize: 12,
-      ),
-      displaySmall: TextStyle(
-        color: Colors.white,
-        fontSize: 15,
-        fontWeight: FontWeight.w500,
-      ),
-      bodyLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
-      ),
-      bodySmall: TextStyle(
-        color: Colors.grey,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
-      labelLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      labelMedium: TextStyle(
-        color: Colors.white.withOpacity(0.6),
-        fontSize: 16,
-        fontWeight: FontWeight.normal,
-      ),
-      labelSmall: TextStyle(
-        color: Colors.white,
-        fontSize: 12,
-      ),
-    ));
+    primaryTextTheme: textThemeDark(),
+    textTheme: textThemeDark());
+
+TextTheme textThemeLight() {
+  return TextTheme(
+    titleLarge: TextStyle(
+      color: Colors.black,
+      fontSize: 23,
+      height: 1.2,
+      fontWeight: FontWeight.bold,
+    ),
+    titleMedium: TextStyle(
+      color: Colors.black,
+      fontSize: 20,
+      height: 1.1,
+      fontWeight: FontWeight.bold,
+    ),
+    titleSmall: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+    ),
+    displayLarge: TextStyle(
+      color: Colors.black,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+    displayMedium: TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+    ),
+    displaySmall: TextStyle(
+      color: Colors.black,
+      fontSize: 15,
+      fontWeight: FontWeight.w500,
+    ),
+    bodyLarge: TextStyle(
+      color: Colors.black,
+      fontSize: 30,
+      fontWeight: FontWeight.bold,
+    ),
+    bodySmall: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
+    labelLarge: TextStyle(
+      color: Colors.black,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+    labelMedium: TextStyle(
+      color: Colors.black,
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+    ),
+    labelSmall: TextStyle(color: Colors.black, fontSize: 12),
+  );
+}
+
+TextTheme textThemeDark() {
+  return TextTheme(
+    titleLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 23,
+      height: 1.2,
+      fontWeight: FontWeight.bold,
+    ),
+    titleMedium: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      height: 1.1,
+      fontWeight: FontWeight.bold,
+    ),
+    titleSmall: TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+    ),
+    displayLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+    displayMedium: TextStyle(
+      color: Colors.white,
+      fontSize: 12,
+    ),
+    displaySmall: TextStyle(
+      color: Colors.white,
+      fontSize: 15,
+      fontWeight: FontWeight.w500,
+    ),
+    bodyLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 30,
+      fontWeight: FontWeight.bold,
+    ),
+    bodySmall: TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
+    labelLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+    labelMedium: TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+    ),
+    labelSmall: TextStyle(color: Colors.white, fontSize: 12),
+  );
+}

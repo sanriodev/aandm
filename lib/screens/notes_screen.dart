@@ -1,6 +1,7 @@
 import 'package:aandm/models/note.dart';
 import 'package:aandm/screens/notes_edit_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/note_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +102,7 @@ class _NotesScreenState extends State<NotesScreen> {
             ),
           ),
         ),
+        endDrawer: AppDrawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
