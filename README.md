@@ -1,6 +1,12 @@
-# AandM
+<h2 align="center">(づ｡◕w◕｡)づ Alina's App</h2>
+<h4 align="center">Manage your tasks, keep notes!</h4>
 
-Alina and Matteos super duper ultra cool IOS app (or pretty much anything like android etc... but we both have IOS devices so we will call it that)
+<p align="center">
+  <!---<a  href="https://apps.apple.com/app/idYOUR_APP_ID" target="_blank">--->
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" style="height: 75px">
+  <!---</a>--->
+  
+</p>
 
 ## Screenshots 
 | Screen 📱 | Light ☀️ | Dark 🌑 |
