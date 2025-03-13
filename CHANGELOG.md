@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.6.0](https://github.com/sanriodev/aandm/compare/v1.5.1...v1.6.0) (2025-03-12)
+
+
+### Features
+
+* add gitkeep ([40950c0](https://github.com/sanriodev/aandm/commit/40950c03eee494ad1dec05955b0512890a978099))
+* ignore linter rule ([e394123](https://github.com/sanriodev/aandm/commit/e394123b93ff9f525e12e096564d97816334ef9b))
+* licenses ([ad3551d](https://github.com/sanriodev/aandm/commit/ad3551d92d1d52ec04a75d8c49e899503111de20))
+* xcode ([518c2cb](https://github.com/sanriodev/aandm/commit/518c2cb9f0976629b30c9950eabbcf3ffeb96198))
+
+
+### Bug Fixes
+
+* api ([8522a4b](https://github.com/sanriodev/aandm/commit/8522a4b6dd442959fb5557d9cb52c00e332be19d))
+
 ## [1.5.1](https://github.com/sanriodev/aandm/compare/v1.5.0...v1.5.1) (2025-02-12)
 
 
