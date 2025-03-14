@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/sanriodev/aandm/compare/v1.7.0...v1.8.0) (2025-03-14)
+
+
+### Features
+
+* end drawer settings with light mode ([6522054](https://github.com/sanriodev/aandm/commit/65220540f1068ee5588037c2d800181eb2d15797))
+
 ## [1.7.0](https://github.com/sanriodev/aandm/compare/v1.6.0...v1.7.0) (2025-03-13)
 
 
