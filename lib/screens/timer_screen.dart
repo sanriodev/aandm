@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
@@ -13,6 +14,7 @@ class TimerScreen extends StatefulWidget {
 class _TimerScreenState extends State<TimerScreen> {
   int seconds = 0;
   int buttonPressCounter = 0;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -42,6 +44,7 @@ class _TimerScreenState extends State<TimerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("Timer",
               style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -56,6 +59,18 @@ class _TimerScreenState extends State<TimerScreen> {
               tooltip: "I love my gf",
             ),
           ),
+          actions: [
+            IconButton(
+              color: Theme.of(context).primaryIconTheme.color,
+              icon: const PhosphorIcon(
+                PhosphorIconsRegular.gear,
+                semanticLabel: 'Einstellungen',
+              ),
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+            ),
+          ],
         ),
         endDrawer: AppDrawer(),
         body: Center(

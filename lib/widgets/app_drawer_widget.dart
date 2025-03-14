@@ -1,5 +1,7 @@
+import 'package:aandm/main.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -58,18 +60,33 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
               ),
             ),
-            // ListTile(
-            //   onTap: () async => {showCardLogoutDialog(context)},
-            //   leading: PhosphorIcon(
-            //     PhosphorIconsRegular.signOut,
-            //     color: Theme.of(context).primaryColor,
-            //   ),
-            //   title: Text(
-            //     'Abmelden',
-            //     style: Theme.of(context).textTheme.bodySmall,
-            //   ),
-            // ),
-            // const Spacer(),
+            ListTile(
+              onTap: () {
+                if (MyApp.of(context)!.currentTheme == ThemeMode.dark) {
+                  MyApp.of(context)!.currentTheme = ThemeMode.light;
+                  setState(() {
+                    MyApp.of(context)!.changeTheme(ThemeMode.light);
+                  });
+                } else {
+                  MyApp.of(context)!.currentTheme = ThemeMode.dark;
+                  setState(() {
+                    MyApp.of(context)!.changeTheme(ThemeMode.dark);
+                  });
+                }
+                setState(() {});
+              },
+              leading: PhosphorIcon(
+                MyApp.of(context)!.currentTheme == ThemeMode.dark
+                    ? PhosphorIconsRegular.sun
+                    : PhosphorIconsRegular.moon,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              title: Text(
+                'Theme ändern',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+            const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
               child: TextButton(

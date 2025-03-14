@@ -2,6 +2,7 @@ import 'package:aandm/models/note.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class NotesEditScreen extends StatefulWidget {
   const NotesEditScreen({super.key, required this.id});
@@ -14,6 +15,8 @@ class NotesEditScreen extends StatefulWidget {
 class _NotesEditScreenState extends State<NotesEditScreen> {
   final TextEditingController _commentController = TextEditingController();
   late Note note;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     note = Note(widget.id, 'neue Notiz', 'neue Notiz');
@@ -40,6 +43,7 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Notiz bearbeiten',
             style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -65,6 +69,16 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
                 _saveNote();
               },
             ),
+          ),
+          IconButton(
+            color: Theme.of(context).primaryIconTheme.color,
+            icon: const PhosphorIcon(
+              PhosphorIconsRegular.gear,
+              semanticLabel: 'Einstellungen',
+            ),
+            onPressed: () {
+              _scaffoldKey.currentState?.openEndDrawer();
+            },
           ),
         ],
       ),

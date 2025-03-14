@@ -3,6 +3,7 @@ import 'package:aandm/models/task_list.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key, required this.list});
@@ -15,6 +16,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> tasks = [];
   String title = 'Titel';
   String content = 'Inhalt';
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -130,6 +132,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("To-Do List",
             style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -144,6 +147,18 @@ class _ToDoScreenState extends State<ToDoScreen> {
             tooltip: "I love my gf",
           ),
         ),
+        actions: [
+          IconButton(
+            color: Theme.of(context).primaryIconTheme.color,
+            icon: const PhosphorIcon(
+              PhosphorIconsRegular.gear,
+              semanticLabel: 'Einstellungen',
+            ),
+            onPressed: () {
+              _scaffoldKey.currentState?.openEndDrawer();
+            },
+          ),
+        ],
       ),
       endDrawer: AppDrawer(),
       body: Column(

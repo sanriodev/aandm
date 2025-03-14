@@ -6,6 +6,7 @@ import 'package:aandm/widgets/note_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -20,6 +21,7 @@ class _NotesScreenState extends State<NotesScreen> {
   List<Note> notes = [];
   String collectionName = 'Name der Notiz';
   bool isLoading = true;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -87,6 +89,7 @@ class _NotesScreenState extends State<NotesScreen> {
         }
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("Notizen",
               style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -101,6 +104,18 @@ class _NotesScreenState extends State<NotesScreen> {
               tooltip: "I love my gf",
             ),
           ),
+          actions: [
+            IconButton(
+              color: Theme.of(context).primaryIconTheme.color,
+              icon: const PhosphorIcon(
+                PhosphorIconsRegular.gear,
+                semanticLabel: 'Einstellungen',
+              ),
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+            ),
+          ],
         ),
         endDrawer: AppDrawer(),
         body: Column(

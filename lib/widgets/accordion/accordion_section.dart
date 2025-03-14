@@ -15,7 +15,6 @@ class TaskListAccordionSection extends AccordionSection {
           rightIcon: Icon(
             Icons.keyboard_arrow_down,
             color: Colors.white,
-            size: 30,
           ),
         );
 }
