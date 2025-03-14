@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -45,7 +46,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode? _themeMode;
+  ThemeMode? currentTheme;
 
   void changeTheme(ThemeMode themeMode) {
     final themeBox = Hive.box('theme');
@@ -57,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       themeBox.put('theme', 'system');
     }
     setState(() {
-      _themeMode = themeMode;
+      currentTheme = themeMode;
     });
   }
 
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _themeMode = _getThemeMode();
+    currentTheme = _getThemeMode();
   }
 
   @override
@@ -86,7 +87,7 @@ class _MyAppState extends State<MyApp> {
         providers: [Provider(create: (context) => Backend())],
         child: MaterialApp(
           title: 'A & M',
-          themeMode: _themeMode,
+          themeMode: currentTheme,
           theme: appThemeLight,
           darkTheme: appThemeDark,
           home: const MyHomePage(title: 'A & M'),
@@ -105,6 +106,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<CatFactsApiModel> catFacts = [];
   List<CatPictureApiModel> catPictures = [];
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -135,6 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("A and M",
               style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -152,24 +155,16 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                icon: const Icon(Icons.settings_brightness),
                 color: Theme.of(context).primaryIconTheme.color,
+                icon: const PhosphorIcon(
+                  PhosphorIconsRegular.gear,
+                  semanticLabel: 'Einstellungen',
+                ),
                 onPressed: () {
-                  if (MyApp.of(context)!._themeMode == ThemeMode.dark) {
-                    MyApp.of(context)!._themeMode = ThemeMode.light;
-                    setState(() {
-                      MyApp.of(context)!.changeTheme(ThemeMode.light);
-                    });
-                  } else {
-                    MyApp.of(context)!._themeMode = ThemeMode.dark;
-                    setState(() {
-                      MyApp.of(context)!.changeTheme(ThemeMode.dark);
-                    });
-                  }
-                  setState(() {});
+                  _scaffoldKey.currentState?.openEndDrawer();
                 },
               ),
-            ),
+            )
           ],
         ),
         endDrawer: AppDrawer(),
@@ -184,19 +179,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   TimerPreviewWidget(
-                    themeMode: MyApp.of(context)!._themeMode!,
+                    themeMode: MyApp.of(context)!.currentTheme!,
                     onPressed: () {
                       navigateToScreen(context, TimerScreen(), true);
                     },
                   ),
                   TodoPreviewWidget(
-                    themeMode: MyApp.of(context)!._themeMode!,
+                    themeMode: MyApp.of(context)!.currentTheme!,
                     onPressed: () {
                       navigateToScreen(context, ToDoListScreen(), true);
                     },
                   ),
                   NotesPreviewWidget(
-                      themeMode: MyApp.of(context)!._themeMode!,
+                      themeMode: MyApp.of(context)!.currentTheme!,
                       onPressed: () {
                         navigateToScreen(context, NotesScreen(), true);
                       }),

@@ -7,6 +7,7 @@ import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:aandm/widgets/task_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -21,6 +22,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   List<TaskListWithTasks> taskLists = [];
   String collectionName = 'Name der Liste';
   bool isLoading = true;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -109,6 +111,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         }
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("To-Do Listen",
               style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -126,6 +129,18 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               tooltip: "I love my gf",
             ),
           ),
+          actions: [
+            IconButton(
+              color: Theme.of(context).primaryIconTheme.color,
+              icon: const PhosphorIcon(
+                PhosphorIconsRegular.gear,
+                semanticLabel: 'Einstellungen',
+              ),
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+            ),
+          ],
         ),
         endDrawer: AppDrawer(),
         body: Column(
