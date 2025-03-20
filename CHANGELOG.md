@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/sanriodev/aandm/compare/v1.8.0...v1.8.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* ci tags ([3120868](https://github.com/sanriodev/aandm/commit/3120868993dd39cacc30577a758c1a73dc5da817))
+
 ## [1.8.0](https://github.com/sanriodev/aandm/compare/v1.7.0...v1.8.0) (2025-03-14)
 
 
