@@ -98,10 +98,10 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
               note.content = value;
             },
             
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Notiz...',
               hintStyle: Theme.of(context).primaryTextTheme.titleSmall,
-              contentPadding: EdgeInsets.all(16.0),
+              contentPadding: const EdgeInsets.all(16.0),
               border: InputBorder.none,
             )),
       ),
