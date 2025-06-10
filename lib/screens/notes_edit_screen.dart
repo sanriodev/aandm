@@ -93,15 +93,14 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
             textAlignVertical: TextAlignVertical.top,
             expands: true,
             maxLines: null,
+            style: Theme.of(context).primaryTextTheme.titleSmall,
             onChanged: (value) {
               note.content = value;
             },
+            
             decoration: const InputDecoration(
               hintText: 'Notiz...',
-              hintStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.bold),
+              hintStyle: Theme.of(context).primaryTextTheme.titleSmall,
               contentPadding: EdgeInsets.all(16.0),
               border: InputBorder.none,
             )),
