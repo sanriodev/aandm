@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.2](https://github.com/sanriodev/aandm/compare/v1.8.1...v1.8.2) (2025-06-10)
+
+
+### Bug Fixes
+
+* lint ([9918b85](https://github.com/sanriodev/aandm/commit/9918b85d30eed3c5917435a2f101adf2f0e9a0b6))
+* text style notes edit ([67055f9](https://github.com/sanriodev/aandm/commit/67055f9bf8944a89a4956bfe1e5908ca4edf71dd))
+
 ## [1.8.1](https://github.com/sanriodev/aandm/compare/v1.8.0...v1.8.1) (2025-03-20)
 
 
