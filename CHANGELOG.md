@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/sanriodev/aandm/compare/v1.8.2...v1.9.0) (2025-06-16)
+
+
+### Features
+
+* update sdk ([f75dd99](https://github.com/sanriodev/aandm/commit/f75dd99da8c37b4727eb6bbc97268ce840ec3b9f))
+
+
+### Bug Fixes
+
+* deps ([eefe02b](https://github.com/sanriodev/aandm/commit/eefe02b0fa9571bd98eefa1bc8fc65ef3ea8cb37))
+
 ## [1.8.2](https://github.com/sanriodev/aandm/compare/v1.8.1...v1.8.2) (2025-06-10)
 
 
