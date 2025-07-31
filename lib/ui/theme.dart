@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 ThemeData appThemeLight = ThemeData(
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue[200]!),
-  dialogBackgroundColor: Colors.white,
   primaryColor: Colors.blue[200],
   canvasColor: Colors.grey[400],
   secondaryHeaderColor: Colors.purple[200],
@@ -37,7 +36,7 @@ ThemeData appThemeLight = ThemeData(
     ),
   ),
   cardColor: Colors.grey[200],
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: Colors.white,
   ),
   progressIndicatorTheme: ProgressIndicatorThemeData(
@@ -59,6 +58,7 @@ ThemeData appThemeLight = ThemeData(
       borderSide: const BorderSide(color: Colors.black26, width: 2.5),
     ),
   ),
+  dialogTheme: DialogThemeData(backgroundColor: Colors.white),
 );
 
 ThemeData appThemeDark = ThemeData(
@@ -66,7 +66,6 @@ ThemeData appThemeDark = ThemeData(
       seedColor: Colors.blue[900]!,
       brightness: Brightness.dark,
     ),
-    dialogBackgroundColor: Colors.black,
     primaryColor: Colors.blue[900],
     canvasColor: Colors.grey[800],
     secondaryHeaderColor: Colors.purple[800],
@@ -104,7 +103,7 @@ ThemeData appThemeDark = ThemeData(
         backgroundColor: WidgetStatePropertyAll(Colors.purple[600]),
       ),
     ),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
       color: Colors.black,
     ),
     cardColor: Colors.black,
@@ -124,7 +123,8 @@ ThemeData appThemeDark = ThemeData(
       labelStyle: TextStyle(color: Colors.white),
     ),
     primaryTextTheme: textThemeDark(),
-    textTheme: textThemeDark());
+    textTheme: textThemeDark(),
+    dialogTheme: DialogThemeData(backgroundColor: Colors.black));
 
 TextTheme textThemeLight() {
   return TextTheme(
