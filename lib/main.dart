@@ -86,6 +86,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [Provider(create: (context) => Backend())],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'A & M',
           themeMode: currentTheme,
           theme: appThemeLight,
