@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
     final theme = Hive.box('theme');
     if (theme.get('theme') == null) {
       theme.put('theme', 'system');
-      return ThemeMode.system;
+      return ThemeMode.light;
     }
     if (theme.get('theme') == 'light') {
       return ThemeMode.light;
