@@ -1,9 +1,6 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/screens/home/home_screen.dart';
-import 'package:aandm/screens/login/login_screen.dart';
 import 'package:aandm/ui/theme.dart';
-import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -52,15 +49,6 @@ class _MainAppScreenState extends State<MainAppScreen> {
   void initState() {
     super.initState();
     currentTheme = _getThemeMode();
-    final AuthBackend auth = AuthBackend();
-    if (auth.loggedInUser != null) {
-      auth.loggedInUser = null;
-      _logout();
-    }
-  }
-
-  Future<void> _logout() async {
-    navigateToScreen(context, LoginScreen(), false);
   }
 
   @override
