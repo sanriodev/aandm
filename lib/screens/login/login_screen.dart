@@ -106,12 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           AutofillHints.email
                         ],
                         decoration: const InputDecoration(
-                          labelText: 'Username or email',
-                          hintText: 'you@example.com',
+                          labelText: 'username',
+                          hintText: 'funkytown123',
                           prefixIcon: Icon(Icons.person_outline),
                         ),
                         validator: (v) => (v == null || v.trim().isEmpty)
-                            ? 'Please enter your username or email'
+                            ? 'Please enter your username'
                             : null,
                         onFieldSubmitted: (_) => _passwordFocus.requestFocus(),
                       ),

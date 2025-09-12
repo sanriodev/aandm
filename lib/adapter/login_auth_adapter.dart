@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 class LoginAuthAdapter extends TypeAdapter<LoginResponse> {
   @override
-  final int typeId = 1;
+  final int typeId = 9;
 
   @override
   LoginResponse read(BinaryReader reader) {
