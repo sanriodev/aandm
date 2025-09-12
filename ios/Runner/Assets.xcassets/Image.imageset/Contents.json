@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "40.png",
+      "filename" : "playstore.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "60.png",
+      "filename" : "playstore 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "80.png",
+      "filename" : "playstore 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
