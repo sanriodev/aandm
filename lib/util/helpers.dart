@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aandm/models/hive_interface.dart';
 import 'package:flutter/material.dart';
 
@@ -30,4 +32,37 @@ int getIncrement<T extends HiveModel>(List<T> list) {
     }
   }
   return max + 1;
+}
+
+dynamic decodeJwt(String jwtString) {
+  final parts = jwtString.split('.');
+
+  //final encodedPayload = addPadding(parts[1]);
+  final payload = _decodeBase64(parts[1]);
+  final payloadMap = json.decode(payload);
+
+  return payloadMap;
+}
+
+String _decodeBase64(String str) {
+  String output = str.replaceAll('-', '+').replaceAll('_', '/');
+
+  switch (output.length % 4) {
+    case 0:
+      break;
+    case 2:
+      output += '==';
+    case 3:
+      output += '=';
+    default:
+      throw Exception('Illegal base64url string!');
+  }
+
+  return utf8.decode(base64Url.decode(output));
+}
+
+bool jwtIsExpired(String rawJwtString) {
+  final Map<String, dynamic> json =
+      decodeJwt(rawJwtString) as Map<String, dynamic>;
+  return DateTime.now().millisecondsSinceEpoch > (json['exp'] as int) * 1000;
 }

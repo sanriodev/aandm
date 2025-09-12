@@ -1,0 +1,21 @@
+import 'package:aandm/models/auth/login_response_model.dart';
+import 'package:hive/hive.dart';
+
+class LoginAuthAdapter extends TypeAdapter<LoginResponse> {
+  @override
+  final int typeId = 1;
+
+  @override
+  LoginResponse read(BinaryReader reader) {
+    return LoginResponse(
+      access: reader.readString(),
+      refresh: reader.readString(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, LoginResponse obj) {
+    writer.writeString(obj.access);
+    writer.writeString(obj.refresh);
+  }
+}

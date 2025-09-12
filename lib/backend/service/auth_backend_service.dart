@@ -1,0 +1,92 @@
+import 'dart:convert';
+
+import 'package:aandm/backend/abstract/backend_abstract.dart';
+import 'package:aandm/models/auth/login_response_model.dart';
+import 'package:aandm/util/helpers.dart';
+import 'package:hive/hive.dart';
+
+class AuthBackend extends ABackend {
+  static final AuthBackend _instance = AuthBackend._privateConstructor();
+  LoginResponse? _loggedInUser;
+  factory AuthBackend() => _instance;
+  AuthBackend._privateConstructor() {
+    _checkForLoggedInUser();
+    super.init();
+  }
+
+  void _checkForLoggedInUser() {
+    final box = Hive.box<LoginResponse>('auth');
+    final LoginResponse? user = box.get('auth');
+    if (user != null &&
+        (!jwtIsExpired(user.access) || !jwtIsExpired(user.refresh))) {
+      loggedInUser = user;
+    }
+  }
+
+  // ignore: unnecessary_getters_setters
+  LoginResponse? get loggedInUser => _loggedInUser;
+  set loggedInUser(LoginResponse? user) {
+    _loggedInUser = user;
+  }
+
+  Future<LoginResponse> postLogin(String username, String password) async {
+    final res = await post(
+      jsonEncode(<String, String>{
+        'username': username,
+        'password': password,
+      }),
+      'api/token/pair/',
+    );
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes));
+      final loginData =
+          LoginResponse.fromJson(jsonData as Map<String, dynamic>);
+      loggedInUser = loginData;
+      final box = await Hive.openBox<LoginResponse>('auth');
+      await box.put('auth', loginData);
+
+      return loginData;
+    } else {
+      throw res;
+    }
+  }
+
+  Future<void> postLogout() async {
+    final res = await post(
+      null,
+      'api/token/logout',
+    );
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      loggedInUser = null;
+      return;
+    } else {
+      throw res;
+    }
+  }
+
+  Future<LoginResponse?> postRefresh() async {
+    final box = Hive.box<LoginResponse>('auth');
+    const String url = 'api/token/refresh';
+    if (_loggedInUser?.access != null) {
+      final Map<String, dynamic> loginData = {
+        'refresh': _loggedInUser?.refresh,
+      };
+
+      final res = await post(jsonEncode(loginData), url);
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes));
+      if (jsonData != null) {
+        final loginData =
+            LoginResponse.fromJson(jsonData as Map<String, dynamic>);
+        loggedInUser = loginData;
+        await box.put('auth', loginData);
+        return loginData;
+      }
+    }
+    await box.clear();
+    loggedInUser = null;
+
+    return null;
+  }
+}

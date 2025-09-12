@@ -1,4 +1,4 @@
-import 'package:aandm/main.dart';
+import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -62,21 +62,21 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             ListTile(
               onTap: () {
-                if (MyApp.of(context)!.currentTheme == ThemeMode.dark) {
-                  MyApp.of(context)!.currentTheme = ThemeMode.light;
+                if (MainAppScreen.of(context)!.currentTheme == ThemeMode.dark) {
+                  MainAppScreen.of(context)!.currentTheme = ThemeMode.light;
                   setState(() {
-                    MyApp.of(context)!.changeTheme(ThemeMode.light);
+                    MainAppScreen.of(context)!.changeTheme(ThemeMode.light);
                   });
                 } else {
-                  MyApp.of(context)!.currentTheme = ThemeMode.dark;
+                  MainAppScreen.of(context)!.currentTheme = ThemeMode.dark;
                   setState(() {
-                    MyApp.of(context)!.changeTheme(ThemeMode.dark);
+                    MainAppScreen.of(context)!.changeTheme(ThemeMode.dark);
                   });
                 }
                 setState(() {});
               },
               leading: PhosphorIcon(
-                MyApp.of(context)!.currentTheme == ThemeMode.dark
+                MainAppScreen.of(context)!.currentTheme == ThemeMode.dark
                     ? PhosphorIconsRegular.sun
                     : PhosphorIconsRegular.moon,
                 color: Theme.of(context).primaryIconTheme.color,
