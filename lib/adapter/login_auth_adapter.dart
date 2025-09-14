@@ -8,14 +8,14 @@ class LoginAuthAdapter extends TypeAdapter<LoginResponse> {
   @override
   LoginResponse read(BinaryReader reader) {
     return LoginResponse(
-      access: reader.readString(),
-      refresh: reader.readString(),
+      accessToken: reader.readString(),
+      refreshToken: reader.readString(),
     );
   }
 
   @override
   void write(BinaryWriter writer, LoginResponse obj) {
-    writer.writeString(obj.access);
-    writer.writeString(obj.refresh);
+    writer.writeString(obj.accessToken);
+    writer.writeString(obj.refreshToken);
   }
 }

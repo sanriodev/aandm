@@ -3,16 +3,16 @@ import 'package:hive/hive.dart';
 @HiveType(typeId: 1)
 class LoginResponse extends HiveObject {
   @HiveField(0)
-  final String access;
+  final String accessToken;
   @HiveField(1)
-  final String refresh;
+  final String refreshToken;
 
-  LoginResponse({required this.access, required this.refresh});
+  LoginResponse({required this.accessToken, required this.refreshToken});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      access: json['access'] as String,
-      refresh: json['refresh'] as String,
+      accessToken: json['accessToken'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
   }
 }

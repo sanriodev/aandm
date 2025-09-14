@@ -18,7 +18,7 @@ class AuthBackend extends ABackend {
     final box = Hive.box<LoginResponse>('auth');
     final LoginResponse? user = box.get('auth');
     if (user != null &&
-        (!jwtIsExpired(user.access) || !jwtIsExpired(user.refresh))) {
+        (!jwtIsExpired(user.accessToken) || !jwtIsExpired(user.refreshToken))) {
       loggedInUser = user;
     }
   }
@@ -39,7 +39,8 @@ class AuthBackend extends ABackend {
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData = await json.decode(utf8.decode(res.bodyBytes));
+      // ignore: avoid_dynamic_calls
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data'];
       final loginData =
           LoginResponse.fromJson(jsonData as Map<String, dynamic>);
       loggedInUser = loginData;
@@ -69,9 +70,9 @@ class AuthBackend extends ABackend {
   Future<LoginResponse?> postRefresh() async {
     final box = Hive.box<LoginResponse>('auth');
     const String url = 'auth/refresh';
-    if (_loggedInUser?.access != null) {
+    if (_loggedInUser?.accessToken != null) {
       final Map<String, dynamic> loginData = {
-        'refresh_token': _loggedInUser?.refresh,
+        'refresh_token': _loggedInUser?.refreshToken,
       };
 
       final res = await post(jsonEncode(loginData), url);

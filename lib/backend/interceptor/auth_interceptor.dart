@@ -26,10 +26,10 @@ class AuthorizationInterceptor implements InterceptorContract {
         request.headers['Expires'] = '0';
       }
 
-      if (AuthBackend().loggedInUser?.access != null &&
+      if (AuthBackend().loggedInUser?.accessToken != null &&
           !request.headers.containsKey('authorization')) {
         request.headers['authorization'] =
-            'Bearer ${AuthBackend().loggedInUser!.access}';
+            'Bearer ${AuthBackend().loggedInUser!.accessToken}';
       }
     } catch (e) {
       Fluttertoast.showToast(msg: 'Error beim Intercepten der Anfrage');
@@ -63,7 +63,7 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   Future<bool> shouldAttemptRetryOnResponse(BaseResponse response) async {
     //This is where we need to update our token on 401 response
     if (response.statusCode == 401 &&
-        AuthBackend().loggedInUser?.refresh != null &&
+        AuthBackend().loggedInUser?.refreshToken != null &&
         !response.request!.url.toString().contains('/refresh') &&
         !response.request!.url.toString().contains('/login')) {
       //Refresh your token here. Make refresh token method where you get new token from
