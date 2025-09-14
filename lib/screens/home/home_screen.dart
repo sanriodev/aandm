@@ -1,9 +1,7 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/models/cat_facts_api_model.dart';
 import 'package:aandm/models/cat_picture_api_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
-import 'package:aandm/screens/login/login_screen.dart';
 import 'package:aandm/screens/notes/notes_screen.dart';
 import 'package:aandm/screens/timer/timer_screen.dart';
 import 'package:aandm/screens/to_do_list/to_do_list_screen.dart';
@@ -33,33 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    final AuthBackend auth = AuthBackend();
-    if (auth.loggedInUser == null) {
-      auth.loggedInUser = null;
-      _logout();
-      return;
-    }
     getCatData();
     super.initState();
-  }
-
-  Future<void> _logout() async {
-    navigateToScreen(context, LoginScreen(
-      onLogin: (username, password) async {
-        final authBackend = AuthBackend();
-        try {
-          await authBackend.postLogin(username, password);
-          // ignore: use_build_context_synchronously
-          navigateToScreen(context, HomeScreen(title: 'A & M'), false);
-        } catch (e) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login failed: $e')),
-          );
-          return;
-        }
-      },
-    ), false);
   }
 
   Future<void> getCatData() async {
