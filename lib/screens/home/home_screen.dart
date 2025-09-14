@@ -44,7 +44,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _logout() async {
-    navigateToScreen(context, LoginScreen(), false);
+    navigateToScreen(context, LoginScreen(
+      onLogin: (username, password) async {
+        final authBackend = AuthBackend();
+        try {
+          await authBackend.postLogin(username, password);
+          // ignore: use_build_context_synchronously
+          navigateToScreen(context, HomeScreen(title: 'A & M'), false);
+        } catch (e) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: $e')),
+          );
+          return;
+        }
+      },
+    ), false);
   }
 
   Future<void> getCatData() async {

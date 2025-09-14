@@ -6,7 +6,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
     super.key,
-    this.onLogin,
+    required this.onLogin,
   });
 
   static const routeName = '/login';
@@ -48,18 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _submitting = true);
 
     try {
-      if (widget.onLogin != null) {
-        widget.onLogin!(
-          _usernameCtrl.text.trim(),
-          _passwordCtrl.text,
-        );
-      } else {
-        await Future<void>.delayed(const Duration(milliseconds: 600));
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logged in')),
-        );
-      }
+      widget.onLogin!(
+        _usernameCtrl.text.trim(),
+        _passwordCtrl.text,
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

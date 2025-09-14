@@ -35,7 +35,7 @@ class AuthBackend extends ABackend {
         'username': username,
         'password': password,
       }),
-      'api/token/pair/',
+      'auth/login/',
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
@@ -55,7 +55,7 @@ class AuthBackend extends ABackend {
   Future<void> postLogout() async {
     final res = await post(
       null,
-      'api/token/logout',
+      'auth/logout',
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
@@ -68,10 +68,10 @@ class AuthBackend extends ABackend {
 
   Future<LoginResponse?> postRefresh() async {
     final box = Hive.box<LoginResponse>('auth');
-    const String url = 'api/token/refresh';
+    const String url = 'auth/refresh';
     if (_loggedInUser?.access != null) {
       final Map<String, dynamic> loginData = {
-        'refresh': _loggedInUser?.refresh,
+        'refresh_token': _loggedInUser?.refresh,
       };
 
       final res = await post(jsonEncode(loginData), url);
