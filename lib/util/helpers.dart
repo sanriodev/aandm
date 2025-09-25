@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aandm/models/hive_interface.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
   Future.delayed(Duration.zero, () async {
@@ -65,4 +66,10 @@ bool jwtIsExpired(String rawJwtString) {
   final Map<String, dynamic> json =
       decodeJwt(rawJwtString) as Map<String, dynamic>;
   return DateTime.now().millisecondsSinceEpoch > (json['exp'] as int) * 1000;
+}
+
+Future<void> launchUrlInBrowser(Uri url) async {
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
+  }
 }

@@ -49,6 +49,7 @@ dependencies:
   provider: ^6.1.2
   http_interceptor: ^2.0.0
   crypto: ^3.0.6
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
