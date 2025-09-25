@@ -1,5 +1,5 @@
 import 'package:aandm/backend/service/auth_backend_service.dart';
-import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/backend/service/cat_backend_service.dart';
 import 'package:aandm/screens/home/home_screen.dart';
 import 'package:aandm/screens/login/login_screen.dart';
 import 'package:aandm/ui/theme.dart';
@@ -77,7 +77,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
       });
     }
     return MultiProvider(
-        providers: [Provider(create: (context) => Backend())],
+        providers: [Provider(create: (context) => CatBackend())],
         child: MaterialApp(
             title: 'A & M',
             themeMode: currentTheme,

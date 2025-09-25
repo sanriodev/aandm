@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+@Deprecated("Old Hive model to store as nosql on device")
 @HiveType(typeId: 1)
 class Task extends HiveObject {
   @HiveField(0)

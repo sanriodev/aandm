@@ -2,6 +2,7 @@ import 'package:aandm/models/hive_interface.dart';
 import 'package:aandm/models/task.dart';
 import 'package:hive/hive.dart';
 
+@Deprecated("Old Hive model to store as nosql on device")
 @HiveType(typeId: 0)
 class TaskList extends HiveObject with HiveModel {
   @HiveField(0)

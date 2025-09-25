@@ -1,6 +1,7 @@
 import 'package:aandm/models/hive_interface.dart';
 import 'package:hive/hive.dart';
 
+@Deprecated("Old Hive model to store as nosql on device")
 @HiveType(typeId: 2)
 class Note extends HiveObject with HiveModel {
   @override

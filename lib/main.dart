@@ -14,14 +14,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  Hive.registerAdapter(TaskAdapter());
-  Hive.registerAdapter(TaskListAdapter());
-  Hive.registerAdapter(NoteAdapter());
   Hive.registerAdapter(LoginAuthAdapter());
   await Hive.openBox<LoginResponse>('auth');
-  await Hive.openBox<TaskList>('taskLists');
-  await Hive.openBox<Task>('tasks');
-  await Hive.openBox<Note>('notes');
   await Hive.openBox('theme');
   final settings = Settings();
   await settings.loadSettings();

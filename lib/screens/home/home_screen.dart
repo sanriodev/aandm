@@ -1,6 +1,6 @@
-import 'package:aandm/backend/service/backend_service.dart';
-import 'package:aandm/models/cat_facts_api_model.dart';
-import 'package:aandm/models/cat_picture_api_model.dart';
+import 'package:aandm/backend/service/cat_backend_service.dart';
+import 'package:aandm/models/api/cat_facts_api_model.dart';
+import 'package:aandm/models/api/cat_picture_api_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:aandm/screens/notes/notes_screen.dart';
 import 'package:aandm/screens/timer/timer_screen.dart';
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getCatData() async {
-    final backend = Provider.of<Backend>(context, listen: false);
+    final backend = Provider.of<CatBackend>(context, listen: false);
     try {
       final pictures = await backend.getCatPictures();
       setState(() {

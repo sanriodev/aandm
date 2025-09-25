@@ -1,48 +1,27 @@
 import 'dart:convert';
 
-import 'package:aandm/models/cat_facts_api_model.dart';
-import 'package:aandm/models/cat_picture_api_model.dart';
-import 'package:http/http.dart';
+import 'package:aandm/backend/abstract/backend_abstract.dart';
+import 'package:aandm/models/api/task_list_api_model.dart';
 
-class Backend {
-  Future<List<CatFactsApiModel>> getCatFacts() async {
-    final Uri url = Uri.parse('https://meowfacts.herokuapp.com/?count=5');
-    final res = await get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          // ignore: avoid_dynamic_calls
-          await json.decode(utf8.decode(res.bodyBytes))['data']
-              as List<dynamic>;
-      final ret = jsonData.map((e) => CatFactsApiModel.fromJson(e)).toList();
-
-      return ret;
-    } else {
-      throw res;
-    }
+class Backend extends ABackend {
+  static final Backend _instance = Backend._privateConstructor();
+  factory Backend() => _instance;
+  Backend._privateConstructor() {
+    super.init();
   }
 
-  Future<List<CatPictureApiModel>> getCatPictures() async {
-    final Uri url =
-        Uri.parse('https://api.thecatapi.com/v1/images/search?limit=5');
-    final res = await get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+  Future<List<TaskList?>> getAllTaskLists() async {
+    final res = await get('task-list/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as List<dynamic>;
-      final ret = jsonData.map((e) => CatPictureApiModel.fromJson(e)).toList();
+          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
 
-      return ret;
+      final taskLists = (jsonData['data'] as List<dynamic>)
+          .map((e) => TaskList.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      return taskLists;
     } else {
       throw res;
     }
