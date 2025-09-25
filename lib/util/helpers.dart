@@ -1,7 +1,12 @@
 import 'dart:convert';
 
+import 'package:aandm/backend/service/auth_backend_service.dart';
+import 'package:aandm/models/auth/login_response_model.dart';
 import 'package:aandm/models/hive_interface.dart';
+import 'package:aandm/screens/home/home_screen.dart';
+import 'package:aandm/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
@@ -71,5 +76,18 @@ bool jwtIsExpired(String rawJwtString) {
 Future<void> launchUrlInBrowser(Uri url) async {
   if (!await launchUrl(url)) {
     throw Exception('Could not launch $url');
+  }
+}
+
+Future<void> deleteBoxAndNavigateToLogin(BuildContext context) async {
+  final Box<LoginResponse> loginBox = Hive.box<LoginResponse>('auth');
+
+  await loginBox.delete('auth');
+
+  final AuthBackend authBackend = AuthBackend();
+  authBackend.loggedInUser = null;
+
+  if (context.mounted) {
+    navigateToScreen(context, LoginScreen(), false);
   }
 }

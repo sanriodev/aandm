@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'package:aandm/widgets/app_drawer_widget.dart';
+import 'package:aandm/backend/service/auth_backend_service.dart';
+import 'package:aandm/screens/home/home_screen.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({
-    super.key,
-    required this.onLogin,
-  });
+  const LoginScreen({super.key});
 
   static const routeName = '/login';
-
-  final void Function(String username, String password)? onLogin;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -40,6 +37,20 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  Future<void> login(String username, String password) async {
+    final authBackend = AuthBackend();
+    try {
+      await authBackend.postLogin(username, password);
+      navigateToScreen(context, HomeScreen(title: 'A & M'), false);
+    } catch (e) {
+      // Show error using innerContext which now has a ScaffoldMessenger ancestor.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: $e')),
+      );
+      return;
+    }
+  }
+
   Future<void> _submit() async {
     final form = _formKey.currentState;
     if (form == null || !form.validate()) return;
@@ -48,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _submitting = true);
 
     try {
-      widget.onLogin!(
+      login(
         _usernameCtrl.text.trim(),
         _passwordCtrl.text,
       );
@@ -85,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
         centerTitle: true,
       ),
-      endDrawer: AppDrawer(),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(

@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("A and M",
+          title: Text("Home",
               style: Theme.of(context).primaryTextTheme.titleMedium),
           actions: [
             Padding(

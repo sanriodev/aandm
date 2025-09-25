@@ -88,6 +88,19 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
             const Spacer(),
+            ListTile(
+              onTap: () {
+                deleteBoxAndNavigateToLogin(context);
+              },
+              leading: PhosphorIcon(
+                PhosphorIconsRegular.signOut,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              title: Text(
+                'Abmelden',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -102,7 +115,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     onPressed: () {
                       launchUrlInBrowser(
                         Uri.parse(
-                          "https://blvckleg.dev/app-legal/",
+                          "https://blvckleg.dev/app-legal",
                         ),
                       );
                     },
