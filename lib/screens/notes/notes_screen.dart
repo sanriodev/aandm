@@ -1,4 +1,6 @@
-import 'package:aandm/models/note.dart';
+import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/api/note_api_model.dart';
+import 'package:aandm/models/dto/create_note_dto.dart';
 import 'package:aandm/screens/notes/notes_edit_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
@@ -34,27 +36,25 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
-  void getNotes() {
-    final box = Hive.box<Note>('notes');
-    final List<Note> notes = box.values.toList();
+  Future<void> getNotes() async {
+    final backend = Backend();
+    final res = await backend.getAllNotes();
 
     setState(() {
-      this.notes = notes;
+      notes = res;
     });
   }
 
-  void createNewItem(Note data) {
-    final box = Hive.box<Note>('notes');
-    box.add(data);
-    setState(() {
-      notes.add(data);
-    });
+  Future<void> createNewItem(CreateNoteDto data) async {
+    final backend = Backend();
+    await backend.createNote(data);
+    await getNotes();
   }
 
-  void deleteItem(int index) {
-    final box = Hive.box<Note>('notes');
-    box.deleteAt(index);
-    getNotes();
+  Future<void> deleteItem(int id) async {
+    final backend = Backend();
+    await backend.deleteNote(id);
+    await getNotes();
   }
 
   ListView getAllListItems() {
@@ -71,10 +71,12 @@ class _NotesScreenState extends State<NotesScreen> {
                   true);
             },
             onDeletePress: () {
-              deleteItem(index);
+              deleteItem(
+                notes[index].id,
+              );
             },
-            name: notes[index].name,
-            content: notes[index].content,
+            name: notes[index].title,
+            content: notes[index].content ?? '',
           );
         });
   }
@@ -83,9 +85,9 @@ class _NotesScreenState extends State<NotesScreen> {
   Widget build(BuildContext context) {
     return VisibilityDetector(
       key: const Key('listViewNoteVis'),
-      onVisibilityChanged: (info) {
+      onVisibilityChanged: (info) async {
         if (info.visibleFraction > 0) {
-          getNotes();
+          await getNotes();
         }
       },
       child: Scaffold(
@@ -155,11 +157,9 @@ class _NotesScreenState extends State<NotesScreen> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ElevatedButton(
                         onPressed: () {
-                          final newIncrementedId = getIncrement<Note>(notes);
-                          createNewItem(Note(
-                            newIncrementedId,
-                            collectionName,
-                            '',
+                          createNewItem(CreateNoteDto(
+                            title: collectionName,
+                            content: '',
                           ));
                         },
                         child: Text("Neue Notiz",

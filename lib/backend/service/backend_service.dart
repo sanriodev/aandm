@@ -4,6 +4,7 @@ import 'package:aandm/backend/abstract/backend_abstract.dart';
 import 'package:aandm/models/api/note_api_model.dart';
 import 'package:aandm/models/api/task_api_model.dart';
 import 'package:aandm/models/api/task_list_api_model.dart';
+import 'package:aandm/models/dto/create_note_dto.dart';
 
 class Backend extends ABackend {
   static final Backend _instance = Backend._privateConstructor();
@@ -29,7 +30,7 @@ class Backend extends ABackend {
     }
   }
 
-  Future<List<TaskList?>> getAllTaskLists() async {
+  Future<List<TaskList>> getAllTaskLists() async {
     final res = await get('task-list/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
@@ -62,9 +63,9 @@ class Backend extends ABackend {
     }
   }
 
-  Future<Note> createNote(Note list) async {
-    final body = json.encode(list.toJson());
-    final res = await post('task-list/', body);
+  Future<Note> createNote(CreateNoteDto note) async {
+    final body = json.encode(note.toJson());
+    final res = await post('note/', body);
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
@@ -78,7 +79,7 @@ class Backend extends ABackend {
     }
   }
 
-  Future<List<Note?>> getAllNotes() async {
+  Future<List<Note>> getAllNotes() async {
     final res = await get('note/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
@@ -159,7 +160,7 @@ class Backend extends ABackend {
     }
   }
 
-  Future<List<Task?>> getAllTasks() async {
+  Future<List<Task>> getAllTasks() async {
     final res = await get('task/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
