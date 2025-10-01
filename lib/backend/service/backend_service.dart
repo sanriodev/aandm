@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:aandm/backend/abstract/backend_abstract.dart';
-import 'package:aandm/models/api/note_api_model.dart';
-import 'package:aandm/models/api/task_api_model.dart';
-import 'package:aandm/models/api/task_list_api_model.dart';
-import 'package:aandm/models/dto/create_note_dto.dart';
-import 'package:aandm/models/dto/create_task_list_dto.dart';
-import 'package:aandm/models/dto/update_note_dto.dart';
+import 'package:aandm/models/note/note_api_model.dart';
+import 'package:aandm/models/task/dto/create_task_dto.dart';
+import 'package:aandm/models/task/task_api_model.dart';
+import 'package:aandm/models/tasklist/task_list_api_model.dart';
+import 'package:aandm/models/note/dto/create_note_dto.dart';
+import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
+import 'package:aandm/models/note/dto/update_note_dto.dart';
 
 class Backend extends ABackend {
   static final Backend _instance = Backend._privateConstructor();
@@ -145,7 +146,7 @@ class Backend extends ABackend {
     }
   }
 
-  Future<Task> createTask(Task task) async {
+  Future<Task> createTask(CreateTaskDto task) async {
     final body = json.encode(task.toJson());
     final res = await post('task/', body);
 

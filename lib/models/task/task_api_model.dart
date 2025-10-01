@@ -1,4 +1,4 @@
-import 'package:aandm/models/api/task_list_api_model.dart';
+import 'package:aandm/models/tasklist/task_list_api_model.dart';
 
 class Task {
   int id;

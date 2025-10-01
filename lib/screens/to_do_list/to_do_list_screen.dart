@@ -1,6 +1,6 @@
 import 'package:aandm/backend/service/backend_service.dart';
-import 'package:aandm/models/api/task_list_api_model.dart';
-import 'package:aandm/models/dto/create_task_list_dto.dart';
+import 'package:aandm/models/tasklist/task_list_api_model.dart';
+import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
 import 'package:aandm/screens/to_do_list/to_do_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';

@@ -1,10 +1,10 @@
 import 'package:aandm/adapter/login_auth_adapter.dart';
 import 'package:aandm/backend/settings/settings.dart';
-import 'package:aandm/models/auth/login_response_model.dart';
+import 'package:aandm/models/base/login_response_model.dart';
 import 'package:aandm/models/note.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
-import 'package:aandm/models/task.dart';
-import 'package:aandm/models/task_list.dart';
+import 'package:aandm/models/task/task.dart';
+import 'package:aandm/models/tasklist/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';

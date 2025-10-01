@@ -1,6 +1,6 @@
 import 'package:aandm/backend/service/cat_backend_service.dart';
-import 'package:aandm/models/api/cat_facts_api_model.dart';
-import 'package:aandm/models/api/cat_picture_api_model.dart';
+import 'package:aandm/models/cat/cat_facts_api_model.dart';
+import 'package:aandm/models/cat/cat_picture_api_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:aandm/screens/notes/notes_screen.dart';
 import 'package:aandm/screens/timer/timer_screen.dart';

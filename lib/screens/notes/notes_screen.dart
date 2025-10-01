@@ -1,6 +1,6 @@
 import 'package:aandm/backend/service/backend_service.dart';
-import 'package:aandm/models/api/note_api_model.dart';
-import 'package:aandm/models/dto/create_note_dto.dart';
+import 'package:aandm/models/note/note_api_model.dart';
+import 'package:aandm/models/note/dto/create_note_dto.dart';
 import 'package:aandm/screens/notes/notes_edit_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';

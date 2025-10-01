@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:aandm/backend/service/auth_backend_service.dart';
-import 'package:aandm/models/auth/login_response_model.dart';
+import 'package:aandm/models/base/login_response_model.dart';
 import 'package:aandm/models/hive_interface.dart';
 import 'package:aandm/screens/home/home_screen.dart';
 import 'package:aandm/screens/login/login_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:aandm/models/hive_interface.dart';
-import 'package:aandm/models/task.dart';
+import 'package:aandm/models/task/task.dart';
 import 'package:hive/hive.dart';
 
 @Deprecated("Old Hive model to store as nosql on device")

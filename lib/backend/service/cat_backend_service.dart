@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:aandm/models/api/cat_facts_api_model.dart';
-import 'package:aandm/models/api/cat_picture_api_model.dart';
+import 'package:aandm/models/cat/cat_facts_api_model.dart';
+import 'package:aandm/models/cat/cat_picture_api_model.dart';
 import 'package:http/http.dart';
 
 class CatBackend {

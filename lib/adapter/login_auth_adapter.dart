@@ -1,4 +1,4 @@
-import 'package:aandm/models/auth/login_response_model.dart';
+import 'package:aandm/models/base/login_response_model.dart';
 import 'package:hive/hive.dart';
 
 class LoginAuthAdapter extends TypeAdapter<LoginResponse> {

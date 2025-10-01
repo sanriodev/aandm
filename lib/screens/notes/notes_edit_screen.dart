@@ -1,6 +1,6 @@
 import 'package:aandm/backend/service/backend_service.dart';
-import 'package:aandm/models/api/note_api_model.dart';
-import 'package:aandm/models/dto/update_note_dto.dart';
+import 'package:aandm/models/note/note_api_model.dart';
+import 'package:aandm/models/note/dto/update_note_dto.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';

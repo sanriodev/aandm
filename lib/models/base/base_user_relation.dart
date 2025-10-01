@@ -1,4 +1,4 @@
-import 'package:aandm/models/auth/user_model.dart';
+import 'package:aandm/models/user/user_model.dart';
 
 class BaseUserRelation {
   User user;

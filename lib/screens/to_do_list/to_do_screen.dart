@@ -1,5 +1,7 @@
-import 'package:aandm/models/api/task_api_model.dart';
-import 'package:aandm/models/api/task_list_api_model.dart';
+import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/task/dto/create_task_dto.dart';
+import 'package:aandm/models/task/task_api_model.dart';
+import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -26,12 +28,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
     super.initState();
   }
 
-  void createNewItem(Task data) {
-    final box = Hive.box<Task>('tasks');
-    box.add(data);
-    setState(() {
-      tasks.add(data);
-    });
+  Future<void> createNewItem(CreateTaskDto data) async {
+    final backend = Backend();
+    await backend.createTask(data);
+    await backend.getAllTasks();
   }
 
   void deleteItem(int index) {
@@ -195,8 +195,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: ElevatedButton(
                       onPressed: () {
-                        createNewItem(Task(
-                            title, content, false, widget.list.taskList.id));
+                        createNewItem(CreateTaskDto(
+                            title: title,
+                            content: content,
+                            taskListId: widget.list.id));
                       },
                       child: Text("Neuer Eintrag",
                           style: Theme.of(context).primaryTextTheme.titleSmall),
