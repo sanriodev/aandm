@@ -1,12 +1,12 @@
-import 'package:aandm/models/task.dart';
-import 'package:aandm/models/task_list.dart';
+import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/api/task_list_api_model.dart';
+import 'package:aandm/models/dto/create_task_list_dto.dart';
 import 'package:aandm/screens/to_do_list/to_do_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:aandm/widgets/task_list_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -19,61 +19,36 @@ class ToDoListScreen extends StatefulWidget {
 }
 
 class _ToDoListScreenState extends State<ToDoListScreen> {
-  List<TaskListWithTasks> taskLists = [];
+  List<TaskList> taskLists = [];
   String collectionName = 'Name der Liste';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 400), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
     getTaskListsAndTasks();
   }
 
-  void getTaskListsAndTasks() {
-    final box = Hive.box<TaskList>('taskLists');
-    final taskBox = Hive.box<Task>('tasks');
-    final List<TaskList> taskLists = box.values.toList();
-
-    final List<TaskListWithTasks> res = [];
-
-    final List<Task> tasks = taskBox.values.toList();
-
-    for (final taskList in taskLists) {
-      res.add(TaskListWithTasks(taskList,
-          tasks.where((item) => item.taskListId == taskList.id).toList()));
-    }
+  Future<void> getTaskListsAndTasks() async {
+    final backend = Backend();
+    final res = await backend.getAllTaskLists();
     setState(() {
-      this.taskLists = res;
+      taskLists = res;
+      isLoading = false;
     });
   }
 
-  void createNewItem(TaskList data) {
-    final box = Hive.box<TaskList>('taskLists');
-    box.add(data);
-    setState(() {
-      taskLists.add(TaskListWithTasks(data, []));
-    });
+  Future<void> createNewItem(CreateTaskListDto data) async {
+    final backend = Backend();
+    await backend.createTaskList(data);
+    await getTaskListsAndTasks();
   }
 
-  void deleteItem(int index) {
-    final box = Hive.box<TaskList>('taskLists');
-    final taskToDelete = taskLists[index];
-    deleteItemsForList(taskToDelete.taskList.id);
-    box.deleteAt(index);
-    getTaskListsAndTasks();
-  }
-
-  void deleteItemsForList(int taskListId) {
-    final box = Hive.box<Task>('tasks');
-    final itemsToDelete = box.values
-        .where((element) => element.taskListId == taskListId)
-        .toList();
-    box.deleteAll(itemsToDelete.map((e) => e.key).toList());
+  Future<void> deleteItem(int id) async {
+    final backend = Backend();
+    await backend.deleteTaskList(id);
+    await getTaskListsAndTasks();
   }
 
   ListView getAllListItems() {
@@ -90,9 +65,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                     true);
               },
               onDeletePress: () {
-                deleteItem(index);
+                deleteItem(taskLists[index].id);
               },
-              taskListName: taskLists[index].taskList.name,
+              taskListName: taskLists[index].name,
               totalTaks: taskLists[index].tasks.length,
               completedTasks:
                   taskLists[index].tasks.where((test) => test.isDone).length,
@@ -180,13 +155,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ElevatedButton(
                           onPressed: () {
-                            final List<TaskList> taskListEntities =
-                                taskLists.map((e) => e.taskList).toList();
-                            final newIncrementedId =
-                                getIncrement<TaskList>(taskListEntities);
-                            createNewItem(TaskList(
-                              collectionName,
-                              newIncrementedId,
+                            createNewItem(CreateTaskListDto(
+                              name: collectionName,
                             ));
                           },
                           child: Text("Neue Liste",

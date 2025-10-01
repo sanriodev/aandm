@@ -7,7 +7,6 @@ import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/note_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -29,11 +28,6 @@ class _NotesScreenState extends State<NotesScreen> {
   void initState() {
     super.initState();
     getNotes();
-    Future.delayed(Duration(milliseconds: 400), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 
   Future<void> getNotes() async {
@@ -41,17 +35,24 @@ class _NotesScreenState extends State<NotesScreen> {
     final res = await backend.getAllNotes();
 
     setState(() {
+      isLoading = false;
       notes = res;
     });
   }
 
   Future<void> createNewItem(CreateNoteDto data) async {
+    setState(() {
+      isLoading = true;
+    });
     final backend = Backend();
     await backend.createNote(data);
     await getNotes();
   }
 
   Future<void> deleteItem(int id) async {
+    setState(() {
+      isLoading = true;
+    });
     final backend = Backend();
     await backend.deleteNote(id);
     await getNotes();
@@ -120,58 +121,70 @@ class _NotesScreenState extends State<NotesScreen> {
           ],
         ),
         endDrawer: AppDrawer(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (isLoading)
-              Skeletonizer(
-                  effect: ShimmerEffect(
-                    baseColor: Theme.of(context).canvasColor,
-                    duration: const Duration(seconds: 3),
-                  ),
-                  enabled: isLoading,
-                  child: const SkeletonCard()),
-            Expanded(child: !isLoading ? getAllListItems() : Container()),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Card(
-                margin: EdgeInsets.zero,
-                child: Column(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: TextField(
-                          style: Theme.of(context).primaryTextTheme.bodyMedium,
-                          controller:
-                              TextEditingController(text: collectionName),
-                          onChanged: (value) {
-                            collectionName = value;
-                          },
-                          onTap: () {
-                            setState(() {
-                              collectionName = '';
-                            });
-                          },
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          createNewItem(CreateNoteDto(
-                            title: collectionName,
-                            content: '',
-                          ));
-                        },
-                        child: Text("Neue Notiz",
+        body: RefreshIndicator(
+          color: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          onRefresh: () async {
+            setState(() {
+              isLoading = true;
+            });
+            return await getNotes();
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (isLoading)
+                Skeletonizer(
+                    effect: ShimmerEffect(
+                      baseColor: Theme.of(context).canvasColor,
+                      duration: const Duration(seconds: 3),
+                    ),
+                    enabled: isLoading,
+                    child: const SkeletonCard()),
+              Expanded(child: !isLoading ? getAllListItems() : Container()),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: TextField(
                             style:
-                                Theme.of(context).primaryTextTheme.titleSmall),
-                      ),
-                    )
-                  ],
+                                Theme.of(context).primaryTextTheme.bodyMedium,
+                            controller:
+                                TextEditingController(text: collectionName),
+                            onChanged: (value) {
+                              collectionName = value;
+                            },
+                            onTap: () {
+                              setState(() {
+                                collectionName = '';
+                              });
+                            },
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            createNewItem(CreateNoteDto(
+                              title: collectionName,
+                              content: '',
+                            ));
+                          },
+                          child: Text("Neue Notiz",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleSmall),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

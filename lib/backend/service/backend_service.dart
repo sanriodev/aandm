@@ -5,6 +5,7 @@ import 'package:aandm/models/api/note_api_model.dart';
 import 'package:aandm/models/api/task_api_model.dart';
 import 'package:aandm/models/api/task_list_api_model.dart';
 import 'package:aandm/models/dto/create_note_dto.dart';
+import 'package:aandm/models/dto/create_task_list_dto.dart';
 import 'package:aandm/models/dto/update_note_dto.dart';
 
 class Backend extends ABackend {
@@ -14,7 +15,7 @@ class Backend extends ABackend {
     super.init();
   }
 
-  Future<TaskList> createTaskList(TaskList list) async {
+  Future<TaskList> createTaskList(CreateTaskListDto list) async {
     final body = json.encode(list.toJson());
     final res = await post('task-list/', body);
 
