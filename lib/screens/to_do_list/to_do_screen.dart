@@ -1,5 +1,5 @@
-import 'package:aandm/models/task.dart';
-import 'package:aandm/models/task_list.dart';
+import 'package:aandm/models/api/task_api_model.dart';
+import 'package:aandm/models/api/task_list_api_model.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +7,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key, required this.list});
-  final TaskListWithTasks list;
+  final TaskList list;
   @override
   State<ToDoScreen> createState() => _ToDoScreenState();
 }
@@ -26,13 +26,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
     super.initState();
   }
 
-  List<Task> getTasks(TaskList list) {
-    final box = Hive.box<Task>('tasks');
-    return box.values
-        .where((element) => element.taskListId == list.id)
-        .toList();
-  }
-
   void createNewItem(Task data) {
     final box = Hive.box<Task>('tasks');
     box.add(data);
@@ -45,7 +38,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     final box = Hive.box<Task>('tasks');
     box.deleteAt(index);
     setState(() {
-      tasks = getTasks(widget.list.taskList);
+      tasks = widget.list.tasks;
     });
   }
 
@@ -82,7 +75,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4),
-                        child: Text(tasks[index].content,
+                        child: Text(tasks[index].content ?? '',
                             style:
                                 Theme.of(context).primaryTextTheme.bodyMedium),
                       ),
@@ -111,7 +104,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                             task!.isDone = value!;
                             box.putAt(index, task);
                             setState(() {
-                              tasks = getTasks(widget.list.taskList);
+                              tasks = widget.list.tasks;
                             });
                           },
                           activeColor: Colors.purple[200],
