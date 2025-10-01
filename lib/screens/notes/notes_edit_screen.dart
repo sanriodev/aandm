@@ -1,7 +1,8 @@
-import 'package:aandm/models/note.dart';
+import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/api/note_api_model.dart';
+import 'package:aandm/models/dto/update_note_dto.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class NotesEditScreen extends StatefulWidget {
@@ -14,30 +15,32 @@ class NotesEditScreen extends StatefulWidget {
 
 class _NotesEditScreenState extends State<NotesEditScreen> {
   final TextEditingController _commentController = TextEditingController();
-  late Note note;
+  Note? note;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    note = Note(widget.id, 'neue Notiz', 'neue Notiz');
     super.initState();
     _loadNote();
   }
 
-  void _loadNote() {
-    final box = Hive.box<Note>('notes');
-    final List<Note> notes = box.values.toList();
-    note = notes.firstWhere(
-      (element) => element.id == widget.id,
-      orElse: () {
-        return note;
-      },
-    );
-    _commentController.text = note.content;
+  Future<void> _loadNote() async {
+    final backend = Backend();
+    note = await backend.getNote(widget.id);
+    setState(() {
+      _commentController.text = note?.content ?? '';
+    });
   }
 
   Future<void> _saveNote() async {
-    await note.save();
+    final backend = Backend();
+    final updatedNote = UpdateNoteDto(
+      id: widget.id,
+      title: note?.title ?? '',
+      privacyMode: note?.privacyMode,
+      content: _commentController.text,
+    );
+    await backend.updateNote(updatedNote);
   }
 
   @override
@@ -95,9 +98,10 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
             maxLines: null,
             style: Theme.of(context).primaryTextTheme.titleSmall,
             onChanged: (value) {
-              note.content = value;
+              if (note != null) {
+                note!.content = value;
+              }
             },
-            
             decoration: InputDecoration(
               hintText: 'Notiz...',
               hintStyle: Theme.of(context).primaryTextTheme.titleSmall,
