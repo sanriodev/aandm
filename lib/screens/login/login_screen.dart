@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/screens/home/home_screen.dart';
