@@ -26,8 +26,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final taskList =
-          TaskList.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final taskList = TaskList.fromJson(jsonData);
 
       return taskList;
     } else {
@@ -59,8 +58,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final taskList =
-          TaskList.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final taskList = TaskList.fromJson(jsonData);
 
       return taskList;
     } else {
@@ -76,7 +74,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final note = Note.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final note = Note.fromJson(jsonData);
 
       return note;
     } else {
@@ -108,7 +106,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final note = Note.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final note = Note.fromJson(jsonData);
 
       return note;
     } else {
@@ -124,8 +122,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final updatedNote =
-          Note.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final updatedNote = Note.fromJson(jsonData);
 
       return updatedNote;
     } else {
@@ -140,7 +137,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final note = Note.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final note = Note.fromJson(jsonData);
 
       return note;
     } else {
@@ -156,8 +153,7 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final createdTask =
-          Task.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final createdTask = Task.fromJson(jsonData);
 
       return createdTask;
     } else {
@@ -207,10 +203,24 @@ class Backend extends ABackend {
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
           as Map<String, dynamic>;
 
-      final updatedTask =
-          Task.fromJson(jsonData['data'] as Map<String, dynamic>);
+      final updatedTask = Task.fromJson(jsonData);
 
       return updatedTask;
+    } else {
+      throw res;
+    }
+  }
+
+  Future<Task> deleteTask(int id) async {
+    final res = await delete('task/$id');
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
+
+      final task = Task.fromJson(jsonData);
+
+      return task;
     } else {
       throw res;
     }

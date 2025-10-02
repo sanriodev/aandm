@@ -5,12 +5,11 @@ import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class ToDoScreen extends StatefulWidget {
+final class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key, required this.list});
   final TaskList list;
   @override
@@ -27,10 +26,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
   @override
   void initState() {
     super.initState();
-    getTasksForList();
+    _getTasksForList();
   }
 
-  Future<void> getTasksForList() async {
+  Future<void> _getTasksForList() async {
     final backend = Backend();
     final res = await backend.getAllTasksForList(widget.list.id);
     setState(() {
@@ -39,18 +38,31 @@ class _ToDoScreenState extends State<ToDoScreen> {
     });
   }
 
-  Future<void> createNewItem(CreateTaskDto data) async {
+  Future<void> _createNewTask(CreateTaskDto data) async {
+    setState(() {
+      isLoading = true;
+    });
     final backend = Backend();
     await backend.createTask(data);
-    await backend.getAllTasks();
+    await _getTasksForList();
   }
 
-  void deleteItem(int index) {
-    final box = Hive.box<Task>('tasks');
-    box.deleteAt(index);
+  Future<void> _deleteTask(int id) async {
     setState(() {
-      tasks = widget.list.tasks;
+      isLoading = true;
     });
+    final backend = Backend();
+    await backend.deleteTask(id);
+    await _getTasksForList();
+  }
+
+  Future<void> _updateTask(Task task) async {
+    setState(() {
+      isLoading = true;
+    });
+    final backend = Backend();
+    await backend.updateTask(task);
+    await _getTasksForList();
   }
 
   ListView getAllListItems() {
@@ -102,21 +114,16 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         icon: Icon(Icons.delete,
                             color: Theme.of(context).iconTheme.color),
                         onPressed: () {
-                          deleteItem(index);
+                          _deleteTask(tasks[index].id);
                         },
                       ),
                       Transform.scale(
                         scale: 1.75,
                         child: Checkbox(
                           value: tasks[index].isDone,
-                          onChanged: (bool? value) {
-                            final box = Hive.box<Task>('tasks');
-                            final task = box.getAt(index);
-                            task!.isDone = value!;
-                            box.putAt(index, task);
-                            setState(() {
-                              tasks = widget.list.tasks;
-                            });
+                          onChanged: (bool? value) async {
+                            tasks[index].isDone = value ?? false;
+                            await _updateTask(tasks[index]);
                           },
                           activeColor: Colors.purple[200],
                           checkColor: Colors.grey[200],
@@ -139,13 +146,13 @@ class _ToDoScreenState extends State<ToDoScreen> {
         key: const Key('listViewToDoItemsVis'),
         onVisibilityChanged: (info) {
           if (info.visibleFraction > 0) {
-            getTasksForList();
+            _getTasksForList();
           }
         },
         child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text("To-Do List",
+              title: Text(widget.list.name,
                   style: Theme.of(context).primaryTextTheme.titleMedium),
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -179,7 +186,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                 setState(() {
                   isLoading = true;
                 });
-                return await getTasksForList();
+                return await _getTasksForList();
               },
               child: Column(
                 children: <Widget>[
@@ -235,7 +242,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                             padding: const EdgeInsets.only(bottom: 30),
                             child: ElevatedButton(
                               onPressed: () {
-                                createNewItem(CreateTaskDto(
+                                _createNewTask(CreateTaskDto(
                                     title: title,
                                     content: content,
                                     taskListId: widget.list.id));

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
@@ -47,7 +49,14 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
 
   Future<void> deleteItem(int id) async {
     final backend = Backend();
-    await backend.deleteTaskList(id);
+    try {
+      await backend.deleteTaskList(id);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+      return;
+    }
     await getTaskLists();
   }
 
