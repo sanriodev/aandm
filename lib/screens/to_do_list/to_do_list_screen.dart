@@ -27,10 +27,10 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   @override
   void initState() {
     super.initState();
-    getTaskListsAndTasks();
+    getTaskLists();
   }
 
-  Future<void> getTaskListsAndTasks() async {
+  Future<void> getTaskLists() async {
     final backend = Backend();
     final res = await backend.getAllTaskLists();
     setState(() {
@@ -42,13 +42,13 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Future<void> createNewItem(CreateTaskListDto data) async {
     final backend = Backend();
     await backend.createTaskList(data);
-    await getTaskListsAndTasks();
+    await getTaskLists();
   }
 
   Future<void> deleteItem(int id) async {
     final backend = Backend();
     await backend.deleteTaskList(id);
-    await getTaskListsAndTasks();
+    await getTaskLists();
   }
 
   ListView getAllListItems() {
@@ -82,95 +82,105 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       key: const Key('listViewVis'),
       onVisibilityChanged: (info) {
         if (info.visibleFraction > 0) {
-          getTaskListsAndTasks();
+          getTaskLists();
         }
       },
       child: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: Text("To-Do Listen",
-              style: Theme.of(context).primaryTextTheme.titleMedium),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: Theme.of(context).primaryIconTheme.color,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              color: Theme.of(context).primaryIconTheme.color,
-              tooltip: "I love my gf",
-            ),
-          ),
-          actions: [
-            IconButton(
-              color: Theme.of(context).primaryIconTheme.color,
-              icon: const PhosphorIcon(
-                PhosphorIconsRegular.gear,
-                semanticLabel: 'Einstellungen',
-              ),
-              onPressed: () {
-                _scaffoldKey.currentState?.openEndDrawer();
-              },
-            ),
-          ],
-        ),
-        endDrawer: AppDrawer(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (isLoading)
-              Skeletonizer(
-                  effect: ShimmerEffect(
-                    baseColor: Theme.of(context).canvasColor,
-                    duration: const Duration(seconds: 3),
-                  ),
-                  enabled: isLoading,
-                  child: const SkeletonCard()),
-            Expanded(child: !isLoading ? getAllListItems() : Container()),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Card(
-                margin: EdgeInsets.zero,
-                child: Column(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: TextField(
-                          style: Theme.of(context).primaryTextTheme.bodyMedium,
-                          controller:
-                              TextEditingController(text: collectionName),
-                          onChanged: (value) {
-                            collectionName = value;
-                          },
-                          onTap: () {
-                            setState(() {
-                              collectionName = '';
-                            });
-                          },
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            createNewItem(CreateTaskListDto(
-                              name: collectionName,
-                            ));
-                          },
-                          child: Text("Neue Liste",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleSmall)),
-                    )
-                  ],
+          key: _scaffoldKey,
+          appBar: AppBar(
+            title: Text("To-Do Listen",
+                style: Theme.of(context).primaryTextTheme.titleMedium),
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_rounded,
+                  color: Theme.of(context).primaryIconTheme.color,
                 ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                color: Theme.of(context).primaryIconTheme.color,
+                tooltip: "I love my gf",
               ),
             ),
-          ],
-        ),
-      ),
+            actions: [
+              IconButton(
+                color: Theme.of(context).primaryIconTheme.color,
+                icon: const PhosphorIcon(
+                  PhosphorIconsRegular.gear,
+                  semanticLabel: 'Einstellungen',
+                ),
+                onPressed: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                },
+              ),
+            ],
+          ),
+          endDrawer: AppDrawer(),
+          body: RefreshIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).secondaryHeaderColor,
+            onRefresh: () async {
+              setState(() {
+                isLoading = true;
+              });
+              return await getTaskLists();
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                if (isLoading)
+                  Skeletonizer(
+                      effect: ShimmerEffect(
+                        baseColor: Theme.of(context).canvasColor,
+                        duration: const Duration(seconds: 3),
+                      ),
+                      enabled: isLoading,
+                      child: const SkeletonCard()),
+                Expanded(child: !isLoading ? getAllListItems() : Container()),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: TextField(
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyMedium,
+                              controller:
+                                  TextEditingController(text: collectionName),
+                              onChanged: (value) {
+                                collectionName = value;
+                              },
+                              onTap: () {
+                                setState(() {
+                                  collectionName = '';
+                                });
+                              },
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                createNewItem(CreateTaskListDto(
+                                  name: collectionName,
+                                ));
+                              },
+                              child: Text("Neue Liste",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleSmall)),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

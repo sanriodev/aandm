@@ -180,6 +180,24 @@ class Backend extends ABackend {
     }
   }
 
+  //getAllTasksForList
+  Future<List<Task>> getAllTasksForList(int taskListId) async {
+    final res = await get('task/list/$taskListId');
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final jsonData =
+          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+
+      final tasks = (jsonData['data'] as List<dynamic>)
+          .map((e) => Task.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      return tasks;
+    } else {
+      throw res;
+    }
+  }
+
   Future<Task> updateTask(Task task) async {
     final body = json.encode(task.toJson());
     final res = await put('task/', body);

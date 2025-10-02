@@ -35,12 +35,13 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
   Future<void> _saveNote() async {
     final backend = Backend();
     final updatedNote = UpdateNoteDto(
-      id: widget.id,
+      id: note?.id ?? widget.id,
       title: note?.title ?? '',
       privacyMode: note?.privacyMode,
       content: _commentController.text,
     );
     await backend.updateNote(updatedNote);
+    await _loadNote();
   }
 
   @override
