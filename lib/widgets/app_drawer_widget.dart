@@ -1,4 +1,5 @@
-import 'package:aandm/main.dart';
+import 'package:aandm/screens/home/main_app_screen.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -62,21 +63,21 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             ListTile(
               onTap: () {
-                if (MyApp.of(context)!.currentTheme == ThemeMode.dark) {
-                  MyApp.of(context)!.currentTheme = ThemeMode.light;
+                if (MainAppScreen.of(context)!.currentTheme == ThemeMode.dark) {
+                  MainAppScreen.of(context)!.currentTheme = ThemeMode.light;
                   setState(() {
-                    MyApp.of(context)!.changeTheme(ThemeMode.light);
+                    MainAppScreen.of(context)!.changeTheme(ThemeMode.light);
                   });
                 } else {
-                  MyApp.of(context)!.currentTheme = ThemeMode.dark;
+                  MainAppScreen.of(context)!.currentTheme = ThemeMode.dark;
                   setState(() {
-                    MyApp.of(context)!.changeTheme(ThemeMode.dark);
+                    MainAppScreen.of(context)!.changeTheme(ThemeMode.dark);
                   });
                 }
                 setState(() {});
               },
               leading: PhosphorIcon(
-                MyApp.of(context)!.currentTheme == ThemeMode.dark
+                MainAppScreen.of(context)!.currentTheme == ThemeMode.dark
                     ? PhosphorIconsRegular.sun
                     : PhosphorIconsRegular.moon,
                 color: Theme.of(context).primaryIconTheme.color,
@@ -87,45 +88,87 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
             const Spacer(),
+            ListTile(
+              onTap: () {
+                deleteBoxAndNavigateToLogin(context);
+              },
+              leading: PhosphorIcon(
+                PhosphorIconsRegular.signOut,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              title: Text(
+                'Abmelden',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor:
-                      Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: () {
+                      launchUrlInBrowser(
+                        Uri.parse(
+                          "https://blvckleg.dev/app-legal",
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Datenschutz',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                    ),
                   ),
-                ),
-                onPressed: () => showAboutDialog(
-                  context: context,
-                  applicationVersion: 'Version: ${_packageInfo.version}',
-                  applicationName: 'Alina\'s App',
-                  children: [
-                    Text(
-                      'Copyright: MATTEO JUEN',
+                  Container(
+                    height: 12,
+                    width: 1,
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor:
+                          Theme.of(context).brightness == Brightness.light
+                              ? Colors.black
+                              : Colors.white,
+                      textStyle: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onPressed: () => showAboutDialog(
+                      context: context,
+                      applicationVersion: 'Version: ${_packageInfo.version}',
+                      applicationName: 'Alina\'s App',
+                      children: [
+                        Text(
+                          'Copyright: MATTEO JUEN',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'Entwickelt von:',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          '• MATTEO JUEN',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      'Version: ${_packageInfo.version}',
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Entwickelt von:',
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                    Text(
-                      '• MATTEO JUEN',
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  ],
-                ),
-                child: Text(
-                  'Version: ${_packageInfo.version}',
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
+                  ),
+                ],
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 30)),

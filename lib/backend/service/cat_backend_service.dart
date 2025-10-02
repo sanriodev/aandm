@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:aandm/models/cat_facts_api_model.dart';
-import 'package:aandm/models/cat_picture_api_model.dart';
+import 'package:aandm/models/cat/cat_facts_api_model.dart';
+import 'package:aandm/models/cat/cat_picture_api_model.dart';
 import 'package:http/http.dart';
 
-class Backend {
+class CatBackend {
   Future<List<CatFactsApiModel>> getCatFacts() async {
     final Uri url = Uri.parse('https://meowfacts.herokuapp.com/?count=5');
     final res = await get(
