@@ -17,8 +17,8 @@ class Backend extends ABackend {
   }
 
   Future<TaskList> createTaskList(CreateTaskListDto list) async {
-    final body = json.encode(list.toJson());
-    final res = await post('task-list/', body);
+    final body = json.encode(list);
+    final res = await post(body, 'task-list/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
@@ -68,7 +68,7 @@ class Backend extends ABackend {
 
   Future<Note> createNote(CreateNoteDto note) async {
     final body = json.encode(note.toJson());
-    final res = await post('note/', body);
+    final res = await post(body, 'note/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
@@ -116,7 +116,7 @@ class Backend extends ABackend {
 
   Future<Note> updateNote(UpdateNoteDto note) async {
     final body = json.encode(note.toJson());
-    final res = await put('note/', body);
+    final res = await put(body, 'note/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
@@ -148,7 +148,7 @@ class Backend extends ABackend {
 
   Future<Task> createTask(CreateTaskDto task) async {
     final body = json.encode(task.toJson());
-    final res = await post('task/', body);
+    final res = await post(body, 'task/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
@@ -200,7 +200,7 @@ class Backend extends ABackend {
 
   Future<Task> updateTask(Task task) async {
     final body = json.encode(task.toJson());
-    final res = await put('task/', body);
+    final res = await put(body, 'task/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       final jsonData =
