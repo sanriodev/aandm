@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/sanriodev/aandm/compare/v1.9.0...v1.10.0) (2025-08-01)
+
+
+### Features
+
+* new icons ([b4920cb](https://github.com/sanriodev/aandm/commit/b4920cba2a8b7a8ce53c907806990bbc04765c3f))
+
+
+### Bug Fixes
+
+* remove debug banner ([0347d31](https://github.com/sanriodev/aandm/commit/0347d31a6899fa3b045ab6c0d85bf4b3e8f23bee))
+
 ## [1.9.0](https://github.com/sanriodev/aandm/compare/v1.8.2...v1.9.0) (2025-06-16)
 
 
