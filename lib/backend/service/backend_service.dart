@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:convert';
 
 import 'package:aandm/backend/abstract/backend_abstract.dart';
@@ -21,8 +23,8 @@ class Backend extends ABackend {
     final res = await post(body, 'task-list/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final taskList =
           TaskList.fromJson(jsonData['data'] as Map<String, dynamic>);
@@ -37,10 +39,10 @@ class Backend extends ABackend {
     final res = await get('task-list/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-
-      final taskLists = (jsonData['data'] as List<dynamic>)
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as List<dynamic>;
+      var taskLists = <TaskList>[];
+      taskLists = jsonData
           .map((e) => TaskList.fromJson(e as Map<String, dynamic>))
           .toList();
 
@@ -54,8 +56,8 @@ class Backend extends ABackend {
     final res = await delete('task-list/$id');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final taskList =
           TaskList.fromJson(jsonData['data'] as Map<String, dynamic>);
@@ -71,8 +73,8 @@ class Backend extends ABackend {
     final res = await post(body, 'note/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final note = Note.fromJson(jsonData['data'] as Map<String, dynamic>);
 
@@ -86,10 +88,10 @@ class Backend extends ABackend {
     final res = await get('note/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-
-      final notes = (jsonData['data'] as List<dynamic>)
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as List<dynamic>;
+      var notes = <Note>[];
+      notes = jsonData
           .map((e) => Note.fromJson(e as Map<String, dynamic>))
           .toList();
 
@@ -103,8 +105,8 @@ class Backend extends ABackend {
     final res = await get('note/$id');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final note = Note.fromJson(jsonData['data'] as Map<String, dynamic>);
 
@@ -119,8 +121,8 @@ class Backend extends ABackend {
     final res = await put(body, 'note/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final updatedNote =
           Note.fromJson(jsonData['data'] as Map<String, dynamic>);
@@ -135,8 +137,8 @@ class Backend extends ABackend {
     final res = await delete('note/$id');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final note = Note.fromJson(jsonData['data'] as Map<String, dynamic>);
 
@@ -151,8 +153,8 @@ class Backend extends ABackend {
     final res = await post(body, 'task/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final createdTask =
           Task.fromJson(jsonData['data'] as Map<String, dynamic>);
@@ -167,10 +169,10 @@ class Backend extends ABackend {
     final res = await get('task/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-
-      final tasks = (jsonData['data'] as List<dynamic>)
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as List<dynamic>;
+      var tasks = <Task>[];
+      tasks = jsonData
           .map((e) => Task.fromJson(e as Map<String, dynamic>))
           .toList();
 
@@ -180,15 +182,14 @@ class Backend extends ABackend {
     }
   }
 
-  //getAllTasksForList
   Future<List<Task>> getAllTasksForList(int taskListId) async {
     final res = await get('task/list/$taskListId');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-
-      final tasks = (jsonData['data'] as List<dynamic>)
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as List<dynamic>;
+      var tasks = <Task>[];
+      tasks = jsonData
           .map((e) => Task.fromJson(e as Map<String, dynamic>))
           .toList();
 
@@ -203,8 +204,8 @@ class Backend extends ABackend {
     final res = await put(body, 'task/');
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData =
-          await json.decode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
 
       final updatedTask =
           Task.fromJson(jsonData['data'] as Map<String, dynamic>);

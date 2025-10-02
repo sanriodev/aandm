@@ -13,19 +13,23 @@ class Note extends BaseUserRelation {
     required this.title,
     required this.privacyMode,
     this.content,
-    required super.user,
-    required super.lastModifiedUser,
+    super.user,
+    super.lastModifiedUser,
   });
 
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
-        id: json['id'] as int,
-        title: json['title'] as String,
-        content: json['content'] as String?,
-        privacyMode: json['privacyMode'] as PrivacyMode,
-        user: User.fromJson(json['user'] as Map<String, dynamic>),
-        lastModifiedUser:
-            User.fromJson(json['lastModifiedUser'] as Map<String, dynamic>));
+      id: json['id'] as int,
+      title: json['title'] as String,
+      content: json['content'] as String?,
+      privacyMode: PrivacyMode.fromJson(json['privacyMode']),
+      user: (json['user'] != null
+          ? User.fromJson(json['user'] as Map<String, dynamic>)
+          : null),
+      lastModifiedUser: (json['lastModifiedUser'] != null
+          ? User.fromJson(json['lastModifiedUser'] as Map<String, dynamic>)
+          : null),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -34,8 +38,8 @@ class Note extends BaseUserRelation {
       'title': title,
       'content': content,
       'privacyMode': privacyMode,
-      'user': user.toJson(),
-      'lastModifiedUser': lastModifiedUser.toJson(),
+      'user': user?.toJson(),
+      'lastModifiedUser': lastModifiedUser?.toJson(),
     };
   }
 }
