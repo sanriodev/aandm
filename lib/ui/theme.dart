@@ -6,7 +6,7 @@ ThemeData appThemeLight = ThemeData(
   canvasColor: Colors.grey[400],
   secondaryHeaderColor: Colors.purple[200],
   scaffoldBackgroundColor: Colors.blue[100],
-  appBarTheme: AppBarTheme(
+  appBarTheme: AppBarThemeData(
     foregroundColor: Colors.purple[200],
     backgroundColor: Colors.purple[200],
     titleTextStyle: const TextStyle(color: Colors.black),
