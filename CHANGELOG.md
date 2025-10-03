@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.1](https://github.com/sanriodev/aandm/compare/v3.0.0...v3.0.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* deployment minimum ([473347d](https://github.com/sanriodev/aandm/commit/473347d214a6624d5210222f3477d60ec5b270c9))
+* **ios:** pods ([05944ee](https://github.com/sanriodev/aandm/commit/05944ee4b74385c89d2d60ded7948fe93981c2a5))
+
 ## [3.0.0](https://github.com/sanriodev/aandm/compare/v2.0.0...v3.0.0) (2025-10-03)
 
 
