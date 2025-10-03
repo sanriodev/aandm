@@ -1,36 +1,5 @@
 # Changelog
 
-## [2.0.0](https://github.com/sanriodev/aandm/compare/v1.10.0...v2.0.0) (2025-10-02)
-
-
-### ⚠ BREAKING CHANGES
-
-* now needs a user account
-
-### Features
-
-* bakcned ([a88220b](https://github.com/sanriodev/aandm/commit/a88220ba6eb4f42b7fdf812f18a605455109464e))
-* changes ([d210a4f](https://github.com/sanriodev/aandm/commit/d210a4fdb802849650e7a780c09466a6190c15bc))
-* login ([1804d6d](https://github.com/sanriodev/aandm/commit/1804d6d5852677c4bd365cb6745fa29c0681c61f))
-* now needs a user account ([ddff1f7](https://github.com/sanriodev/aandm/commit/ddff1f79fddfa2b10aa8a92e034d15c06dd3a833))
-* wip ([b1f8784](https://github.com/sanriodev/aandm/commit/b1f87844b1a8de81b35de949853042a03ee12ef3))
-* wip ([ae54427](https://github.com/sanriodev/aandm/commit/ae54427a32fb18c2bdd88106340694024df699d8))
-* wip ([a7015c1](https://github.com/sanriodev/aandm/commit/a7015c1ea727cbbabb3a26747ed52fa13c5c215a))
-* wip api ([8d9c616](https://github.com/sanriodev/aandm/commit/8d9c616762aae02bbb3ef88f1a04b650e41f13fe))
-* wip api ([36770c8](https://github.com/sanriodev/aandm/commit/36770c8cadf30d780e617711c31f609652d3059e))
-* wip backend api ([2aed25b](https://github.com/sanriodev/aandm/commit/2aed25ba2bdbd74c2ee90384008e8d46a2fb1878))
-* wip backend models ([b115c27](https://github.com/sanriodev/aandm/commit/b115c27fba38b29ed2e251cb72e4828610f27207))
-* wip backend service ([0ba5b49](https://github.com/sanriodev/aandm/commit/0ba5b490e562e4a6f8f15d7a2a89a2bea2f8a0b2))
-* wip datenschutz ([7773b22](https://github.com/sanriodev/aandm/commit/7773b222f2c3fb6672b20349b5544e67a019f9f3))
-* wip login ([b0cb005](https://github.com/sanriodev/aandm/commit/b0cb005fbf2e9c423e6faf803af7187f4020bd54))
-* wip login ([71fcc97](https://github.com/sanriodev/aandm/commit/71fcc977211faf0f59300158a43a3e019635dabc))
-* wip login screen ([702489a](https://github.com/sanriodev/aandm/commit/702489a4ef65a94431af2a97ab668dafd6a8b708))
-* wip note backend ([7e8f8c6](https://github.com/sanriodev/aandm/commit/7e8f8c6a68d0ce00e0a126220550be89955b5970))
-* wip tasklist to api ([12205cf](https://github.com/sanriodev/aandm/commit/12205cf101c9a7c017c8c0e4d8ad9988ed8b483e))
-* wip umstellung auf backend ([e60ea4c](https://github.com/sanriodev/aandm/commit/e60ea4c6fb86f60ac1831c75a1c7142ab2193a97))
-* wip umstellung auf rest ([f3f46df](https://github.com/sanriodev/aandm/commit/f3f46dff52f809197f767ed9927d5307bbbaebbd))
-* wip xd ([71ea67d](https://github.com/sanriodev/aandm/commit/71ea67d7f06c38e1560803ef3c0b2d83b1f7b02e))
-
 ## [1.10.0](https://github.com/sanriodev/aandm/compare/v1.9.0...v1.10.0) (2025-08-01)
 
 
