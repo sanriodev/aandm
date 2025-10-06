@@ -53,7 +53,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       bottom: 20,
                       left: 15,
                       child: Text(
-                        'Deine\nÜbersicht',
+                        'Alina\s App\nI love Alina',
                         style: Theme.of(context).primaryTextTheme.displayLarge,
                       ),
                     ),
