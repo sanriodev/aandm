@@ -41,7 +41,6 @@ class AuthBackend extends ABackend {
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      // ignore: avoid_dynamic_calls
       final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data'];
       final loginData =
           LoginResponse.fromJson(jsonData as Map<String, dynamic>);
