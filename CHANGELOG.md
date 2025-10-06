@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.3](https://github.com/sanriodev/aandm/compare/v3.0.2...v3.0.3) (2025-10-06)
+
+
+### Bug Fixes
+
+* styling ([1884495](https://github.com/sanriodev/aandm/commit/188449581af05f58f8fd3a82f41580d8e54e0421))
+* styling ([0ba7265](https://github.com/sanriodev/aandm/commit/0ba7265ea637e0fd3935219dcf67f9a3e06296c9))
+* typo ([99b1968](https://github.com/sanriodev/aandm/commit/99b1968f651207b334a18efa57fa9f4640456721))
+
 ## [3.0.2](https://github.com/sanriodev/aandm/compare/v3.0.1...v3.0.2) (2025-10-06)
 
 
