@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:convert';
 
 import 'package:aandm/backend/abstract/backend_abstract.dart';
@@ -76,17 +78,21 @@ class AuthBackend extends ABackend {
       };
 
       final res = await post(jsonEncode(loginData), url);
-      final jsonData = await json.decode(utf8.decode(res.bodyBytes));
-      if (jsonData != null) {
-        final loginData =
-            LoginResponse.fromJson(jsonData as Map<String, dynamic>);
-        loggedInUser = loginData;
-        await box.put('auth', loginData);
-        return loginData;
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        final jsonData = await json.decode(utf8.decode(res.bodyBytes));
+        if (jsonData != null) {
+          final loginData =
+              LoginResponse.fromJson(jsonData['data'] as Map<String, dynamic>);
+          loggedInUser = loginData;
+          await box.put('auth', loginData);
+          return loginData;
+        }
+      } else {
+        await box.clear();
+        loggedInUser = null;
+        throw res;
       }
     }
-    await box.clear();
-    loggedInUser = null;
 
     return null;
   }

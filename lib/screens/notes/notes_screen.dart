@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
@@ -31,13 +33,22 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Future<void> getNotes() async {
-    final backend = Backend();
-    final res = await backend.getAllNotes();
+    try {
+      final backend = Backend();
+      final res = await backend.getAllNotes();
 
-    setState(() {
-      isLoading = false;
-      notes = res;
-    });
+      setState(() {
+        isLoading = false;
+        notes = res;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Fehler beim Laden der Notizen')),
+      );
+    }
   }
 
   Future<void> createNewItem(CreateNoteDto data) async {
