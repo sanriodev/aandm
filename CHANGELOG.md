@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/sanriodev/aandm/compare/v3.0.1...v3.0.2) (2025-10-06)
+
+
+### Bug Fixes
+
+* **refresh:** adjust refresh model issues ([bb97362](https://github.com/sanriodev/aandm/commit/bb97362b53e0d14af659c0372468471949a20df2))
+
 ## [3.0.1](https://github.com/sanriodev/aandm/compare/v3.0.0...v3.0.1) (2025-10-03)
 
 
