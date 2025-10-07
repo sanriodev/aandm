@@ -86,16 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
           'Welcome back',
           style: Theme.of(context).primaryTextTheme.titleMedium,
         ),
-        actions: [
-          IconButton(
-            color: Theme.of(context).primaryIconTheme.color,
-            icon: const PhosphorIcon(
-              PhosphorIconsRegular.gear,
-              semanticLabel: 'Einstellungen',
-            ),
-            onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-          ),
-        ],
         centerTitle: true,
       ),
       body: SafeArea(
