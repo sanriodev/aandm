@@ -81,7 +81,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               completedTasks:
                   taskLists[index].tasks.where((test) => test.isDone).length,
               openTasks:
-                  taskLists[index].tasks.where((test) => !test.isDone).length);
+                  taskLists[index].tasks.where((test) => !test.isDone).length,
+              author: taskLists[index].user,
+              lastModifiedUser: taskLists[index].lastModifiedUser);
         });
   }
 

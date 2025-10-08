@@ -1,7 +1,9 @@
+import 'package:aandm/models/user/user_model.dart';
 import 'package:aandm/widgets/accordion/accordion_section.dart';
 import 'package:aandm/widgets/accordion/task_list_accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class TaskListWidget extends StatefulWidget {
   final String taskListName;
@@ -10,6 +12,8 @@ class TaskListWidget extends StatefulWidget {
   final int openTasks;
   final void Function()? onTap;
   final void Function()? onDeletePress;
+  final User? author;
+  final User? lastModifiedUser;
 
   const TaskListWidget(
       {super.key,
@@ -18,7 +22,9 @@ class TaskListWidget extends StatefulWidget {
       required this.completedTasks,
       required this.openTasks,
       this.onDeletePress,
-      this.onTap});
+      this.onTap,
+      this.author,
+      this.lastModifiedUser});
 
   @override
   State<TaskListWidget> createState() => _TaskListWidgetState();
@@ -126,6 +132,42 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       ],
                     ),
                   ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6),
+                        child: PhosphorIcon(
+                          PhosphorIconsRegular.user,
+                          size: 16,
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      Text(
+                        widget.lastModifiedUser != null
+                            ? widget.lastModifiedUser!.username
+                            : "unknown",
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6),
+                        child: PhosphorIcon(
+                          PhosphorIconsRegular.pencil,
+                          size: 16,
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      Text(
+                        widget.author != null
+                            ? widget.author!.username
+                            : "unknown",
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                      ),
+                    ],
+                  )
                 ],
               ),
             )),

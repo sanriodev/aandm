@@ -90,18 +90,24 @@ class _ToDoScreenState extends State<ToDoScreen> {
                             style:
                                 Theme.of(context).primaryTextTheme.bodyMedium),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text("Inhalt",
-                            style:
-                                Theme.of(context).primaryTextTheme.titleSmall),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(tasks[index].content ?? '',
-                            style:
-                                Theme.of(context).primaryTextTheme.bodyMedium),
-                      ),
+                      if (tasks[index].content != null &&
+                          tasks[index].content!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text("Inhalt",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleSmall),
+                        ),
+                      if (tasks[index].content != null &&
+                          tasks[index].content!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text(tasks[index].content!,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodyMedium),
+                        ),
                     ],
                   ),
                 ),

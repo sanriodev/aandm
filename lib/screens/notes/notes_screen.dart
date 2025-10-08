@@ -89,6 +89,8 @@ class _NotesScreenState extends State<NotesScreen> {
             },
             name: notes[index].title,
             content: notes[index].content ?? '',
+            author: notes[index].user,
+            lastModifiedUser: notes[index].lastModifiedUser,
           );
         });
   }
