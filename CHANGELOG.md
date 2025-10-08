@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.1.0](https://github.com/sanriodev/aandm/compare/v3.0.3...v3.1.0) (2025-10-08)
+
+
+### Features
+
+* author and last modified user ([59863a3](https://github.com/sanriodev/aandm/commit/59863a3900da4b42e7f747c8038bead3498d2a02))
+
+
+### Bug Fixes
+
+* remove settings drawer button on login screen ([41c3e69](https://github.com/sanriodev/aandm/commit/41c3e697b87d9ea9d3a787008724950329dbc671))
+
 ## [3.0.3](https://github.com/sanriodev/aandm/compare/v3.0.2...v3.0.3) (2025-10-06)
 
 
