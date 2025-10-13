@@ -99,9 +99,7 @@ class _NoteWidgetState extends State<NoteWidget> {
               Padding(
                 padding: const EdgeInsets.only(right: 12, bottom: 8),
                 child: Text(
-                  widget.lastModifiedUser != null
-                      ? widget.lastModifiedUser!.username
-                      : "unknown",
+                  widget.author != null ? widget.author!.username : "unknown",
                   style: Theme.of(context).primaryTextTheme.bodySmall,
                 ),
               ),
@@ -120,12 +118,14 @@ class _NoteWidgetState extends State<NoteWidget> {
               Padding(
                 padding: const EdgeInsets.only(right: 12, bottom: 8),
                 child: Text(
-                  widget.author != null ? widget.author!.username : "unknown",
+                  widget.lastModifiedUser != null
+                      ? widget.lastModifiedUser!.username
+                      : "unknown",
                   style: Theme.of(context).primaryTextTheme.bodySmall,
                 ),
               ),
             ],
-          )
+          ),
         ],
       )),
     );
