@@ -143,14 +143,14 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         ),
                       ),
                       Text(
-                        widget.lastModifiedUser != null
-                            ? widget.lastModifiedUser!.username
+                        widget.author != null
+                            ? widget.author!.username
                             : "unknown",
                         style: Theme.of(context).primaryTextTheme.bodySmall,
                       ),
                     ],
                   ),
-                  Row(
+                                   Row(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 6),
@@ -161,13 +161,13 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         ),
                       ),
                       Text(
-                        widget.author != null
-                            ? widget.author!.username
+                        widget.lastModifiedUser != null
+                            ? widget.lastModifiedUser!.username
                             : "unknown",
                         style: Theme.of(context).primaryTextTheme.bodySmall,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             )),
