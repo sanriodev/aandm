@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.1](https://github.com/sanriodev/aandm/compare/v3.1.0...v3.1.1) (2025-10-13)
+
+
+### Bug Fixes
+
+* show user and last modified user in wrong order with wrong icons ([920b424](https://github.com/sanriodev/aandm/commit/920b4241f6b3918f49fb19f599ada9026921c0d9))
+* show user and last modified user in wrong order with wrong icons ([1a09873](https://github.com/sanriodev/aandm/commit/1a09873d575ac1eddce710400d74ae01a52496da))
+
 ## [3.1.0](https://github.com/sanriodev/aandm/compare/v3.0.3...v3.1.0) (2025-10-08)
 
 
