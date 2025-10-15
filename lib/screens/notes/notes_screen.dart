@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
 import 'package:aandm/screens/notes/notes_edit_screen.dart';
@@ -45,9 +46,13 @@ class _NotesScreenState extends State<NotesScreen> {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Fehler beim Laden der Notizen')),
-      );
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
     }
   }
 
@@ -55,18 +60,44 @@ class _NotesScreenState extends State<NotesScreen> {
     setState(() {
       isLoading = true;
     });
-    final backend = Backend();
-    await backend.createNote(data);
-    await getNotes();
+    try {
+      final backend = Backend();
+      await backend.createNote(data);
+      await getNotes();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> deleteItem(int id) async {
     setState(() {
       isLoading = true;
     });
-    final backend = Backend();
-    await backend.deleteNote(id);
-    await getNotes();
+    try {
+      final backend = Backend();
+      await backend.deleteNote(id);
+      await getNotes();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   ListView getAllListItems() {

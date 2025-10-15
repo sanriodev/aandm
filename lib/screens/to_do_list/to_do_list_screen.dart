@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
 import 'package:aandm/screens/to_do_list/to_do_screen.dart';
@@ -33,31 +34,63 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   }
 
   Future<void> getTaskLists() async {
-    final backend = Backend();
-    final res = await backend.getAllTaskLists();
-    setState(() {
-      taskLists = res;
-      isLoading = false;
-    });
+    try {
+      final backend = Backend();
+      final res = await backend.getAllTaskLists();
+      setState(() {
+        taskLists = res;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> createNewItem(CreateTaskListDto data) async {
-    final backend = Backend();
-    await backend.createTaskList(data);
-    await getTaskLists();
+    try {
+      final backend = Backend();
+      await backend.createTaskList(data);
+      await getTaskLists();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> deleteItem(int id) async {
-    final backend = Backend();
     try {
+      final backend = Backend();
       await backend.deleteTaskList(id);
+      await getTaskLists();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
-      return;
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
     }
-    await getTaskLists();
   }
 
   ListView getAllListItems() {

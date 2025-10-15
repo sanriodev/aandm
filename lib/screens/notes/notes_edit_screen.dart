@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/update_note_dto.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -25,23 +29,43 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
   }
 
   Future<void> _loadNote() async {
-    final backend = Backend();
-    note = await backend.getNote(widget.id);
-    setState(() {
-      _commentController.text = note?.content ?? '';
-    });
+    try {
+      final backend = Backend();
+      note = await backend.getNote(widget.id);
+      setState(() {
+        _commentController.text = note?.content ?? '';
+      });
+    } catch (e) {
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> _saveNote() async {
-    final backend = Backend();
-    final updatedNote = UpdateNoteDto(
-      id: note?.id ?? widget.id,
-      title: note?.title ?? '',
-      privacyMode: note?.privacyMode,
-      content: _commentController.text,
-    );
-    await backend.updateNote(updatedNote);
-    await _loadNote();
+    try {
+      final backend = Backend();
+      final updatedNote = UpdateNoteDto(
+        id: note?.id ?? widget.id,
+        title: note?.title ?? '',
+        privacyMode: note?.privacyMode,
+        content: _commentController.text,
+      );
+      await backend.updateNote(updatedNote);
+      await _loadNote();
+    } catch (e) {
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   @override
