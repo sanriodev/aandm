@@ -11,7 +11,6 @@ import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 final class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key, required this.list});
@@ -23,8 +22,6 @@ final class ToDoScreen extends StatefulWidget {
 class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> completeTasks = [];
   List<Task> incompleteTasks = [];
-  String title = 'Titel';
-  String content = 'Inhalt';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -36,6 +33,9 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _getTasksForList() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final backend = Backend();
       final res = await backend.getAllTasksForList(widget.list.id);
       final complete = res.where((task) => task.isDone).toList();
@@ -61,9 +61,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _createNewTask(CreateTaskDto data) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
       final backend = Backend();
       await backend.createTask(data);
       await _getTasksForList();
@@ -83,9 +80,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _deleteTask(int id) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
       final backend = Backend();
       await backend.deleteTask(id);
       await _getTasksForList();
@@ -105,9 +99,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _updateTask(Task task) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
       final backend = Backend();
       await backend.updateTask(task);
       await _getTasksForList();
@@ -179,8 +170,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.delete,
-                            color: Theme.of(context).iconTheme.color),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
                         onPressed: () {
                           _deleteTask(tasks[index].id);
                         },
@@ -210,158 +203,173 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return VisibilityDetector(
-        key: const Key('listViewToDoItemsVis'),
-        onVisibilityChanged: (info) {
-          if (info.visibleFraction > 0) {
-            _getTasksForList();
-          }
-        },
-        child: Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text(widget.list.name,
-                  style: Theme.of(context).primaryTextTheme.titleMedium),
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_rounded),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  color: Theme.of(context).primaryIconTheme.color,
-                  tooltip: "I love my gf",
-                ),
-              ),
-              actions: [
-                IconButton(
-                  color: Theme.of(context).primaryIconTheme.color,
-                  icon: const PhosphorIcon(
-                    PhosphorIconsRegular.gear,
-                    semanticLabel: 'Einstellungen',
-                  ),
-                  onPressed: () {
-                    _scaffoldKey.currentState?.openEndDrawer();
-                  },
-                ),
-              ],
-            ),
-            endDrawer: AppDrawer(),
-            body: RefreshIndicator(
-              color: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).secondaryHeaderColor,
-              onRefresh: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                return await _getTasksForList();
+    return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(widget.list.name,
+              style: Theme.of(context).primaryTextTheme.titleMedium),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
-              child: Column(
-                children: <Widget>[
-                  if (isLoading)
-                    Skeletonizer(
-                        effect: ShimmerEffect(
-                          baseColor: Theme.of(context).canvasColor,
-                          duration: const Duration(seconds: 3),
+              color: Theme.of(context).primaryIconTheme.color,
+              tooltip: "I love my gf",
+            ),
+          ),
+          actions: [
+            IconButton(
+              color: Theme.of(context).primaryIconTheme.color,
+              icon: const PhosphorIcon(
+                PhosphorIconsRegular.gear,
+                semanticLabel: 'Einstellungen',
+              ),
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+            ),
+          ],
+        ),
+        endDrawer: AppDrawer(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final titleController = TextEditingController();
+            final contentController = TextEditingController();
+            await showDialog<void>(
+              context: context,
+              builder: (dialogContext) {
+                return AlertDialog(
+                  title: Text(
+                    'Name der Aufgabe',
+                    style: Theme.of(context).primaryTextTheme.bodySmall,
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextField(
+                        controller: titleController,
+                        autofocus: true,
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                        decoration: InputDecoration(
+                          labelText: 'Titel',
+                          labelStyle:
+                              Theme.of(context).primaryTextTheme.bodySmall,
                         ),
-                        enabled: isLoading,
-                        child: const SkeletonCard()),
-                  Expanded(
-                      child: !isLoading
-                          ? SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (incompleteTasks.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      child: Text(
-                                        "Offene Tasks",
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .titleMedium,
-                                      ),
-                                    ),
-                                  getAllListItems(incompleteTasks),
-                                  if (completeTasks.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      child: Text(
-                                        "Abgeschlossene Tasks",
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .titleMedium,
-                                      ),
-                                    ),
-                                  getAllListItems(completeTasks)
-                                ],
-                              ),
-                            )
-                          : Container()),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Card(
-                      margin: EdgeInsets.zero,
-                      child: Column(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: TextField(
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyMedium,
-                                controller: TextEditingController(text: title),
-                                onChanged: (value) {
-                                  title = value;
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    title = '';
-                                  });
-                                },
-                              )),
-                          Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: TextField(
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyMedium,
-                                controller:
-                                    TextEditingController(text: content),
-                                onChanged: (value) {
-                                  content = value;
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    content = '';
-                                  });
-                                },
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 30),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _createNewTask(CreateTaskDto(
-                                    title: title,
-                                    content: content,
-                                    taskListId: widget.list.id));
-                              },
-                              child: Text("Neuer Eintrag",
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: contentController,
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                        decoration: InputDecoration(
+                          labelText: 'Inhalt (optional)',
+                          labelStyle:
+                              Theme.of(context).primaryTextTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                  actionsAlignment: MainAxisAlignment.spaceEvenly,
+                  actionsPadding: const EdgeInsets.all(16),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      child: Text('Abbrechen',
+                          style: Theme.of(context).primaryTextTheme.titleSmall),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final t = titleController.text.trim();
+                        final c = contentController.text.trim();
+                        if (t.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Bitte einen Titel eingeben.'),
+                            ),
+                          );
+                          return;
+                        }
+                        await _createNewTask(CreateTaskDto(
+                          title: t,
+                          content: c,
+                          taskListId: widget.list.id,
+                        ));
+                        if (mounted) {
+                          Navigator.of(dialogContext).pop();
+                        }
+                      },
+                      style: Theme.of(context).elevatedButtonTheme.style,
+                      child: Text('Erstellen',
+                          style: Theme.of(context).primaryTextTheme.titleSmall),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          tooltip: 'Neuer Eintrag',
+          child: const Icon(Icons.add),
+        ),
+        body: RefreshIndicator(
+          color: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          onRefresh: () async {
+            setState(() {
+              isLoading = true;
+            });
+            return await _getTasksForList();
+          },
+          child: Column(
+            children: <Widget>[
+              if (isLoading)
+                Skeletonizer(
+                    effect: ShimmerEffect(
+                      baseColor: Theme.of(context).canvasColor,
+                      duration: const Duration(seconds: 3),
+                    ),
+                    enabled: isLoading,
+                    child: const SkeletonCard()),
+              Expanded(
+                child: !isLoading
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (incompleteTasks.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Text(
+                                  "Offene Tasks",
                                   style: Theme.of(context)
                                       .primaryTextTheme
-                                      .titleSmall),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                                      .titleMedium,
+                                ),
+                              ),
+                            getAllListItems(incompleteTasks),
+                            if (completeTasks.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Text(
+                                  "Abgeschlossene Tasks",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleMedium,
+                                ),
+                              ),
+                            getAllListItems(completeTasks)
+                          ],
+                        ),
+                      )
+                    : Container(),
               ),
-            )));
+            ],
+          ),
+        ));
   }
 }

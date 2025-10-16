@@ -22,7 +22,7 @@ ThemeData appThemeLight = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-    minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
+    // minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
     backgroundColor: WidgetStatePropertyAll(Colors.purple[200]),
     foregroundColor: const WidgetStatePropertyAll(Colors.black),
     textStyle: const WidgetStatePropertyAll(
@@ -91,7 +91,7 @@ ThemeData appThemeDark = ThemeData(
     primaryIconTheme: IconThemeData(color: Colors.white),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-      minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
+      // minimumSize: const WidgetStatePropertyAll(Size(200, 40)),
       backgroundColor: WidgetStatePropertyAll(Colors.purple[800]),
       foregroundColor: const WidgetStatePropertyAll(Colors.black),
       textStyle: const WidgetStatePropertyAll(

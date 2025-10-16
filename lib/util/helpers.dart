@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:aandm/backend/service/auth_backend_service.dart';
+import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/base/login_response_model.dart';
 import 'package:aandm/models/hive_interface.dart';
 import 'package:aandm/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
@@ -88,5 +90,17 @@ Future<void> deleteBoxAndNavigateToLogin(BuildContext context) async {
 
   if (context.mounted) {
     navigateToScreen(context, LoginScreen(), false);
+  }
+}
+
+IconData privacyIconFor(PrivacyMode? mode) {
+  switch (mode) {
+    case PrivacyMode.protected:
+      return PhosphorIconsRegular.eye;
+    case PrivacyMode.public:
+      return PhosphorIconsRegular.lockOpen;
+    case PrivacyMode.private:
+    default:
+      return PhosphorIconsRegular.lock;
   }
 }
