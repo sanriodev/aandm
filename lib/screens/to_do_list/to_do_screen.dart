@@ -21,7 +21,8 @@ final class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<Task> tasks = [];
+  List<Task> completeTasks = [];
+  List<Task> incompleteTasks = [];
   String title = 'Titel';
   String content = 'Inhalt';
   bool isLoading = true;
@@ -37,8 +38,11 @@ class _ToDoScreenState extends State<ToDoScreen> {
     try {
       final backend = Backend();
       final res = await backend.getAllTasksForList(widget.list.id);
+      final complete = res.where((task) => task.isDone).toList();
+      final incomplete = res.where((task) => !task.isDone).toList();
       setState(() {
-        tasks = res;
+        completeTasks = complete;
+        incompleteTasks = incomplete;
         isLoading = false;
       });
     } catch (e) {
@@ -121,7 +125,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     }
   }
 
-  ListView getAllListItems() {
+  ListView getAllListItems(List<Task> tasks) {
     return ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
@@ -260,7 +264,25 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         ),
                         enabled: isLoading,
                         child: const SkeletonCard()),
-                  Expanded(child: !isLoading ? getAllListItems() : Container()),
+                  Expanded(
+                      child: !isLoading
+                          ? Column(
+                              children: [
+                                if (incompleteTasks.isNotEmpty)
+                                  Text("Offene Tasks",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleMedium),
+                                getAllListItems(incompleteTasks),
+                                if (completeTasks.isNotEmpty)
+                                  Text("Abgeschlossene Tasks",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleMedium),
+                                getAllListItems(completeTasks)
+                              ],
+                            )
+                          : Container()),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Card(
