@@ -112,27 +112,42 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
       ),
       endDrawer: AppDrawer(),
       body: Container(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: Colors.grey[400],
-          border: Border.all(width: 0),
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.zero,
+          boxShadow: const [],
+          border: Border.all(
+            color: Colors.transparent,
+            width: 0,
+            style: BorderStyle.none,
+          ),
         ),
         child: TextField(
-            controller: _commentController,
-            textAlignVertical: TextAlignVertical.top,
-            expands: true,
-            maxLines: null,
-            style: Theme.of(context).primaryTextTheme.titleSmall,
-            onChanged: (value) {
-              if (note != null) {
-                note!.content = value;
-              }
-            },
-            decoration: InputDecoration(
-              hintText: 'Notiz...',
-              hintStyle: Theme.of(context).primaryTextTheme.titleSmall,
-              contentPadding: const EdgeInsets.all(16.0),
-              border: InputBorder.none,
-            )),
+          controller: _commentController,
+          textAlignVertical: TextAlignVertical.top,
+          expands: true,
+          maxLines: null,
+          style: Theme.of(context).primaryTextTheme.titleSmall,
+          onChanged: (value) {
+            if (note != null) {
+              note!.content = value;
+            }
+          },
+          decoration: InputDecoration(
+            hintText: 'Notiz...',
+            hintStyle: Theme.of(context).primaryTextTheme.titleSmall,
+            contentPadding: const EdgeInsets.all(16.0),
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
+            filled: false,
+          ),
+        ),
       ),
     );
   }
