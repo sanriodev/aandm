@@ -124,6 +124,18 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               onDeletePress: () {
                 deleteItem(taskLists[index].id);
               },
+              privacyMode: taskLists[index].privacyMode,
+              onChangePrivacy: (mode) {
+                // TODO: Call backend to update privacy mode once available.
+                // For now, update local state to reflect immediately.
+                setState(() {
+                  taskLists[index].privacyMode = mode;
+                });
+                // Optionally show feedback
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Privatsphäre geändert.')),
+                );
+              },
               taskListName: taskLists[index].name,
               totalTaks: taskLists[index].tasks.length,
               completedTasks:
@@ -177,6 +189,61 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
             ],
           ),
           endDrawer: AppDrawer(),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              final TextEditingController nameController =
+                  TextEditingController(text: collectionName);
+              await showDialog<void>(
+                context: context,
+                builder: (dialogContext) {
+                  return AlertDialog(
+                    title: Text(
+                      'Neue Liste',
+                      style: Theme.of(context).primaryTextTheme.titleMedium,
+                    ),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextField(
+                          controller: nameController,
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Name der Liste',
+                          ),
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        child: const Text('Abbrechen'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final name = nameController.text.trim();
+                          if (name.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Bitte einen Namen eingeben.')),
+                            );
+                            return;
+                          }
+                          await createNewItem(CreateTaskListDto(name: name));
+                          if (mounted) {
+                            Navigator.of(dialogContext).pop();
+                          }
+                        },
+                        child: const Text('Erstellen'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            tooltip: 'Neue Liste',
+            child: const Icon(Icons.add),
+          ),
           body: RefreshIndicator(
             color: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).secondaryHeaderColor,
@@ -198,79 +265,40 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       enabled: isLoading,
                       child: const SkeletonCard()),
                 Expanded(
-                    child: !isLoading
-                        ? SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (ownTaskLists.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
-                                    child: Text(
-                                      "Deine Listen",
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                getAllListItems(ownTaskLists),
-                                if (sharedTaskLists.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
-                                    child: Text(
-                                      "Geteilte Listen",
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                getAllListItems(sharedTaskLists)
-                              ],
-                            ),
-                          )
-                        : Container()),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    child: Column(
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: TextField(
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyMedium,
-                              controller:
-                                  TextEditingController(text: collectionName),
-                              onChanged: (value) {
-                                collectionName = value;
-                              },
-                              onTap: () {
-                                setState(() {
-                                  collectionName = '';
-                                });
-                              },
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                createNewItem(CreateTaskListDto(
-                                  name: collectionName,
-                                ));
-                              },
-                              child: Text("Neue Liste",
+                  child: !isLoading
+                      ? SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Text(
+                                  "Deine Listen",
                                   style: Theme.of(context)
                                       .primaryTextTheme
-                                      .titleSmall)),
+                                      .titleMedium,
+                                ),
+                              ),
+                              getAllListItems(ownTaskLists),
+                              if (sharedTaskLists.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Text(
+                                    "Geteilte Listen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium,
+                                  ),
+                                ),
+                              getAllListItems(sharedTaskLists)
+                            ],
+                          ),
                         )
-                      ],
-                    ),
-                  ),
+                      : Container(),
                 ),
               ],
             ),
