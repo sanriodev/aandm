@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
@@ -22,7 +23,8 @@ class ToDoListScreen extends StatefulWidget {
 }
 
 class _ToDoListScreenState extends State<ToDoListScreen> {
-  List<TaskList> taskLists = [];
+  List<TaskList> ownTaskLists = [];
+  List<TaskList> sharedTaskLists = [];
   String collectionName = 'Name der Liste';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,8 +39,19 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
     try {
       final backend = Backend();
       final res = await backend.getAllTaskLists();
+      final own = res
+          .where((element) =>
+              element.user!.username ==
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
+      final shared = res
+          .where((element) =>
+              element.user!.username !=
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
       setState(() {
-        taskLists = res;
+        ownTaskLists = own;
+        sharedTaskLists = shared;
         isLoading = false;
       });
     } catch (e) {
@@ -93,7 +106,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
     }
   }
 
-  ListView getAllListItems() {
+  ListView getAllListItems(List<TaskList> taskLists) {
     return ListView.builder(
         itemCount: taskLists.length,
         itemBuilder: (BuildContext context, int index) {
@@ -182,7 +195,25 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       ),
                       enabled: isLoading,
                       child: const SkeletonCard()),
-                Expanded(child: !isLoading ? getAllListItems() : Container()),
+                Expanded(
+                    child: !isLoading
+                        ? Column(
+                            children: [
+                              if (ownTaskLists.isNotEmpty)
+                                Text("Deine Listen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium),
+                              getAllListItems(ownTaskLists),
+                              if (sharedTaskLists.isNotEmpty)
+                                Text("Geteilte Listen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium),
+                              getAllListItems(sharedTaskLists)
+                            ],
+                          )
+                        : Container()),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Card(
