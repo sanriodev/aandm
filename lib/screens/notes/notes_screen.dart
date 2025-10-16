@@ -136,6 +136,7 @@ class _NotesScreenState extends State<NotesScreen> {
             content: notes[index].content ?? '',
             author: notes[index].user,
             lastModifiedUser: notes[index].lastModifiedUser,
+            privacyMode: notes[index].privacyMode,
           );
         });
   }

@@ -12,9 +12,6 @@ class TaskListAccordionSection extends AccordionSection {
   }) : super(
           contentVerticalPadding: 20,
           leftIcon: leftHeaderIcon,
-          rightIcon: Icon(
-            Icons.keyboard_arrow_down,
-            color: Colors.white,
-          ),
+          rightIcon: null,
         );
 }

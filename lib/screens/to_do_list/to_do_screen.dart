@@ -179,8 +179,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.delete,
-                            color: Theme.of(context).iconTheme.color),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
                         onPressed: () {
                           _deleteTask(tasks[index].id);
                         },

@@ -37,6 +37,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
 
   Future<void> getTaskLists() async {
     try {
+      setState(() {
+        isLoading = false;
+      });
       final backend = Backend();
       final res = await backend.getAllTaskLists();
       final own = res
@@ -208,6 +211,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                         TextField(
                           controller: nameController,
                           autofocus: true,
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
                           decoration: const InputDecoration(
                             labelText: 'Name der Liste',
                           ),
