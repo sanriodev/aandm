@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.2.0](https://github.com/sanriodev/aandm/compare/v3.1.1...v3.2.0) (2025-10-16)
+
+
+### Features
+
+* display for own and shared lists ([f075537](https://github.com/sanriodev/aandm/commit/f07553778b92f0ae02b03a542d0484045dff47e7))
+* show complete and incomplete tasks ([60838cd](https://github.com/sanriodev/aandm/commit/60838cdd852800c8ecea23a3f5e6b429fd53c5db))
+* wip refresh handling ([bab69b2](https://github.com/sanriodev/aandm/commit/bab69b2e83a7940004a448eac798338ab5f90df0))
+* wip seperate notes ([72bffc5](https://github.com/sanriodev/aandm/commit/72bffc56cc3bd9347886c84cbd738566f1f8411d))
+
+
+### Bug Fixes
+
+* adapter adjust to user and adjust headers and widgets ([a17be90](https://github.com/sanriodev/aandm/commit/a17be90053e347a6e9506366cfc9d247be0d1a56))
+
 ## [3.1.1](https://github.com/sanriodev/aandm/compare/v3.1.0...v3.1.1) (2025-10-13)
 
 
