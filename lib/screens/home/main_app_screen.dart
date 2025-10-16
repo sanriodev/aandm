@@ -27,7 +27,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     } else if (themeMode == ThemeMode.dark) {
       themeBox.put('theme', 'dark');
     } else {
-      themeBox.put('theme', 'system');
+      themeBox.put('theme', 'light');
     }
     setState(() {
       currentTheme = themeMode;
@@ -37,8 +37,8 @@ class _MainAppScreenState extends State<MainAppScreen> {
   ThemeMode _getThemeMode() {
     final theme = Hive.box('theme');
     if (theme.get('theme') == null) {
-      theme.put('theme', 'system');
-      return ThemeMode.system;
+      theme.put('theme', 'light');
+      return ThemeMode.light;
     }
     if (theme.get('theme') == 'light') {
       return ThemeMode.light;

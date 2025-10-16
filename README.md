@@ -2,7 +2,7 @@
 <h4 align="center">Manage your tasks, keep notes!</h4>
 
 <p align="center">
-  <a  href="https://testflight.apple.com/join/kz131jGp" target="_blank">
+  <a  href="https://apps.apple.com/at/app/alinas-app/id6738291729?l=en-GB" target="_blank">
     <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" style="height: 75px">
   </a>
   
