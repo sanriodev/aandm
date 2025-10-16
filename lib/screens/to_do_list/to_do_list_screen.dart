@@ -108,6 +108,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
 
   ListView getAllListItems(List<TaskList> taskLists) {
     return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: taskLists.length,
         itemBuilder: (BuildContext context, int index) {
           return TaskListWidget(
@@ -197,21 +199,38 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       child: const SkeletonCard()),
                 Expanded(
                     child: !isLoading
-                        ? Column(
-                            children: [
-                              if (ownTaskLists.isNotEmpty)
-                                Text("Deine Listen",
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .titleMedium),
-                              getAllListItems(ownTaskLists),
-                              if (sharedTaskLists.isNotEmpty)
-                                Text("Geteilte Listen",
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .titleMedium),
-                              getAllListItems(sharedTaskLists)
-                            ],
+                        ? SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (ownTaskLists.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    child: Text(
+                                      "Deine Listen",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleMedium,
+                                    ),
+                                  ),
+                                getAllListItems(ownTaskLists),
+                                if (sharedTaskLists.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    child: Text(
+                                      "Geteilte Listen",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleMedium,
+                                    ),
+                                  ),
+                                getAllListItems(sharedTaskLists)
+                              ],
+                            ),
                           )
                         : Container()),
                 Align(

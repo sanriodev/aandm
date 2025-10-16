@@ -127,6 +127,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   ListView getAllListItems(List<Task> tasks) {
     return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
@@ -266,21 +268,38 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: const SkeletonCard()),
                   Expanded(
                       child: !isLoading
-                          ? Column(
-                              children: [
-                                if (incompleteTasks.isNotEmpty)
-                                  Text("Offene Tasks",
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .titleMedium),
-                                getAllListItems(incompleteTasks),
-                                if (completeTasks.isNotEmpty)
-                                  Text("Abgeschlossene Tasks",
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .titleMedium),
-                                getAllListItems(completeTasks)
-                              ],
+                          ? SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (incompleteTasks.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Text(
+                                        "Offene Tasks",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .titleMedium,
+                                      ),
+                                    ),
+                                  getAllListItems(incompleteTasks),
+                                  if (completeTasks.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Text(
+                                        "Abgeschlossene Tasks",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .titleMedium,
+                                      ),
+                                    ),
+                                  getAllListItems(completeTasks)
+                                ],
+                              ),
                             )
                           : Container()),
                   Align(

@@ -114,6 +114,8 @@ class _NotesScreenState extends State<NotesScreen> {
 
   ListView getAllListItems(List<Note> notes) {
     return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: notes.length,
         itemBuilder: (BuildContext context, int index) {
           return NoteWidget(
@@ -199,21 +201,38 @@ class _NotesScreenState extends State<NotesScreen> {
                     child: const SkeletonCard()),
               Expanded(
                   child: !isLoading
-                      ? Column(
-                          children: [
-                            if (ownNotes.isNotEmpty)
-                              Text("Deine Notizen",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .titleMedium),
-                            getAllListItems(ownNotes),
-                            if (sharedNotes.isNotEmpty)
-                              Text("Geteilte Notizen",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .titleMedium),
-                            getAllListItems(sharedNotes)
-                          ],
+                      ? SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (ownNotes.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Text(
+                                    "Deine Notizen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium,
+                                  ),
+                                ),
+                              getAllListItems(ownNotes),
+                              if (sharedNotes.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Text(
+                                    "Geteilte Notizen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium,
+                                  ),
+                                ),
+                              getAllListItems(sharedNotes)
+                            ],
+                          ),
                         )
                       : Container()),
               Align(
