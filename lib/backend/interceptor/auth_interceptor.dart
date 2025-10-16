@@ -1,4 +1,5 @@
 import 'package:aandm/backend/service/auth_backend_service.dart';
+import 'package:aandm/models/exception/session_expired.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/models/interceptor_contract.dart';
@@ -68,8 +69,13 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
         !response.request!.url.toString().contains('/login')) {
       //Refresh your token here. Make refresh token method where you get new token from
       //API and set it to your local data
-      await AuthBackend().postRefresh(); //Find below the code of this function
-      return true;
+      try {
+        await AuthBackend()
+            .postRefresh(); //Find below the code of this function
+        return true;
+      } catch (e) {
+        throw SessionExpiredException();
+      }
     }
     return false;
   }

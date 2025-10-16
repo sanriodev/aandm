@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/task/dto/create_task_dto.dart';
 import 'package:aandm/models/task/task_api_model.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +21,8 @@ final class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<Task> tasks = [];
+  List<Task> completeTasks = [];
+  List<Task> incompleteTasks = [];
   String title = 'Titel';
   String content = 'Inhalt';
   bool isLoading = true;
@@ -30,43 +35,100 @@ class _ToDoScreenState extends State<ToDoScreen> {
   }
 
   Future<void> _getTasksForList() async {
-    final backend = Backend();
-    final res = await backend.getAllTasksForList(widget.list.id);
-    setState(() {
-      tasks = res;
-      isLoading = false;
-    });
+    try {
+      final backend = Backend();
+      final res = await backend.getAllTasksForList(widget.list.id);
+      final complete = res.where((task) => task.isDone).toList();
+      final incomplete = res.where((task) => !task.isDone).toList();
+      setState(() {
+        completeTasks = complete;
+        incompleteTasks = incomplete;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> _createNewTask(CreateTaskDto data) async {
-    setState(() {
-      isLoading = true;
-    });
-    final backend = Backend();
-    await backend.createTask(data);
-    await _getTasksForList();
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      final backend = Backend();
+      await backend.createTask(data);
+      await _getTasksForList();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> _deleteTask(int id) async {
-    setState(() {
-      isLoading = true;
-    });
-    final backend = Backend();
-    await backend.deleteTask(id);
-    await _getTasksForList();
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      final backend = Backend();
+      await backend.deleteTask(id);
+      await _getTasksForList();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> _updateTask(Task task) async {
-    setState(() {
-      isLoading = true;
-    });
-    final backend = Backend();
-    await backend.updateTask(task);
-    await _getTasksForList();
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      final backend = Backend();
+      await backend.updateTask(task);
+      await _getTasksForList();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
-  ListView getAllListItems() {
+  ListView getAllListItems(List<Task> tasks) {
     return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
@@ -204,7 +266,42 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         ),
                         enabled: isLoading,
                         child: const SkeletonCard()),
-                  Expanded(child: !isLoading ? getAllListItems() : Container()),
+                  Expanded(
+                      child: !isLoading
+                          ? SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (incompleteTasks.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Text(
+                                        "Offene Tasks",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .titleMedium,
+                                      ),
+                                    ),
+                                  getAllListItems(incompleteTasks),
+                                  if (completeTasks.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Text(
+                                        "Abgeschlossene Tasks",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .titleMedium,
+                                      ),
+                                    ),
+                                  getAllListItems(completeTasks)
+                                ],
+                              ),
+                            )
+                          : Container()),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Card(

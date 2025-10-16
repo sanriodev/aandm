@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
 import 'package:aandm/screens/notes/notes_edit_screen.dart';
@@ -21,7 +23,8 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  List<Note> notes = [];
+  List<Note> ownNotes = [];
+  List<Note> sharedNotes = [];
   String collectionName = 'Name der Notiz';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -36,18 +39,32 @@ class _NotesScreenState extends State<NotesScreen> {
     try {
       final backend = Backend();
       final res = await backend.getAllNotes();
-
+      final own = res
+          .where((element) =>
+              element.user!.username ==
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
+      final shared = res
+          .where((element) =>
+              element.user!.username !=
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
       setState(() {
         isLoading = false;
-        notes = res;
+        ownNotes = own;
+        sharedNotes = shared;
       });
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Fehler beim Laden der Notizen')),
-      );
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
     }
   }
 
@@ -55,22 +72,50 @@ class _NotesScreenState extends State<NotesScreen> {
     setState(() {
       isLoading = true;
     });
-    final backend = Backend();
-    await backend.createNote(data);
-    await getNotes();
+    try {
+      final backend = Backend();
+      await backend.createNote(data);
+      await getNotes();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   Future<void> deleteItem(int id) async {
     setState(() {
       isLoading = true;
     });
-    final backend = Backend();
-    await backend.deleteNote(id);
-    await getNotes();
+    try {
+      final backend = Backend();
+      await backend.deleteNote(id);
+      await getNotes();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
-  ListView getAllListItems() {
+  ListView getAllListItems(List<Note> notes) {
     return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: notes.length,
         itemBuilder: (BuildContext context, int index) {
           return NoteWidget(
@@ -154,7 +199,42 @@ class _NotesScreenState extends State<NotesScreen> {
                     ),
                     enabled: isLoading,
                     child: const SkeletonCard()),
-              Expanded(child: !isLoading ? getAllListItems() : Container()),
+              Expanded(
+                  child: !isLoading
+                      ? SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (ownNotes.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Text(
+                                    "Deine Notizen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium,
+                                  ),
+                                ),
+                              getAllListItems(ownNotes),
+                              if (sharedNotes.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Text(
+                                    "Geteilte Notizen",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .titleMedium,
+                                  ),
+                                ),
+                              getAllListItems(sharedNotes)
+                            ],
+                          ),
+                        )
+                      : Container()),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Card(

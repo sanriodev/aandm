@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.1.1](https://github.com/sanriodev/aandm/compare/v3.1.0...v3.1.1) (2025-10-13)
+
+
+### Bug Fixes
+
+* show user and last modified user in wrong order with wrong icons ([920b424](https://github.com/sanriodev/aandm/commit/920b4241f6b3918f49fb19f599ada9026921c0d9))
+* show user and last modified user in wrong order with wrong icons ([1a09873](https://github.com/sanriodev/aandm/commit/1a09873d575ac1eddce710400d74ae01a52496da))
+
+## [3.1.0](https://github.com/sanriodev/aandm/compare/v3.0.3...v3.1.0) (2025-10-08)
+
+
+### Features
+
+* author and last modified user ([59863a3](https://github.com/sanriodev/aandm/commit/59863a3900da4b42e7f747c8038bead3498d2a02))
+
+
+### Bug Fixes
+
+* remove settings drawer button on login screen ([41c3e69](https://github.com/sanriodev/aandm/commit/41c3e697b87d9ea9d3a787008724950329dbc671))
+
 ## [3.0.3](https://github.com/sanriodev/aandm/compare/v3.0.2...v3.0.3) (2025-10-06)
 
 
