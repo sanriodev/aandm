@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.3.0](https://github.com/sanriodev/aandm/compare/v3.2.0...v3.3.0) (2025-10-16)
+
+
+### Features
+
+* buttons etc ([9fb092f](https://github.com/sanriodev/aandm/commit/9fb092f4ea06f6d0a973c26a7b7b9a688ad80c6e))
+* set loading ([61bd115](https://github.com/sanriodev/aandm/commit/61bd1158f2e68ef010108d4c2a0868861c7af8fb))
+* wip changes ([2239cda](https://github.com/sanriodev/aandm/commit/2239cdafefc8aa37dbd03a59433fcc84e6868dcb))
+* wip slidable ([d207652](https://github.com/sanriodev/aandm/commit/d20765235fce237279a8225eb948d1f1783b27ed))
+
+
+### Bug Fixes
+
+* default to light theme ([449ce36](https://github.com/sanriodev/aandm/commit/449ce3604288c635f9947961214abe8c69a6d573))
+
 ## [3.2.0](https://github.com/sanriodev/aandm/compare/v3.1.1...v3.2.0) (2025-10-16)
 
 
