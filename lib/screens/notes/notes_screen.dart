@@ -25,7 +25,6 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
   List<Note> ownNotes = [];
   List<Note> sharedNotes = [];
-  String collectionName = 'Name der Notiz';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -37,6 +36,9 @@ class _NotesScreenState extends State<NotesScreen> {
 
   Future<void> getNotes() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final backend = Backend();
       final res = await backend.getAllNotes();
       final own = res
@@ -180,6 +182,69 @@ class _NotesScreenState extends State<NotesScreen> {
           ],
         ),
         endDrawer: AppDrawer(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final nameController = TextEditingController();
+            await showDialog<void>(
+              context: context,
+              builder: (dialogContext) {
+                return AlertDialog(
+                  title: Text(
+                    'Neue Notiz',
+                    style: Theme.of(context).primaryTextTheme.bodySmall,
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextField(
+                        controller: nameController,
+                        autofocus: true,
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                        decoration: InputDecoration(
+                          labelText: 'Name der Notiz',
+                          labelStyle:
+                              Theme.of(context).primaryTextTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      child: Text('Abbrechen',
+                          style: Theme.of(context).primaryTextTheme.titleSmall),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final name = nameController.text.trim();
+                        if (name.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Bitte einen Namen eingeben.'),
+                            ),
+                          );
+                          return;
+                        }
+                        await createNewItem(CreateNoteDto(
+                          title: name,
+                          content: '',
+                        ));
+                        if (mounted) {
+                          Navigator.of(dialogContext).pop();
+                        }
+                      },
+                      child: Text('Erstellen',
+                          style: Theme.of(context).primaryTextTheme.titleSmall),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          tooltip: 'Neue Notiz',
+          child: const Icon(Icons.add),
+        ),
         body: RefreshIndicator(
           color: Theme.of(context).primaryColor,
           backgroundColor: Theme.of(context).secondaryHeaderColor,
@@ -201,81 +266,41 @@ class _NotesScreenState extends State<NotesScreen> {
                     enabled: isLoading,
                     child: const SkeletonCard()),
               Expanded(
-                  child: !isLoading
-                      ? SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (ownNotes.isNotEmpty)
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
-                                  child: Text(
-                                    "Deine Notizen",
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .titleMedium,
-                                  ),
+                child: !isLoading
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (ownNotes.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Text(
+                                  "Deine Notizen",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleMedium,
                                 ),
-                              getAllListItems(ownNotes),
-                              if (sharedNotes.isNotEmpty)
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
-                                  child: Text(
-                                    "Geteilte Notizen",
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .titleMedium,
-                                  ),
+                              ),
+                            getAllListItems(ownNotes),
+                            if (sharedNotes.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Text(
+                                  "Geteilte Notizen",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleMedium,
                                 ),
-                              getAllListItems(sharedNotes)
-                            ],
-                          ),
-                        )
-                      : Container()),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  child: Column(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: TextField(
-                            style:
-                                Theme.of(context).primaryTextTheme.bodyMedium,
-                            controller:
-                                TextEditingController(text: collectionName),
-                            onChanged: (value) {
-                              collectionName = value;
-                            },
-                            onTap: () {
-                              setState(() {
-                                collectionName = '';
-                              });
-                            },
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            createNewItem(CreateNoteDto(
-                              title: collectionName,
-                              content: '',
-                            ));
-                          },
-                          child: Text("Neue Notiz",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleSmall),
+                              ),
+                            getAllListItems(sharedNotes)
+                          ],
                         ),
                       )
-                    ],
-                  ),
-                ),
+                    : Container(),
               ),
             ],
           ),

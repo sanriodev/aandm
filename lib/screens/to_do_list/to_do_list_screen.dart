@@ -25,7 +25,7 @@ class ToDoListScreen extends StatefulWidget {
 class _ToDoListScreenState extends State<ToDoListScreen> {
   List<TaskList> ownTaskLists = [];
   List<TaskList> sharedTaskLists = [];
-  String collectionName = 'Name der Liste';
+  String collectionName = '';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -38,7 +38,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Future<void> getTaskLists() async {
     try {
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
       final backend = Backend();
       final res = await backend.getAllTaskLists();
@@ -202,7 +202,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                   return AlertDialog(
                     title: Text(
                       'Neue Liste',
-                      style: Theme.of(context).primaryTextTheme.titleMedium,
+                      style: Theme.of(context).primaryTextTheme.bodySmall,
                     ),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -211,9 +211,11 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                         TextField(
                           controller: nameController,
                           autofocus: true,
-                          style: Theme.of(context).primaryTextTheme.bodyMedium,
-                          decoration: const InputDecoration(
+                          style: Theme.of(context).primaryTextTheme.bodySmall,
+                          decoration: InputDecoration(
                             labelText: 'Name der Liste',
+                            labelStyle:
+                                Theme.of(context).primaryTextTheme.bodySmall,
                           ),
                         ),
                       ],
@@ -221,7 +223,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: const Text('Abbrechen'),
+                        child: Text('Abbrechen',
+                            style:
+                                Theme.of(context).primaryTextTheme.titleSmall),
                       ),
                       ElevatedButton(
                         onPressed: () async {
@@ -238,7 +242,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                             Navigator.of(dialogContext).pop();
                           }
                         },
-                        child: const Text('Erstellen'),
+                        child: Text('Erstellen',
+                            style:
+                                Theme.of(context).primaryTextTheme.titleSmall),
                       ),
                     ],
                   );

@@ -23,8 +23,6 @@ final class ToDoScreen extends StatefulWidget {
 class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> completeTasks = [];
   List<Task> incompleteTasks = [];
-  String title = 'Titel';
-  String content = 'Inhalt';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -36,6 +34,9 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _getTasksForList() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final backend = Backend();
       final res = await backend.getAllTasksForList(widget.list.id);
       final complete = res.where((task) => task.isDone).toList();
@@ -61,9 +62,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _createNewTask(CreateTaskDto data) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
       final backend = Backend();
       await backend.createTask(data);
       await _getTasksForList();
@@ -83,9 +81,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _deleteTask(int id) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
       final backend = Backend();
       await backend.deleteTask(id);
       await _getTasksForList();
@@ -105,9 +100,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
 
   Future<void> _updateTask(Task task) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
       final backend = Backend();
       await backend.updateTask(task);
       await _getTasksForList();
@@ -249,6 +241,86 @@ class _ToDoScreenState extends State<ToDoScreen> {
               ],
             ),
             endDrawer: AppDrawer(),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () async {
+                final titleController = TextEditingController();
+                final contentController = TextEditingController();
+                await showDialog<void>(
+                  context: context,
+                  builder: (dialogContext) {
+                    return AlertDialog(
+                      title: Text(
+                        'Name der Aufgabe',
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextField(
+                            controller: titleController,
+                            autofocus: true,
+                            style: Theme.of(context).primaryTextTheme.bodySmall,
+                            decoration: InputDecoration(
+                              labelText: 'Titel',
+                              labelStyle:
+                                  Theme.of(context).primaryTextTheme.bodySmall,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextField(
+                            controller: contentController,
+                            style: Theme.of(context).primaryTextTheme.bodySmall,
+                            decoration: InputDecoration(
+                              labelText: 'Inhalt (optional)',
+                              labelStyle:
+                                  Theme.of(context).primaryTextTheme.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          child: Text('Abbrechen',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleSmall),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final t = titleController.text.trim();
+                            final c = contentController.text.trim();
+                            if (t.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Bitte einen Titel eingeben.'),
+                                ),
+                              );
+                              return;
+                            }
+                            await _createNewTask(CreateTaskDto(
+                              title: t,
+                              content: c,
+                              taskListId: widget.list.id,
+                            ));
+                            if (mounted) {
+                              Navigator.of(dialogContext).pop();
+                            }
+                          },
+                          child: Text('Erstellen',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleSmall),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              tooltip: 'Neuer Eintrag',
+              child: const Icon(Icons.add),
+            ),
             body: RefreshIndicator(
               color: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).secondaryHeaderColor,
@@ -269,98 +341,41 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         enabled: isLoading,
                         child: const SkeletonCard()),
                   Expanded(
-                      child: !isLoading
-                          ? SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (incompleteTasks.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      child: Text(
-                                        "Offene Tasks",
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .titleMedium,
-                                      ),
+                    child: !isLoading
+                        ? SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (incompleteTasks.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    child: Text(
+                                      "Offene Tasks",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleMedium,
                                     ),
-                                  getAllListItems(incompleteTasks),
-                                  if (completeTasks.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      child: Text(
-                                        "Abgeschlossene Tasks",
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .titleMedium,
-                                      ),
+                                  ),
+                                getAllListItems(incompleteTasks),
+                                if (completeTasks.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    child: Text(
+                                      "Abgeschlossene Tasks",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleMedium,
                                     ),
-                                  getAllListItems(completeTasks)
-                                ],
-                              ),
-                            )
-                          : Container()),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Card(
-                      margin: EdgeInsets.zero,
-                      child: Column(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: TextField(
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyMedium,
-                                controller: TextEditingController(text: title),
-                                onChanged: (value) {
-                                  title = value;
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    title = '';
-                                  });
-                                },
-                              )),
-                          Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: TextField(
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyMedium,
-                                controller:
-                                    TextEditingController(text: content),
-                                onChanged: (value) {
-                                  content = value;
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    content = '';
-                                  });
-                                },
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 30),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _createNewTask(CreateTaskDto(
-                                    title: title,
-                                    content: content,
-                                    taskListId: widget.list.id));
-                              },
-                              child: Text("Neuer Eintrag",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .titleSmall),
+                                  ),
+                                getAllListItems(completeTasks)
+                              ],
                             ),
                           )
-                        ],
-                      ),
-                    ),
+                        : Container(),
                   ),
                 ],
               ),
