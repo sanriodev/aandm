@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/note_api_model.dart';
@@ -22,7 +23,8 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  List<Note> notes = [];
+  List<Note> ownNotes = [];
+  List<Note> sharedNotes = [];
   String collectionName = 'Name der Notiz';
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,10 +39,20 @@ class _NotesScreenState extends State<NotesScreen> {
     try {
       final backend = Backend();
       final res = await backend.getAllNotes();
-
+      final own = res
+          .where((element) =>
+              element.user!.username ==
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
+      final shared = res
+          .where((element) =>
+              element.user!.username !=
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
       setState(() {
         isLoading = false;
-        notes = res;
+        ownNotes = own;
+        sharedNotes = shared;
       });
     } catch (e) {
       setState(() {
@@ -100,7 +112,7 @@ class _NotesScreenState extends State<NotesScreen> {
     }
   }
 
-  ListView getAllListItems() {
+  ListView getAllListItems(List<Note> notes) {
     return ListView.builder(
         itemCount: notes.length,
         itemBuilder: (BuildContext context, int index) {
@@ -185,7 +197,25 @@ class _NotesScreenState extends State<NotesScreen> {
                     ),
                     enabled: isLoading,
                     child: const SkeletonCard()),
-              Expanded(child: !isLoading ? getAllListItems() : Container()),
+              Expanded(
+                  child: !isLoading
+                      ? Column(
+                          children: [
+                            if (ownNotes.isNotEmpty)
+                              Text("Deine Notizen",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleMedium),
+                            getAllListItems(ownNotes),
+                            if (sharedNotes.isNotEmpty)
+                              Text("Geteilte Notizen",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleMedium),
+                            getAllListItems(sharedNotes)
+                          ],
+                        )
+                      : Container()),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Card(
