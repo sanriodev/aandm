@@ -6,6 +6,7 @@ import 'package:aandm/backend/abstract/backend_abstract.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/task/dto/create_task_dto.dart';
 import 'package:aandm/models/task/task_api_model.dart';
+import 'package:aandm/models/tasklist/dto/update_task_list_dto.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
 import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
@@ -46,6 +47,23 @@ class Backend extends ABackend {
           .toList();
 
       return taskLists;
+    } else {
+      throw res;
+    }
+  }
+
+  //updateTaskList
+  Future<TaskList> updateTaskList(UpdateTaskListDto taskList) async {
+    final body = json.encode(taskList.toJson());
+    final res = await put(body, 'task-list/');
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data']
+          as Map<String, dynamic>;
+
+      final updatedTaskList = TaskList.fromJson(jsonData);
+
+      return updatedTaskList;
     } else {
       throw res;
     }

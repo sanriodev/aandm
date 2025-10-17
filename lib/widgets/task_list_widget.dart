@@ -1,5 +1,7 @@
-import 'package:aandm/models/user/user_model.dart';
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
+import 'package:aandm/models/tasklist/task_list_api_model.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/accordion/accordion_section.dart';
 import 'package:aandm/widgets/accordion/task_list_accordion.dart';
 import 'package:flutter/material.dart';
@@ -8,29 +10,24 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TaskListWidget extends StatefulWidget {
-  final String taskListName;
-  final int totalTaks;
+  final int totalTasks;
   final int completedTasks;
   final int openTasks;
+  final TaskList taskList;
   final void Function()? onTap;
   final void Function()? onDeletePress;
-  final PrivacyMode? privacyMode;
   final void Function(PrivacyMode mode)? onChangePrivacy;
-  final User? author;
-  final User? lastModifiedUser;
 
-  const TaskListWidget(
-      {super.key,
-      required this.taskListName,
-      required this.totalTaks,
-      required this.completedTasks,
-      required this.openTasks,
-      this.onDeletePress,
-      this.onTap,
-      this.privacyMode,
-      this.onChangePrivacy,
-      this.author,
-      this.lastModifiedUser});
+  const TaskListWidget({
+    super.key,
+    required this.taskList,
+    required this.totalTasks,
+    required this.completedTasks,
+    required this.openTasks,
+    this.onDeletePress,
+    this.onTap,
+    this.onChangePrivacy,
+  });
 
   @override
   State<TaskListWidget> createState() => _TaskListWidgetState();
@@ -54,6 +51,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     )),
           ),
           Slidable(
+              enabled: widget.taskList.user?.username ==
+                  AuthBackend().loggedInUser?.user?.username,
               key: UniqueKey(),
               endActionPane: ActionPane(
                 motion: BehindMotion(),
@@ -78,33 +77,38 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       child: Row(
                         children: [
                           // Privacy mode button in place of the old delete button
-                          // Padding(
-                          //   padding: const EdgeInsets.all(12),
-                          //   child: PopupMenuButton<PrivacyMode>(
-                          //     tooltip: 'Privatsphäre',
-                          //     onSelected: (mode) =>
-                          //         widget.onChangePrivacy?.call(mode),
-                          //     itemBuilder: (context) => [
-                          //       const PopupMenuItem(
-                          //         value: PrivacyMode.private,
-                          //         child: Text('Privat'),
-                          //       ),
-                          //       const PopupMenuItem(
-                          //         value: PrivacyMode.protected,
-                          //         child: Text('Geschützt'),
-                          //       ),
-                          //       const PopupMenuItem(
-                          //         value: PrivacyMode.public,
-                          //         child: Text('Öffentlich'),
-                          //       ),
-                          //     ],
-                          //     child: Icon(
-                          //       privacyIconFor(widget.privacyMode),
-                          //       color: Theme.of(context).primaryIconTheme.color,
-                          //     ),
-                          //   ),
-                          // ),
-                          Text(widget.taskListName,
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: PopupMenuButton<PrivacyMode>(
+                              enabled: widget.taskList.user?.username ==
+                                  AuthBackend().loggedInUser?.user?.username,
+                              tooltip: 'Privatsphäre',
+                              onSelected: (mode) =>
+                                  widget.onChangePrivacy?.call(mode),
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  value: PrivacyMode.private,
+                                  child: Text(
+                                      'Privat - nur du kannst sehen/bearbeiten'),
+                                ),
+                                const PopupMenuItem(
+                                  value: PrivacyMode.protected,
+                                  child: Text(
+                                      'Geschützt - alle können sehen, bearbeiten nur du'),
+                                ),
+                                const PopupMenuItem(
+                                  value: PrivacyMode.public,
+                                  child: Text(
+                                      'Öffentlich - alle können sehen/bearbeiten'),
+                                ),
+                              ],
+                              child: Icon(
+                                privacyIconFor(widget.taskList.privacyMode),
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                          ),
+                          Text(widget.taskList.name,
                               style: Theme.of(context)
                                   .primaryTextTheme
                                   .titleMedium),
@@ -126,7 +130,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                   color: Colors.purple,
                                   size: 15,
                                 ),
-                                Text("Einträge gesamt: ${widget.totalTaks}",
+                                Text("Einträge gesamt: ${widget.totalTasks}",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .bodyMedium),
@@ -182,17 +186,17 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                   ),
                                 ),
                                 GFProgressBar(
-                                  percentage:
-                                      (widget.completedTasks / widget.totalTaks)
-                                              .isNaN
-                                          ? 0
-                                          : (widget.completedTasks /
-                                              widget.totalTaks),
+                                  percentage: (widget.completedTasks /
+                                              widget.totalTasks)
+                                          .isNaN
+                                      ? 0
+                                      : (widget.completedTasks /
+                                          widget.totalTasks),
                                   lineHeight: 20,
                                   backgroundColor: Colors.black26,
                                   progressBarColor: Colors.purple.shade400,
                                   child: Text(
-                                      "${(((widget.completedTasks / widget.totalTaks).isNaN ? 0 : (widget.completedTasks / widget.totalTaks)) * 100).toStringAsFixed(2)}%",
+                                      "${(((widget.completedTasks / widget.totalTasks).isNaN ? 0 : (widget.completedTasks / widget.totalTasks)) * 100).toStringAsFixed(2)}%",
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .bodyMedium),
@@ -212,8 +216,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                 ),
                               ),
                               Text(
-                                widget.author != null
-                                    ? widget.author!.username
+                                widget.taskList.user != null
+                                    ? widget.taskList.user!.username
                                     : "unknown",
                                 style: Theme.of(context)
                                     .primaryTextTheme
@@ -233,8 +237,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                 ),
                               ),
                               Text(
-                                widget.lastModifiedUser != null
-                                    ? widget.lastModifiedUser!.username
+                                widget.taskList.lastModifiedUser != null
+                                    ? widget.taskList.lastModifiedUser!.username
                                     : "unknown",
                                 style: Theme.of(context)
                                     .primaryTextTheme

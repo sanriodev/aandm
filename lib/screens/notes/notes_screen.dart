@@ -2,7 +2,9 @@
 
 import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/exception/session_expired.dart';
+import 'package:aandm/models/note/dto/update_note_dto.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
 import 'package:aandm/screens/notes/notes_edit_screen.dart';
@@ -113,6 +115,40 @@ class _NotesScreenState extends State<NotesScreen> {
     }
   }
 
+  Future<void> updatePrivacy(Note note, PrivacyMode mode) async {
+    if (note.user?.username != AuthBackend().loggedInUser?.user?.username) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Du kannst die Privatsphäre nur bei deinen eigenen Notizen ändern.')),
+      );
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final backend = Backend();
+      await backend.updateNote(UpdateNoteDto(
+        id: note.id,
+        title: note.title,
+        privacyMode: mode,
+      ));
+      await getNotes();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
+  }
+
   ListView getAllListItems(List<Note> notes) {
     return ListView.builder(
         shrinkWrap: true,
@@ -133,11 +169,10 @@ class _NotesScreenState extends State<NotesScreen> {
                 notes[index].id,
               );
             },
-            name: notes[index].title,
-            content: notes[index].content ?? '',
-            author: notes[index].user,
-            lastModifiedUser: notes[index].lastModifiedUser,
-            privacyMode: notes[index].privacyMode,
+            onChangePrivacy: (PrivacyMode mode) {
+              updatePrivacy(notes[index], mode);
+            },
+            note: notes[index],
           );
         });
   }

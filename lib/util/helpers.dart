@@ -96,9 +96,9 @@ Future<void> deleteBoxAndNavigateToLogin(BuildContext context) async {
 IconData privacyIconFor(PrivacyMode? mode) {
   switch (mode) {
     case PrivacyMode.protected:
-      return PhosphorIconsRegular.eye;
+      return PhosphorIconsRegular.shield;
     case PrivacyMode.public:
-      return PhosphorIconsRegular.lockOpen;
+      return PhosphorIconsRegular.eye;
     case PrivacyMode.private:
     default:
       return PhosphorIconsRegular.lock;
