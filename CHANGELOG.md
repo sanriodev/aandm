@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/sanriodev/aandm/compare/v3.3.0...v3.4.0) (2025-10-17)
+
+
+### Features
+
+* slidable for tasks and borders ([507e366](https://github.com/sanriodev/aandm/commit/507e36641ef824b38abd0e98fbfaf59d06799490))
+
 ## [3.3.0](https://github.com/sanriodev/aandm/compare/v3.2.0...v3.3.0) (2025-10-16)
 
 
