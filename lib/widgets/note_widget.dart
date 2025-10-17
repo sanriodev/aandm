@@ -54,7 +54,7 @@ class _NoteWidgetState extends State<NoteWidget> {
                 extentRatio: 0.3,
                 children: [
                   SlidableAction(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(12),
                     onPressed: (_) => widget.onDeletePress?.call(),
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
