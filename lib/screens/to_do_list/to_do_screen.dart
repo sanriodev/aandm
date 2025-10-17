@@ -9,6 +9,7 @@ import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -122,79 +123,101 @@ class _ToDoScreenState extends State<ToDoScreen> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Stack(
+              clipBehavior: Clip.antiAlias,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Text("Titel",
-                            style:
-                                Theme.of(context).primaryTextTheme.titleSmall),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(tasks[index].title,
-                            style:
-                                Theme.of(context).primaryTextTheme.bodyMedium),
-                      ),
-                      if (tasks[index].content != null &&
-                          tasks[index].content!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text("Inhalt",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleSmall),
-                        ),
-                      if (tasks[index].content != null &&
-                          tasks[index].content!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text(tasks[index].content!,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .bodyMedium),
-                        ),
-                    ],
-                  ),
+                Positioned.fill(
+                  child: Builder(
+                      builder: (context) => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                              color: Colors.red,
+                            ),
+                          )),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Theme.of(context).primaryIconTheme.color,
+                Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: BehindMotion(),
+                      extentRatio: 0.3,
+                      children: [
+                        SlidableAction(
+                          borderRadius: BorderRadius.circular(12),
+                          onPressed: (_) => {_deleteTask(tasks[index].id)},
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
                         ),
-                        onPressed: () {
-                          _deleteTask(tasks[index].id);
-                        },
+                      ],
+                    ),
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Text("Titel",
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .titleSmall),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: Text(tasks[index].title,
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .bodyMedium),
+                                ),
+                                if (tasks[index].content != null &&
+                                    tasks[index].content!.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text("Inhalt",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .titleSmall),
+                                  ),
+                                if (tasks[index].content != null &&
+                                    tasks[index].content!.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text(tasks[index].content!,
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyMedium),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Transform.scale(
+                              scale: 1.75,
+                              child: Checkbox(
+                                value: tasks[index].isDone,
+                                onChanged: (bool? value) async {
+                                  tasks[index].isDone = value ?? false;
+                                  await _updateTask(tasks[index]);
+                                },
+                                activeColor: Colors.purple[200],
+                                checkColor: Colors.grey[200],
+                                side: const BorderSide(
+                                    color: Colors.grey, width: 1.5),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Transform.scale(
-                        scale: 1.75,
-                        child: Checkbox(
-                          value: tasks[index].isDone,
-                          onChanged: (bool? value) async {
-                            tasks[index].isDone = value ?? false;
-                            await _updateTask(tasks[index]);
-                          },
-                          activeColor: Colors.purple[200],
-                          checkColor: Colors.grey[200],
-                          side:
-                              const BorderSide(color: Colors.grey, width: 1.5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    )),
               ],
             ),
           );
