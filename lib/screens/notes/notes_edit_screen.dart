@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/update_note_dto.dart';
@@ -126,6 +128,10 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
         ),
         child: TextField(
           controller: _commentController,
+          enabled: note != null &&
+              (note!.user?.username ==
+                      AuthBackend().loggedInUser?.user?.username ||
+                  note!.privacyMode == PrivacyMode.public),
           textAlignVertical: TextAlignVertical.top,
           expands: true,
           maxLines: null,

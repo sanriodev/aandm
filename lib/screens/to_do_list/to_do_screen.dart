@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/task/dto/create_task_dto.dart';
 import 'package:aandm/models/task/task_api_model.dart';
@@ -139,6 +141,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
                           )),
                 ),
                 Slidable(
+                    enabled: tasks[index].taskList?.user?.username ==
+                        AuthBackend().loggedInUser?.user?.username,
                     key: UniqueKey(),
                     endActionPane: ActionPane(
                       motion: BehindMotion(),
@@ -200,18 +204,29 @@ class _ToDoScreenState extends State<ToDoScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12),
-                            child: Transform.scale(
-                              scale: 1.75,
-                              child: Checkbox(
-                                value: tasks[index].isDone,
-                                onChanged: (bool? value) async {
-                                  tasks[index].isDone = value ?? false;
-                                  await _updateTask(tasks[index]);
-                                },
-                                activeColor: Colors.purple[200],
-                                checkColor: Colors.grey[200],
-                                side: const BorderSide(
-                                    color: Colors.grey, width: 1.5),
+                            child: IgnorePointer(
+                              ignoring: tasks[index].taskList?.user?.username !=
+                                      AuthBackend()
+                                          .loggedInUser
+                                          ?.user
+                                          ?.username &&
+                                  (tasks[index].taskList?.privacyMode ==
+                                          PrivacyMode.protected ||
+                                      tasks[index].taskList?.privacyMode ==
+                                          PrivacyMode.private),
+                              child: Transform.scale(
+                                scale: 1.75,
+                                child: Checkbox(
+                                  value: tasks[index].isDone,
+                                  onChanged: (bool? value) async {
+                                    tasks[index].isDone = value ?? false;
+                                    await _updateTask(tasks[index]);
+                                  },
+                                  activeColor: Colors.purple[200],
+                                  checkColor: Colors.grey[200],
+                                  side: const BorderSide(
+                                      color: Colors.grey, width: 1.5),
+                                ),
                               ),
                             ),
                           ),

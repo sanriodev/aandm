@@ -1,30 +1,24 @@
+import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
-import 'package:aandm/models/user/user_model.dart';
+import 'package:aandm/models/note/note_api_model.dart';
+import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class NoteWidget extends StatefulWidget {
-  final String name;
-  final String content;
-  final PrivacyMode privacyMode;
+  final Note note;
   final void Function()? onTap;
   final void Function()? onDeletePress;
   final void Function(PrivacyMode mode)? onChangePrivacy;
 
-  final User? author;
-  final User? lastModifiedUser;
-
-  const NoteWidget(
-      {super.key,
-      required this.name,
-      required this.content,
-      required this.privacyMode,
-      this.onDeletePress,
-      this.onTap,
-      this.onChangePrivacy,
-      this.author,
-      this.lastModifiedUser});
+  const NoteWidget({
+    super.key,
+    required this.note,
+    this.onDeletePress,
+    this.onTap,
+    this.onChangePrivacy,
+  });
 
   @override
   State<NoteWidget> createState() => _NoteWidgetState();
@@ -48,6 +42,8 @@ class _NoteWidgetState extends State<NoteWidget> {
                     )),
           ),
           Slidable(
+              enabled: widget.note.user?.username ==
+                  AuthBackend().loggedInUser?.user?.username,
               key: UniqueKey(),
               endActionPane: ActionPane(
                 motion: BehindMotion(),
@@ -88,13 +84,14 @@ class _NoteWidgetState extends State<NoteWidget> {
                                   Padding(
                                     padding: const EdgeInsets.all(4),
                                     child: Text(
-                                      widget.name,
+                                      widget.note.title,
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .bodyMedium,
                                     ),
                                   ),
-                                  if (widget.content.isNotEmpty)
+                                  if (widget.note.content != null &&
+                                      widget.note.content!.isNotEmpty)
                                     Padding(
                                       padding: EdgeInsets.all(4),
                                       child: Text(
@@ -104,11 +101,12 @@ class _NoteWidgetState extends State<NoteWidget> {
                                             .titleSmall,
                                       ),
                                     ),
-                                  if (widget.content.isNotEmpty)
+                                  if (widget.note.content != null &&
+                                      widget.note.content!.isNotEmpty)
                                     Padding(
                                       padding: const EdgeInsets.all(4),
                                       child: Text(
-                                        "${widget.content.length > 40 ? widget.content.substring(0, 40) : widget.content}...",
+                                        "${widget.note.content!.length > 40 ? widget.note.content!.substring(0, 40) : widget.note.content}...",
                                         style: Theme.of(context)
                                             .primaryTextTheme
                                             .bodyMedium!
@@ -119,34 +117,39 @@ class _NoteWidgetState extends State<NoteWidget> {
                                 ],
                               ),
                             ),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.only(left: 12, right: 12),
-                            //   child: PopupMenuButton<PrivacyMode>(
-                            //     tooltip: 'Privatsphäre',
-                            //     onSelected: (mode) =>
-                            //         widget.onChangePrivacy?.call(mode),
-                            //     itemBuilder: (context) => [
-                            //       const PopupMenuItem(
-                            //         value: PrivacyMode.private,
-                            //         child: Text('Privat'),
-                            //       ),
-                            //       const PopupMenuItem(
-                            //         value: PrivacyMode.protected,
-                            //         child: Text('Geschützt'),
-                            //       ),
-                            //       const PopupMenuItem(
-                            //         value: PrivacyMode.public,
-                            //         child: Text('Öffentlich'),
-                            //       ),
-                            //     ],
-                            //     child: Icon(
-                            //       privacyIconFor(widget.privacyMode),
-                            //       color:
-                            //           Theme.of(context).primaryIconTheme.color,
-                            //     ),
-                            //   ),
-                            // ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              child: PopupMenuButton<PrivacyMode>(
+                                enabled: widget.note.user?.username ==
+                                    AuthBackend().loggedInUser?.user?.username,
+                                tooltip: 'Privatsphäre',
+                                onSelected: (mode) =>
+                                    widget.onChangePrivacy?.call(mode),
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem(
+                                    value: PrivacyMode.private,
+                                    child: Text(
+                                        'Privat - nur du kannst sehen/bearbeiten'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: PrivacyMode.protected,
+                                    child: Text(
+                                        'Geschützt - alle können sehen, bearbeiten nur du'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: PrivacyMode.public,
+                                    child: Text(
+                                        'Öffentlich - alle können sehen/bearbeiten'),
+                                  ),
+                                ],
+                                child: Icon(
+                                  privacyIconFor(widget.note.privacyMode),
+                                  color:
+                                      Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         Row(
@@ -164,8 +167,8 @@ class _NoteWidgetState extends State<NoteWidget> {
                               padding:
                                   const EdgeInsets.only(right: 12, bottom: 8),
                               child: Text(
-                                widget.author != null
-                                    ? widget.author!.username
+                                widget.note.user != null
+                                    ? widget.note.user!.username
                                     : "unknown",
                                 style: Theme.of(context)
                                     .primaryTextTheme
@@ -189,8 +192,8 @@ class _NoteWidgetState extends State<NoteWidget> {
                               padding:
                                   const EdgeInsets.only(right: 12, bottom: 8),
                               child: Text(
-                                widget.lastModifiedUser != null
-                                    ? widget.lastModifiedUser!.username
+                                widget.note.lastModifiedUser != null
+                                    ? widget.note.lastModifiedUser!.username
                                     : "unknown",
                                 style: Theme.of(context)
                                     .primaryTextTheme

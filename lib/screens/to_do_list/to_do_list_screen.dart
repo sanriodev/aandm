@@ -2,7 +2,9 @@
 
 import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/exception/session_expired.dart';
+import 'package:aandm/models/tasklist/dto/update_task_list_dto.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
 import 'package:aandm/screens/to_do_list/to_do_screen.dart';
@@ -108,6 +110,40 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
     }
   }
 
+  Future<void> updatePrivacy(TaskList taskList, PrivacyMode mode) async {
+    if (taskList.user?.username != AuthBackend().loggedInUser?.user?.username) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Du kannst die Privatsphäre nur bei deinen eigenen Notizen ändern.')),
+      );
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final backend = Backend();
+      await backend.updateTaskList(UpdateTaskListDto(
+        id: taskList.id,
+        name: taskList.name,
+        privacyMode: mode,
+      ));
+      await getTaskLists();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
+  }
+
   ListView getAllListItems(List<TaskList> taskLists) {
     return ListView.builder(
         shrinkWrap: true,
@@ -126,26 +162,15 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               onDeletePress: () {
                 deleteItem(taskLists[index].id);
               },
-              privacyMode: taskLists[index].privacyMode,
-              onChangePrivacy: (mode) {
-                // TODO: Call backend to update privacy mode once available.
-                // For now, update local state to reflect immediately.
-                setState(() {
-                  taskLists[index].privacyMode = mode;
-                });
-                // Optionally show feedback
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Privatsphäre geändert.')),
-                );
+              onChangePrivacy: (PrivacyMode mode) {
+                updatePrivacy(taskLists[index], mode);
               },
-              taskListName: taskLists[index].name,
-              totalTaks: taskLists[index].tasks.length,
+              totalTasks: taskLists[index].tasks.length,
               completedTasks:
                   taskLists[index].tasks.where((test) => test.isDone).length,
               openTasks:
                   taskLists[index].tasks.where((test) => !test.isDone).length,
-              author: taskLists[index].user,
-              lastModifiedUser: taskLists[index].lastModifiedUser);
+              taskList: taskLists[index]);
         });
   }
 

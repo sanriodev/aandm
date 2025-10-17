@@ -1,23 +1,20 @@
 import 'package:aandm/enum/privacy_mode_enum.dart';
 
-class UpdateNoteDto {
+class UpdateTaskListDto {
   int id;
-  String? title;
-  String? content;
+  String? name;
   PrivacyMode? privacyMode;
 
-  UpdateNoteDto({
+  UpdateTaskListDto({
     required this.id,
-    this.title,
-    this.content,
+    this.name,
     this.privacyMode,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
-      'content': content,
+      'name': name,
       'privacyMode': privacyMode,
     };
   }
