@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/sanriodev/aandm/compare/v3.4.0...v3.5.0) (2025-10-17)
+
+
+### Features
+
+* privacymodes ([55a8a86](https://github.com/sanriodev/aandm/commit/55a8a861a07bf41ecff503cef00b915d043c2d94))
+
 ## [3.4.0](https://github.com/sanriodev/aandm/compare/v3.3.0...v3.4.0) (2025-10-17)
 
 
