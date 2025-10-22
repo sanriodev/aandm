@@ -7,9 +7,9 @@ import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/tasklist/dto/update_task_list_dto.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
-import 'package:aandm/screens/to_do_list/to_do_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
+import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:aandm/widgets/task_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -152,12 +152,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         itemBuilder: (BuildContext context, int index) {
           return TaskListWidget(
               onTap: () {
-                navigateToScreen(
-                    context,
-                    ToDoScreen(
-                      list: taskLists[index],
-                    ),
-                    true);
+                navigateToRoute(context, 'tasks',
+                    extra: taskLists[index], backEnabled: true);
               },
               onDeletePress: () {
                 deleteItem(taskLists[index].id);
@@ -178,23 +174,24 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      bottomNavigationBar: const BottomMenu(),
       appBar: AppBar(
         title: Text("To-Do Listen",
             style: Theme.of(context).primaryTextTheme.titleMedium),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            color: Theme.of(context).primaryIconTheme.color,
-            tooltip: "I love my gf",
-          ),
-        ),
+        // leading: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: IconButton(
+        //     icon: Icon(
+        //       Icons.arrow_back_rounded,
+        //       color: Theme.of(context).primaryIconTheme.color,
+        //     ),
+        //     onPressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //     color: Theme.of(context).primaryIconTheme.color,
+        //     tooltip: "I love my gf",
+        //   ),
+        // ),
         actions: [
           IconButton(
             color: Theme.of(context).primaryIconTheme.color,

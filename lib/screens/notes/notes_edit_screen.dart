@@ -9,31 +9,53 @@ import 'package:aandm/models/note/dto/update_note_dto.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class NotesEditScreen extends StatefulWidget {
-  const NotesEditScreen({super.key, required this.id});
+  const NotesEditScreen({super.key});
 
   @override
   _NotesEditScreenState createState() => _NotesEditScreenState();
-  final int id;
 }
 
 class _NotesEditScreenState extends State<NotesEditScreen> {
   final TextEditingController _commentController = TextEditingController();
+  late int id;
   Note? note;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _loadNote();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final extra = GoRouterState.of(context).extra;
+      if (extra is int) {
+        id = extra;
+        _initialized = true;
+        _loadNote();
+      } else {
+        // Gracefully handle missing payload
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Fehlender Parameter für Notiz.')),
+          );
+          Navigator.of(context).pop();
+        });
+      }
+    }
   }
 
   Future<void> _loadNote() async {
     try {
       final backend = Backend();
-      note = await backend.getNote(widget.id);
+      note = await backend.getNote(id);
       setState(() {
         _commentController.text = note?.content ?? '';
       });
@@ -52,7 +74,7 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
     try {
       final backend = Backend();
       final updatedNote = UpdateNoteDto(
-        id: note?.id ?? widget.id,
+        id: note?.id ?? id,
         title: note?.title ?? '',
         privacyMode: note?.privacyMode,
         content: _commentController.text,

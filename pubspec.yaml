@@ -51,6 +51,8 @@ dependencies:
   url_launcher: ^6.3.2
   getwidget: ^7.0.0
   flutter_slidable: ^3.1.0
+  go_router: ^16.2.5
+  flutter_svg: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +76,12 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/icons/logo.svg
+    - assets/icons/top_figure.svg
+    - assets/icons/bottom_figure.svg
+    - assets/icons/top_figure_dark.svg
+    - assets/icons/bottom_figure_dark.svg
+    - assets/settings.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

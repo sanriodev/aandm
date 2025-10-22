@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'package:aandm/backend/service/auth_backend_service.dart';
-import 'package:aandm/screens/home/home_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final authBackend = AuthBackend();
     try {
       await authBackend.postLogin(username, password);
-      navigateToScreen(context, HomeScreen(title: 'A & M'), false);
+      navigateToRoute(
+        context,
+        'home',
+      );
     } catch (e) {
       // Show error using innerContext which now has a ScaffoldMessenger ancestor.
       ScaffoldMessenger.of(context).showSnackBar(

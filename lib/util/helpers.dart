@@ -4,28 +4,25 @@ import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/base/login_response_model.dart';
 import 'package:aandm/models/hive_interface.dart';
-import 'package:aandm/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
-  Future.delayed(Duration.zero, () async {
+void navigateToRoute(
+  BuildContext context,
+  String routeName, {
+  Object? extra,
+  bool backEnabled = false,
+}) {
+  if (context.mounted) {
     if (backEnabled) {
-      // ignore: use_build_context_synchronously
-      await Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return screen;
-      }));
+      context.pushNamed(routeName, extra: extra);
     } else {
-      await Navigator.pushAndRemoveUntil(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (context) => screen),
-        (Route<dynamic> route) => false,
-      );
+      context.goNamed(routeName, extra: extra);
     }
-  });
+  }
 }
 
 int getIncrement<T extends HiveModel>(List<T> list) {
@@ -89,7 +86,10 @@ Future<void> deleteBoxAndNavigateToLogin(BuildContext context) async {
   authBackend.loggedInUser = null;
 
   if (context.mounted) {
-    navigateToScreen(context, LoginScreen(), false);
+    navigateToRoute(
+      context,
+      'login',
+    );
   }
 }
 

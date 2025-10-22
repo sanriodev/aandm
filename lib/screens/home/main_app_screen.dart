@@ -1,9 +1,8 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/cat_backend_service.dart';
-import 'package:aandm/screens/home/home_screen.dart';
-import 'package:aandm/screens/login/login_screen.dart';
+import 'package:aandm/routes/routes.dart';
 import 'package:aandm/ui/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +18,7 @@ class MainAppScreen extends StatefulWidget {
 
 class _MainAppScreenState extends State<MainAppScreen> {
   ThemeMode? currentTheme;
+  late final GoRouter _router;
 
   void changeTheme(ThemeMode themeMode) {
     final themeBox = Hive.box('theme');
@@ -51,29 +51,19 @@ class _MainAppScreenState extends State<MainAppScreen> {
   void initState() {
     super.initState();
     currentTheme = _getThemeMode();
+    _router = createRouter();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [Provider(create: (context) => CatBackend())],
-      child: MaterialApp(
-        title: 'A & M',
+      child: MaterialApp.router(
+        title: 'Alina\'s App',
         themeMode: currentTheme,
         theme: appThemeLight,
         darkTheme: appThemeDark,
-        // Use a Builder so we get a context BELOW MaterialApp & its ScaffoldMessenger.
-        home: Builder(
-          builder: (innerContext) {
-            Widget screen = HomeScreen(title: 'A & M');
-
-            final AuthBackend auth = AuthBackend();
-            if (auth.loggedInUser == null) {
-              screen = LoginScreen();
-            }
-            return screen;
-          },
-        ),
+        routerConfig: _router,
       ),
     );
   }

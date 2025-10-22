@@ -12,12 +12,12 @@ import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 final class ToDoScreen extends StatefulWidget {
-  const ToDoScreen({super.key, required this.list});
-  final TaskList list;
+  const ToDoScreen({super.key});
   @override
   State<ToDoScreen> createState() => _ToDoScreenState();
 }
@@ -25,13 +25,35 @@ final class ToDoScreen extends StatefulWidget {
 class _ToDoScreenState extends State<ToDoScreen> {
   List<Task> completeTasks = [];
   List<Task> incompleteTasks = [];
+  late TaskList list;
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _getTasksForList();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final extra = GoRouterState.of(context).extra;
+      if (extra is TaskList) {
+        list = extra;
+        _initialized = true;
+        _getTasksForList();
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Fehlender Parameter für Aufgabenliste.')),
+          );
+          Navigator.of(context).pop();
+        });
+      }
+    }
   }
 
   Future<void> _getTasksForList() async {
@@ -40,7 +62,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
         isLoading = true;
       });
       final backend = Backend();
-      final res = await backend.getAllTasksForList(widget.list.id);
+      final res = await backend.getAllTasksForList(list.id);
       final complete = res.where((task) => task.isDone).toList();
       final incomplete = res.where((task) => !task.isDone).toList();
       setState(() {
@@ -244,7 +266,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(widget.list.name,
+          title: Text(list.name,
               style: Theme.of(context).primaryTextTheme.titleMedium),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -332,7 +354,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         await _createNewTask(CreateTaskDto(
                           title: t,
                           content: c,
-                          taskListId: widget.list.id,
+                          taskListId: list.id,
                         ));
                         if (mounted) {
                           Navigator.of(dialogContext).pop();

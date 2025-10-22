@@ -73,7 +73,7 @@ ThemeData appThemeDark = ThemeData(
     appBarTheme: AppBarTheme(
       foregroundColor: Colors.purple[800],
       backgroundColor: Colors.purple[800],
-      titleTextStyle: const TextStyle(color: Colors.black),
+      titleTextStyle: const TextStyle(color: Colors.white),
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.blue[800],
