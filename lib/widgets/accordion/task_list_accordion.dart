@@ -29,6 +29,7 @@ class TaskListAccordion extends StatelessWidget {
       sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
       sectionClosingHapticFeedback: SectionHapticFeedback.light,
       children: children,
+      disableScrolling: true,
     );
   }
 }
