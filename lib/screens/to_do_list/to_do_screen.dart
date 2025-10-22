@@ -28,12 +28,32 @@ class _ToDoScreenState extends State<ToDoScreen> {
   late TaskList list;
   bool isLoading = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _initialized = false;
 
   @override
   void initState() {
-    list = GoRouterState.of(context).extra! as TaskList;
     super.initState();
-    _getTasksForList();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final extra = GoRouterState.of(context).extra;
+      if (extra is TaskList) {
+        list = extra;
+        _initialized = true;
+        _getTasksForList();
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Fehlender Parameter für Aufgabenliste.')),
+          );
+          Navigator.of(context).pop();
+        });
+      }
+    }
   }
 
   Future<void> _getTasksForList() async {

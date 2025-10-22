@@ -14,7 +14,8 @@ class BottomMenu extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Theme.of(context).secondaryHeaderColor),
+          top:
+              BorderSide(color: Theme.of(context).appBarTheme.foregroundColor!),
         ),
         color: Theme.of(context).appBarTheme.foregroundColor,
       ),

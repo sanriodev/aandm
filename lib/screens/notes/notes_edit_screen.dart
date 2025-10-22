@@ -24,12 +24,32 @@ class _NotesEditScreenState extends State<NotesEditScreen> {
   late int id;
   Note? note;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _initialized = false;
 
   @override
   void initState() {
-    id = GoRouterState.of(context).extra! as int;
     super.initState();
-    _loadNote();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final extra = GoRouterState.of(context).extra;
+      if (extra is int) {
+        id = extra;
+        _initialized = true;
+        _loadNote();
+      } else {
+        // Gracefully handle missing payload
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Fehlender Parameter für Notiz.')),
+          );
+          Navigator.of(context).pop();
+        });
+      }
+    }
   }
 
   Future<void> _loadNote() async {
