@@ -6,6 +6,7 @@ import 'package:aandm/models/base/login_response_model.dart';
 import 'package:aandm/models/hive_interface.dart';
 import 'package:aandm/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,6 +27,21 @@ void navigateToScreen(BuildContext context, Widget screen, bool backEnabled) {
       );
     }
   });
+}
+
+void navigateToRoute(
+  BuildContext context,
+  String routeName, {
+  Object? extra,
+  bool backEnabled = false,
+}) {
+  if (context.mounted) {
+    if (backEnabled) {
+      context.pushNamed(routeName, extra: extra);
+    } else {
+      context.goNamed(routeName, extra: extra);
+    }
+  }
 }
 
 int getIncrement<T extends HiveModel>(List<T> list) {
