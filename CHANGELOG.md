@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.6.0](https://github.com/sanriodev/aandm/compare/v3.5.1...v3.6.0) (2025-10-22)
+
+
+### Features
+
+* add nav menu ([b12ebbb](https://github.com/sanriodev/aandm/commit/b12ebbb76cefee81a93ad7406b1da02ace8bb98c))
+* add navigate ([f522825](https://github.com/sanriodev/aandm/commit/f522825d3fefb6d41835c53a81530b3a530afebe))
+* adjust colors ([812785f](https://github.com/sanriodev/aandm/commit/812785f90223f5ad898700ca66fa1bd4e99038c7))
+* adjust to use router ([0440f7b](https://github.com/sanriodev/aandm/commit/0440f7b3e2ea730cf4bd4023a65eca433c8e9d0b))
+* switch colors ([9dd742a](https://github.com/sanriodev/aandm/commit/9dd742a1d15e6d0d5ee7ca0f923505c14f7f8945))
+* use new router navigation for logout ([5131a65](https://github.com/sanriodev/aandm/commit/5131a651ef7c354f51018a3805f81cec4f2b7154))
+
+
+### Bug Fixes
+
+* adjust button ([749ebc6](https://github.com/sanriodev/aandm/commit/749ebc626104a9827c51481f682d715244dc814d))
+
 ## [3.5.1](https://github.com/sanriodev/aandm/compare/v3.5.0...v3.5.1) (2025-10-22)
 
 
