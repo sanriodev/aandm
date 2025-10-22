@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aandm/widgets/app_drawer_widget.dart';
+import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -45,20 +46,21 @@ class _TimerScreenState extends State<TimerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
+        bottomNavigationBar: const BottomMenu(),
         appBar: AppBar(
           title: Text("Timer",
               style: Theme.of(context).primaryTextTheme.titleMedium),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              color: Theme.of(context).primaryIconTheme.color,
-              tooltip: "I love my gf",
-            ),
-          ),
+          // leading: Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: IconButton(
+          //     icon: const Icon(Icons.arrow_back_rounded),
+          //     onPressed: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //     color: Theme.of(context).primaryIconTheme.color,
+          //     tooltip: "I love my gf",
+          //   ),
+          // ),
           actions: [
             IconButton(
               color: Theme.of(context).primaryIconTheme.color,
