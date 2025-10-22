@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.1](https://github.com/sanriodev/aandm/compare/v3.5.0...v3.5.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* disable scrolling on tasklist accordions ([fa84f56](https://github.com/sanriodev/aandm/commit/fa84f56e4bd94229d64594b21ac6de60bbebae57))
+
 ## [3.5.0](https://github.com/sanriodev/aandm/compare/v3.4.0...v3.5.0) (2025-10-17)
 
 
