@@ -7,9 +7,9 @@ import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/dto/update_note_dto.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
-import 'package:aandm/screens/notes/notes_edit_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
+import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:aandm/widgets/note_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
 import 'package:flutter/material.dart';
@@ -157,12 +157,8 @@ class _NotesScreenState extends State<NotesScreen> {
         itemBuilder: (BuildContext context, int index) {
           return NoteWidget(
             onTap: () {
-              navigateToScreen(
-                  context,
-                  NotesEditScreen(
-                    id: notes[index].id,
-                  ),
-                  true);
+              navigateToRoute(context, 'notes-edit',
+                  extra: notes[index].id, backEnabled: true);
             },
             onDeletePress: () {
               deleteItem(
@@ -181,20 +177,21 @@ class _NotesScreenState extends State<NotesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      bottomNavigationBar: const BottomMenu(),
       appBar: AppBar(
         title: Text("Notizen",
             style: Theme.of(context).primaryTextTheme.titleMedium),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            color: Theme.of(context).primaryIconTheme.color,
-            tooltip: "I love my gf",
-          ),
-        ),
+        // leading: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: IconButton(
+        //     icon: const Icon(Icons.arrow_back_rounded),
+        //     onPressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //     color: Theme.of(context).primaryIconTheme.color,
+        //     tooltip: "I love my gf",
+        //   ),
+        // ),
         actions: [
           IconButton(
             color: Theme.of(context).primaryIconTheme.color,

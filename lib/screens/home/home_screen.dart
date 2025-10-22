@@ -2,12 +2,10 @@ import 'package:aandm/backend/service/cat_backend_service.dart';
 import 'package:aandm/models/cat/cat_facts_api_model.dart';
 import 'package:aandm/models/cat/cat_picture_api_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
-import 'package:aandm/screens/notes/notes_screen.dart';
-import 'package:aandm/screens/timer/timer_screen.dart';
-import 'package:aandm/screens/to_do_list/to_do_list_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/cat_facts_widget.dart';
+import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:aandm/widgets/notes_preview_widget.dart';
 import 'package:aandm/widgets/timer_preview_widget.dart';
 import 'package:aandm/widgets/to_do_list_widget.dart';
@@ -17,9 +15,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+  const HomeScreen({
+    super.key,
+  });
 
-  final String title;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -59,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
+        bottomNavigationBar: const BottomMenu(),
         appBar: AppBar(
           title: Text("Home - I love Alina",
               style: Theme.of(context).primaryTextTheme.titleMedium),
@@ -102,19 +102,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   TimerPreviewWidget(
                     themeMode: MainAppScreen.of(context)!.currentTheme!,
                     onPressed: () {
-                      navigateToScreen(context, TimerScreen(), true);
+                      navigateToRoute(context, 'timer');
                     },
                   ),
                   TodoPreviewWidget(
                     themeMode: MainAppScreen.of(context)!.currentTheme!,
                     onPressed: () {
-                      navigateToScreen(context, ToDoListScreen(), true);
+                      navigateToRoute(context, 'task-lists');
                     },
                   ),
                   NotesPreviewWidget(
                       themeMode: MainAppScreen.of(context)!.currentTheme!,
                       onPressed: () {
-                        navigateToScreen(context, NotesScreen(), true);
+                        navigateToRoute(context, 'notes');
                       }),
                   CatPreviewWidget(
                       catFacts: catFacts, catPictures: catPictures),
