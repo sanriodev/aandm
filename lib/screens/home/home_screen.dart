@@ -63,29 +63,16 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text("Home - I love Alina",
               style: Theme.of(context).primaryTextTheme.titleMedium),
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(Icons.favorite),
-                color: Theme.of(context).primaryIconTheme.color,
-                onPressed: () {
-                  Fluttertoast.showToast(msg: "I miss you too darling!");
-                },
+            IconButton(
+              color: Theme.of(context).primaryIconTheme.color,
+              icon: const PhosphorIcon(
+                PhosphorIconsRegular.gear,
+                semanticLabel: 'Einstellungen',
               ),
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                color: Theme.of(context).primaryIconTheme.color,
-                icon: const PhosphorIcon(
-                  PhosphorIconsRegular.gear,
-                  semanticLabel: 'Einstellungen',
-                ),
-                onPressed: () {
-                  _scaffoldKey.currentState?.openEndDrawer();
-                },
-              ),
-            )
           ],
         ),
         endDrawer: AppDrawer(),
