@@ -16,14 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ToDoListScreen extends StatefulWidget {
-  const ToDoListScreen({super.key});
+class TaskListScreen extends StatefulWidget {
+  const TaskListScreen({super.key});
 
   @override
-  State<ToDoListScreen> createState() => _ToDoListScreenState();
+  State<TaskListScreen> createState() => _TaskListScreenState();
 }
 
-class _ToDoListScreenState extends State<ToDoListScreen> {
+class _TaskListScreenState extends State<TaskListScreen> {
   List<TaskList> ownTaskLists = [];
   List<TaskList> sharedTaskLists = [];
   String collectionName = '';
@@ -296,16 +296,17 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: Text(
-                              "Deine Listen",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleMedium,
+                          if (sharedTaskLists.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Text(
+                                "Deine Listen",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .titleMedium,
+                              ),
                             ),
-                          ),
                           getAllListItems(ownTaskLists),
                           if (sharedTaskLists.isNotEmpty)
                             Padding(

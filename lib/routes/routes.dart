@@ -4,8 +4,8 @@ import 'package:aandm/screens/notes/notes_edit_screen.dart';
 import 'package:aandm/screens/notes/notes_screen.dart';
 import 'package:aandm/screens/splash/splash_screen.dart';
 import 'package:aandm/screens/timer/timer_screen.dart';
-import 'package:aandm/screens/to_do_list/to_do_list_screen.dart';
-import 'package:aandm/screens/to_do_list/to_do_screen.dart';
+import 'package:aandm/screens/task-lists/task_list_screen.dart';
+import 'package:aandm/screens/task-lists/tasks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -112,7 +112,7 @@ GoRouter createRouter() {
         name: 'task-lists',
         path: '/task-lists',
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: const ToDoListScreen(),
+          child: const TaskListScreen(),
           key: state.pageKey,
           name: 'task-lists',
           transitionDuration: const Duration(milliseconds: transitionDuration),
@@ -128,7 +128,7 @@ GoRouter createRouter() {
             name: 'tasks',
             path: 'tasks',
             pageBuilder: (context, state) => CustomTransitionPage(
-              child: const ToDoScreen(),
+              child: const TasksScreen(),
               key: state.pageKey,
               name: 'tasks',
               transitionDuration:
