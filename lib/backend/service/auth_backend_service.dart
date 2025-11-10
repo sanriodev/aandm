@@ -68,32 +68,6 @@ class AuthBackend extends ABackend {
     }
   }
 
-  Future<List<EventlogMessage<dynamic>>> getActivity() async {
-    final res = await get('activity/');
-
-    if (res.statusCode == 200 || res.statusCode == 201) {
-      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data'];
-      final activity = (jsonData as List<dynamic>)
-          .map((e) =>
-              EventlogMessage<dynamic>.fromJson(e as Map<String, dynamic>))
-          .toList();
-      return activity;
-    } else {
-      throw res;
-    }
-  }
-
-  Future<void> setActivityPrivacy(bool publicActivity) async {
-    final res =
-        await get('activity/public-activity?publicActivity=$publicActivity');
-
-    if (res.statusCode == 200 || res.statusCode == 201) {
-      return;
-    } else {
-      throw res;
-    }
-  }
-
   Future<void> postLogout() async {
     final res = await post(
       null,
