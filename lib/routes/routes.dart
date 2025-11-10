@@ -1,3 +1,4 @@
+import 'package:aandm/screens/activity/activity_screen.dart';
 import 'package:aandm/screens/home/home_screen.dart';
 import 'package:aandm/screens/login/login_screen.dart';
 import 'package:aandm/screens/notes/notes_edit_screen.dart';
@@ -47,6 +48,22 @@ GoRouter createRouter() {
           key: state.pageKey,
           name: 'timer',
           child: TimerScreen(),
+          transitionDuration: const Duration(milliseconds: transitionDuration),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.easeIn).animate(animation),
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        name: 'activity',
+        path: '/activity',
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          name: 'activity',
+          child: ActivityScreen(),
           transitionDuration: const Duration(milliseconds: transitionDuration),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(

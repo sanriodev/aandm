@@ -1,11 +1,59 @@
 import 'package:flutter/material.dart';
 
+/// Theme extension providing a 5-level activity heatmap color scale
+/// (index 0 = no activity, 1..4 increasing intensity).
+/// Added so widgets like `ActivityGraphWidget` can obtain consistent
+/// colors for light & dark mode without hardcoding color values.
+class ActivityHeatmapColors extends ThemeExtension<ActivityHeatmapColors> {
+  final List<Color> levels; // length 5
+
+  const ActivityHeatmapColors({required this.levels})
+      : assert(levels.length == 5);
+
+  // Light mode scale inspired by GitHub contribution greens but aligned slightly
+  // with existing blue/purple brand by nudging hue towards teal.
+  factory ActivityHeatmapColors.light() => ActivityHeatmapColors(levels: [
+        Color(0xFFE8F5E9), // empty
+        Color(0xFFC8E6C9), // low
+        Color(0xFFA5D6A7), // medium
+        Color(0xFF66BB6A), // high
+        Color(0xFF2E7D32), // very high
+      ]);
+
+  // Dark mode scale – darker bases with higher contrast.
+  factory ActivityHeatmapColors.dark() => ActivityHeatmapColors(levels: [
+        Color(0xFF1B2420), // empty
+        Color(0xFF274B32), // low
+        Color(0xFF2E7D32), // medium
+        Color(0xFF1B9E48), // high
+        Color(0xFF00C853), // very high
+      ]);
+
+  @override
+  ActivityHeatmapColors copyWith({List<Color>? levels}) {
+    return ActivityHeatmapColors(levels: levels ?? this.levels);
+  }
+
+  @override
+  ThemeExtension<ActivityHeatmapColors> lerp(
+      covariant ThemeExtension<ActivityHeatmapColors>? other, double t) {
+    if (other is! ActivityHeatmapColors) return this;
+    return ActivityHeatmapColors(
+      levels: List.generate(
+          levels.length, (i) => Color.lerp(levels[i], other.levels[i], t)!),
+    );
+  }
+}
+
 ThemeData appThemeLight = ThemeData(
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue[200]!),
   primaryColor: Colors.blue[200],
   canvasColor: Colors.grey[400],
   secondaryHeaderColor: Colors.purple[200],
   scaffoldBackgroundColor: Colors.blue[100],
+  extensions: <ThemeExtension<dynamic>>[
+    ActivityHeatmapColors.light(),
+  ],
   appBarTheme: AppBarThemeData(
     foregroundColor: Colors.purple[200],
     backgroundColor: Colors.purple[200],
@@ -70,6 +118,9 @@ ThemeData appThemeDark = ThemeData(
     canvasColor: Colors.grey[800],
     secondaryHeaderColor: Colors.purple[800],
     scaffoldBackgroundColor: Colors.blue[800],
+    extensions: <ThemeExtension<dynamic>>[
+      ActivityHeatmapColors.dark(),
+    ],
     appBarTheme: AppBarTheme(
       foregroundColor: Colors.purple[800],
       backgroundColor: Colors.purple[800],
