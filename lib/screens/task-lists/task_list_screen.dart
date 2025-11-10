@@ -296,7 +296,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (sharedTaskLists.isNotEmpty)
+                          if (ownTaskLists.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),

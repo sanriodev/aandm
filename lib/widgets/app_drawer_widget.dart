@@ -1,3 +1,5 @@
+import 'package:aandm/backend/service/auth_backend_service.dart';
+import 'package:aandm/models/user/user_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +21,20 @@ class _AppDrawerState extends State<AppDrawer> {
     buildNumber: 'Unknown',
   );
 
+  User? _ownUser;
+
   @override
   void initState() {
     super.initState();
     _initPackageInfo();
+    _getOwnUser();
+  }
+
+  Future<void> _getOwnUser() async {
+    final res = await AuthBackend().getOwnUser();
+    setState(() {
+      _ownUser = res;
+    });
   }
 
   Future<void> _initPackageInfo() async {
@@ -84,6 +96,17 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
               title: Text(
                 'Theme ändern',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: PhosphorIcon(
+                PhosphorIcons.pulse(),
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              title: Text(
+                'Aktivität - ${_ownUser != null && _ownUser!.publicActivity ? 'Öffentlich' : 'Privat'}',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),

@@ -1,9 +1,11 @@
 class LoginResponseUser {
   String username;
   String? email;
+  bool? publicActivity;
 
   LoginResponseUser({
     required this.username,
+    this.publicActivity = false,
     this.email,
   });
 
@@ -11,6 +13,7 @@ class LoginResponseUser {
     return LoginResponseUser(
       username: json['username'] as String,
       email: json['email'] as String?,
+      publicActivity: json['publicActivity'] as bool? ?? false,
     );
   }
 
@@ -18,6 +21,7 @@ class LoginResponseUser {
     return {
       'username': username,
       'email': email,
+      'publicActivity': publicActivity,
     };
   }
 }
