@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:aandm/backend/abstract/backend_abstract.dart';
-import 'package:aandm/models/activity/activity_model.dart';
 import 'package:aandm/models/base/login_response_model.dart';
 import 'package:aandm/models/user/user_model.dart';
 import 'package:aandm/util/helpers.dart';

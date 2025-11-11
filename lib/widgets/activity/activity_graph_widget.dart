@@ -77,7 +77,7 @@ class ActivityGraphWidget extends StatelessWidget {
             final resolvedCellSize =
                 dynamicCellSize.clamp(6, 28).toDouble(); // ensure double
 
-            Widget grid = Row(
+            final Widget grid = Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Day labels gutter
@@ -91,7 +91,6 @@ class ActivityGraphWidget extends StatelessWidget {
                     children: [
                       for (final week in columns)
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             for (final day in week)
                               Padding(
@@ -206,7 +205,6 @@ class _DayLabels extends StatelessWidget {
     // Show only S, T, T (Sun, Tue, Thu) to reduce clutter, similar to GitHub
     final labels = ['S', '', 'T', '', 'T', '', ''];
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         for (int i = 0; i < 7; i++)
           Padding(
@@ -222,7 +220,7 @@ class _DayLabels extends StatelessWidget {
                             .textTheme
                             .labelSmall
                             ?.color
-                            ?.withOpacity(0.7),
+                            ?.withValues(alpha: 0.7),
                       ),
                 ),
               ),

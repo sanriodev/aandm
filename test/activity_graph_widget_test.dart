@@ -116,7 +116,7 @@ void main() {
         expect(finder, findsOneWidget);
         final container = tester.widget<Container>(finder);
         return container.decoration is BoxDecoration
-            ? (container.decoration as BoxDecoration).color
+            ? (container.decoration! as BoxDecoration).color
             : container.color;
       }
 
