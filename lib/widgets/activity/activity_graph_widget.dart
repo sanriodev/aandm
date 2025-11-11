@@ -30,14 +30,7 @@ class ActivityGraphWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final heatmap =
-        Theme.of(context).extension<ActivityHeatmapColors>()?.levels ??
-            [
-              const Color(0xFFE8F5E9),
-              const Color(0xFFC8E6C9),
-              const Color(0xFFA5D6A7),
-              const Color(0xFF66BB6A),
-              const Color(0xFF2E7D32),
-            ];
+        Theme.of(context).extension<ActivityHeatmapColors>()!.levels;
 
     final now = (endDate ?? DateTime.now()).toLocal();
     final endOfWeek = _endOfWeek(now);
@@ -57,6 +50,7 @@ class ActivityGraphWidget extends StatelessWidget {
     });
 
     return Card(
+      margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       child: Padding(
         padding: padding,

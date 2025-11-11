@@ -176,7 +176,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
       key: _scaffoldKey,
       bottomNavigationBar: const BottomMenu(),
       appBar: AppBar(
-        title: Text("To-Do Listen",
+        title: Text("AufgabenListen",
             style: Theme.of(context).primaryTextTheme.titleMedium),
         // leading: Padding(
         //   padding: const EdgeInsets.all(8.0),

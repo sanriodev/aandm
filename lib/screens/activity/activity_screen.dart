@@ -5,6 +5,7 @@ import 'package:aandm/models/activity/activity_model.dart';
 import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/activity/activity_graph_widget.dart';
+import 'package:aandm/widgets/activity/activity_history_widget.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
@@ -106,18 +107,37 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (activities.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Text(
-                                "Deine Aktivitäten",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .titleMedium,
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Text(
+                              "Deine Aktivitäten",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleMedium,
                             ),
-                          ActivityGraphWidget(activities: activities),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: ActivityGraphWidget(activities: activities),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Text(
+                              "Letzte Aktivitäten",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleMedium,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: ActivityHistoryWidget(
+                              activities: activities,
+                              maxItems: 20,
+                            ),
+                          ),
                         ],
                       ),
                     )

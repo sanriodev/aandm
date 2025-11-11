@@ -13,20 +13,20 @@ class ActivityHeatmapColors extends ThemeExtension<ActivityHeatmapColors> {
   // Light mode scale inspired by GitHub contribution greens but aligned slightly
   // with existing blue/purple brand by nudging hue towards teal.
   factory ActivityHeatmapColors.light() => ActivityHeatmapColors(levels: [
-        Color(0xFFE8F5E9), // empty
-        Color(0xFFC8E6C9), // low
-        Color(0xFFA5D6A7), // medium
-        Color(0xFF66BB6A), // high
-        Color(0xFF2E7D32), // very high
+        Color(0xFFE0E0E0), // empty - light grey
+        Colors.purple[100]!, // low
+        Colors.purple[200]!, // medium
+        Colors.purple[300]!, // high
+        Colors.purple[400]!, // very high
       ]);
 
   // Dark mode scale – darker bases with higher contrast.
   factory ActivityHeatmapColors.dark() => ActivityHeatmapColors(levels: [
-        Color(0xFF1B2420), // empty
-        Color(0xFF274B32), // low
-        Color(0xFF2E7D32), // medium
-        Color(0xFF1B9E48), // high
-        Color(0xFF00C853), // very high
+        Color(0xFF424242), // empty - dark grey
+        Colors.purple[800]!, // low
+        Colors.purple[700]!, // medium
+        Colors.purple[600]!, // high
+        Colors.purple[500]!, // very high
       ]);
 
   @override
