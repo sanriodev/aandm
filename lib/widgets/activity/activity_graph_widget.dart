@@ -169,11 +169,17 @@ class ActivityGraphWidget extends StatelessWidget {
   }
 
   static int _bucketForCount(int count, int maxCount) {
-    if (count <= 0 || maxCount <= 0) return 0;
-    // Quantize proportionally into 4 non-zero levels.
-    final ratio = count / maxCount;
-    final level = (ratio * 4).ceil();
-    return level.clamp(1, 4);
+    if (count <= 0) return 0;
+    // Fixed thresholds: every 5 activities = 1 level
+    // 0 -> level 0 (empty)
+    // 1-5 -> level 1
+    // 6-10 -> level 2
+    // 11-15 -> level 3
+    // 16+ -> level 4
+    if (count <= 5) return 1;
+    if (count <= 10) return 2;
+    if (count <= 15) return 3;
+    return 4;
   }
 
   static Map<DateTime, int> _groupByDay(
