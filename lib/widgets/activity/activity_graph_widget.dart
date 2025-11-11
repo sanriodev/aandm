@@ -62,29 +62,16 @@ class ActivityGraphWidget extends StatelessWidget {
         padding: padding,
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Compute dynamic cell size so the entire grid spans available width.
-            // Width allocation: day label gutter + spacing*2 + week columns + (spacing between weeks)
-            // We remove horizontal scroll and fit columns exactly.
+            // Compute dynamic cell size so the entire grid spans available width (no weekday labels).
+            // Total width formula: weeks*x + (weeks-1)*cellSpacing
             final availableWidth = constraints.maxWidth;
-            // Reserve gutter for day labels (~cellSize + 6). We'll recompute with dynamic size.
-            // Let dynamicCellSize be x. Total width = (x + 6) + spacing*2 + weeks*x + (weeks-1)*cellSpacing
-            // Solve for x: availableWidth = x*(weeks + 1) + 6 + cellSpacing*(weeks -1 + 2)
-            final spacingBlocks =
-                (weeks - 1) + 2; // between weeks + left/right offsets
             final dynamicCellSize =
-                (availableWidth - 6 - cellSpacing * spacingBlocks) /
-                    (weeks + 1);
-            final resolvedCellSize =
-                dynamicCellSize.clamp(6, 28).toDouble(); // ensure double
+                (availableWidth - (weeks - 1) * cellSpacing) / weeks;
+            final resolvedCellSize = dynamicCellSize.clamp(6, 32).toDouble();
 
-            final Widget grid = Row(
+            final grid = Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Day labels gutter
-                _DayLabels(
-                    cellSize: resolvedCellSize, cellSpacing: cellSpacing),
-                SizedBox(width: cellSpacing * 2),
-                // Week columns spanning full width
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,26 +80,21 @@ class ActivityGraphWidget extends StatelessWidget {
                         Column(
                           children: [
                             for (final day in week)
-                              Padding(
-                                padding: EdgeInsets.only(bottom: cellSpacing),
-                                child: _buildCell(
-                                  context,
-                                  day,
-                                  countsByDay[DateTime(
-                                          day.year, day.month, day.day)] ??
-                                      0,
-                                  heatmap,
-                                  maxCount,
-                                  overrideSize: resolvedCellSize,
-                                ),
+                              _buildCell(
+                                context,
+                                day,
+                                countsByDay[DateTime(
+                                        day.year, day.month, day.day)] ??
+                                    0,
+                                heatmap,
+                                maxCount,
+                                overrideSize: resolvedCellSize,
                               ),
                           ],
                         ),
                     ],
                   ),
                 ),
-                // Right side minimal spacer to visually balance (optional)
-                SizedBox(width: cellSpacing),
               ],
             );
 
@@ -194,42 +176,7 @@ class ActivityGraphWidget extends StatelessWidget {
   }
 }
 
-class _DayLabels extends StatelessWidget {
-  final double cellSize;
-  final double cellSpacing;
-
-  const _DayLabels({required this.cellSize, required this.cellSpacing});
-
-  @override
-  Widget build(BuildContext context) {
-    // Show only S, T, T (Sun, Tue, Thu) to reduce clutter, similar to GitHub
-    final labels = ['S', '', 'T', '', 'T', '', ''];
-    return Column(
-      children: [
-        for (int i = 0; i < 7; i++)
-          Padding(
-            padding: EdgeInsets.only(bottom: cellSpacing),
-            child: SizedBox(
-              width: cellSize + 6,
-              height: cellSize,
-              child: Center(
-                child: Text(
-                  labels[i],
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context)
-                            .textTheme
-                            .labelSmall
-                            ?.color
-                            ?.withValues(alpha: 0.7),
-                      ),
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
+// Day labels removed per request – graph now spans entire card width.
 
 class _Legend extends StatelessWidget {
   final List<Color> heatmap;

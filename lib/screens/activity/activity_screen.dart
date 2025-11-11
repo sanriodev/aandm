@@ -62,7 +62,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       key: _scaffoldKey,
       bottomNavigationBar: const BottomMenu(),
       appBar: AppBar(
-        title: Text("To-Do Listen",
+        title: Text("Aktivitäten",
             style: Theme.of(context).primaryTextTheme.titleMedium),
         actions: [
           IconButton(
