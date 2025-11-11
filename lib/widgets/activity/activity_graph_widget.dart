@@ -69,6 +69,15 @@ class ActivityGraphWidget extends StatelessWidget {
                 (availableWidth - (weeks - 1) * cellSpacing) / weeks;
             final resolvedCellSize = dynamicCellSize.clamp(6, 32).toDouble();
 
+            // Try to pick up card radius from theme; fallback to 12
+            double cardRadius = 12;
+            final shape = Theme.of(context).cardTheme.shape;
+            if (shape is RoundedRectangleBorder) {
+              final br = shape.borderRadius;
+              final resolved = br.resolve(Directionality.of(context));
+              cardRadius = resolved.topLeft.x;
+            }
+
             final grid = Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,19 +85,27 @@ class ActivityGraphWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      for (final week in columns)
+                      for (int w = 0; w < columns.length; w++)
                         Column(
                           children: [
-                            for (final day in week)
+                            for (int d = 0; d < columns[w].length; d++)
                               _buildCell(
                                 context,
-                                day,
+                                columns[w][d],
                                 countsByDay[DateTime(
-                                        day.year, day.month, day.day)] ??
+                                      columns[w][d].year,
+                                      columns[w][d].month,
+                                      columns[w][d].day,
+                                    )] ??
                                     0,
                                 heatmap,
                                 maxCount,
                                 overrideSize: resolvedCellSize,
+                                isTop: d == 0,
+                                isBottom: d == columns[w].length - 1,
+                                isLeft: w == 0,
+                                isRight: w == columns.length - 1,
+                                cornerRadius: cardRadius,
                               ),
                           ],
                         ),
@@ -102,14 +119,6 @@ class ActivityGraphWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 grid,
-                if (showLegend) ...[
-                  const SizedBox(height: 12),
-                  _Legend(
-                    heatmap: heatmap,
-                    cellSize: resolvedCellSize,
-                    cellSpacing: cellSpacing,
-                  ),
-                ],
               ],
             );
           },
@@ -120,12 +129,31 @@ class ActivityGraphWidget extends StatelessWidget {
 
   Widget _buildCell(BuildContext context, DateTime day, int count,
       List<Color> heatmap, int maxCount,
-      {double? overrideSize}) {
+      {double? overrideSize,
+      bool isTop = false,
+      bool isBottom = false,
+      bool isLeft = false,
+      bool isRight = false,
+      double cornerRadius = 12}) {
     final bucket = _bucketForCount(count, maxCount);
     final color = heatmap[bucket];
     final dayKey = DateFormat('yyyy-MM-dd').format(day);
     final tooltip =
         '${DateFormat.yMMMEd().format(day)}\n$count activit${count == 1 ? 'y' : 'ies'}';
+    final radius = BorderRadius.only(
+      topLeft: isTop && isLeft
+          ? Radius.circular(cornerRadius)
+          : const Radius.circular(2),
+      topRight: isTop && isRight
+          ? Radius.circular(cornerRadius)
+          : const Radius.circular(2),
+      bottomLeft: isBottom && isLeft
+          ? Radius.circular(cornerRadius)
+          : const Radius.circular(2),
+      bottomRight: isBottom && isRight
+          ? Radius.circular(cornerRadius)
+          : const Radius.circular(2),
+    );
     return Padding(
       padding: EdgeInsets.only(bottom: cellSpacing),
       child: Tooltip(
@@ -138,7 +166,7 @@ class ActivityGraphWidget extends StatelessWidget {
             height: overrideSize ?? cellSize,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: radius,
             ),
           ),
         ),
@@ -176,45 +204,4 @@ class ActivityGraphWidget extends StatelessWidget {
   }
 }
 
-// Day labels removed per request – graph now spans entire card width.
-
-class _Legend extends StatelessWidget {
-  final List<Color> heatmap;
-  final double cellSize;
-  final double cellSpacing;
-
-  const _Legend(
-      {required this.heatmap,
-      required this.cellSize,
-      required this.cellSpacing});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          'Less',
-          style: Theme.of(context).textTheme.labelSmall,
-        ),
-        SizedBox(width: 6),
-        for (int i = 0; i < heatmap.length; i++)
-          Padding(
-            padding: EdgeInsets.only(right: cellSpacing),
-            child: Container(
-              width: cellSize,
-              height: cellSize,
-              decoration: BoxDecoration(
-                color: heatmap[i],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-        SizedBox(width: 6),
-        Text(
-          'More',
-          style: Theme.of(context).textTheme.labelSmall,
-        ),
-      ],
-    );
-  }
-}
+// Day labels and color legend are removed as requested; heatmap spans full card width.
