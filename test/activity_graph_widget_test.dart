@@ -19,6 +19,7 @@ void main() {
           entityId: 't$i',
           actionStatus: 'ok',
           date: now.subtract(Duration(days: i)),
+          user: AcitvityUser(username: 'testuser', id: 1),
         ));
       }
 
@@ -82,6 +83,7 @@ void main() {
         entityId: '1',
         actionStatus: 'ok',
         date: today,
+        user: AcitvityUser(username: 'testuser', id: 1),
       ));
       for (int i = 0; i < 8; i++) {
         activities.add(EventlogMessage(
@@ -90,6 +92,7 @@ void main() {
           entityId: 'y$i',
           actionStatus: 'ok',
           date: today.subtract(const Duration(days: 1)),
+          user: AcitvityUser(username: 'testuser', id: 1),
         ));
       }
 
