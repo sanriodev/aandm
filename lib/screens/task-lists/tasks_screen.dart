@@ -16,13 +16,13 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-final class ToDoScreen extends StatefulWidget {
-  const ToDoScreen({super.key});
+final class TasksScreen extends StatefulWidget {
+  const TasksScreen({super.key});
   @override
-  State<ToDoScreen> createState() => _ToDoScreenState();
+  State<TasksScreen> createState() => _TasksScreenState();
 }
 
-class _ToDoScreenState extends State<ToDoScreen> {
+class _TasksScreenState extends State<TasksScreen> {
   List<Task> completeTasks = [];
   List<Task> incompleteTasks = [];
   late TaskList list;

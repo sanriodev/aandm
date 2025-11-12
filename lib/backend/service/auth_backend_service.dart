@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:aandm/backend/abstract/backend_abstract.dart';
 import 'package:aandm/models/base/login_response_model.dart';
+import 'package:aandm/models/user/user_model.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:hive/hive.dart';
 
@@ -49,6 +50,18 @@ class AuthBackend extends ABackend {
       await box.put('auth', loginData);
 
       return loginData;
+    } else {
+      throw res;
+    }
+  }
+
+  Future<User> getOwnUser() async {
+    final res = await get('user/me');
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data'];
+      final user = User.fromJson(jsonData as Map<String, dynamic>);
+      return user;
     } else {
       throw res;
     }

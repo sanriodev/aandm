@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:aandm/backend/abstract/backend_abstract.dart';
+import 'package:aandm/models/activity/activity_model.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/task/dto/create_task_dto.dart';
 import 'package:aandm/models/task/task_api_model.dart';
@@ -52,7 +53,6 @@ class Backend extends ABackend {
     }
   }
 
-  //updateTaskList
   Future<TaskList> updateTaskList(UpdateTaskListDto taskList) async {
     final body = json.encode(taskList.toJson());
     final res = await put(body, 'task-list/');
@@ -239,6 +239,35 @@ class Backend extends ABackend {
       final task = Task.fromJson(jsonData);
 
       return task;
+    } else {
+      throw res;
+    }
+  }
+
+  Future<List<EventlogMessage<dynamic>>> getActivity(String filterMode) async {
+    if (filterMode != 'own' && filterMode != 'any') {
+      throw 'Invalid filter mode';
+    }
+    final res = await get('activity/?filterMode=$filterMode');
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      final jsonData = await json.decode(utf8.decode(res.bodyBytes))['data'];
+      final activity = (jsonData as List<dynamic>)
+          .map((e) =>
+              EventlogMessage<dynamic>.fromJson(e as Map<String, dynamic>))
+          .toList();
+      return activity;
+    } else {
+      throw res;
+    }
+  }
+
+  Future<void> setActivityPrivacy(bool publicActivity) async {
+    final res =
+        await get('activity/public-activity?publicActivity=$publicActivity');
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      return;
     } else {
       throw res;
     }

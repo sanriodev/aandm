@@ -77,9 +77,14 @@ const List<BottomMenuNavigationItem> _pages = [
     label: 'Notizen',
     materialRoute: 'notes',
   ),
+  // BottomMenuNavigationItem(
+  //   icon: PhosphorIcon(PhosphorIconsRegular.clock),
+  //   label: 'Timer',
+  //   materialRoute: 'timer',
+  // ),
   BottomMenuNavigationItem(
-    icon: PhosphorIcon(PhosphorIconsRegular.clock),
-    label: 'Timer',
-    materialRoute: 'timer',
+    icon: PhosphorIcon(PhosphorIconsRegular.pulse),
+    label: 'Aktivität',
+    materialRoute: 'activity',
   ),
 ];
