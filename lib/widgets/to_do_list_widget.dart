@@ -75,7 +75,7 @@ class _TodoPreviewWidgetState extends State<TodoPreviewWidget> {
               ),
               onPressed: widget.onPressed,
               label: Text(
-                'Aufgabenisten',
+                'Aufgabenlisten',
                 style: Theme.of(context).primaryTextTheme.titleSmall,
               ),
               icon: Icon(
