@@ -63,7 +63,7 @@ GoRouter createRouter() {
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           name: 'activity',
-          child: ActivityScreen(),
+          child: const ActivityScreen(),
           transitionDuration: const Duration(milliseconds: transitionDuration),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
