@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.7.0](https://github.com/sanriodev/aandm/compare/v3.6.0...v3.7.0) (2025-11-12)
+
+
+### Features
+
+* activity heatmap and more ([866f002](https://github.com/sanriodev/aandm/commit/866f00206413d5d65cea14c51ca0dd10a92b44fc))
+* activity set and get request methods ([565261a](https://github.com/sanriodev/aandm/commit/565261a6630d4d37bb45359da72660d6af09485b))
+* add fvm ([b22fae2](https://github.com/sanriodev/aandm/commit/b22fae2f1e5dd18d34e8adbdff1705ef241f4f1f))
+* dart linting etc ([c8c09c6](https://github.com/sanriodev/aandm/commit/c8c09c6a4fe6d02d70cf80fbaa99c7ce60860128))
+* heatmap levels ([59df5ec](https://github.com/sanriodev/aandm/commit/59df5ec9ec747e8249f5021e2aea1f3562b78637))
+* wip activity ([1fae9ea](https://github.com/sanriodev/aandm/commit/1fae9ea4d59fa4998432d4cf405f2be5b3627d91))
+* wip activity ([090b1c2](https://github.com/sanriodev/aandm/commit/090b1c2c7aa6e150461a66f81bb32a86501eed5b))
+* wip activity graph ([017d19f](https://github.com/sanriodev/aandm/commit/017d19fd2f43cd3778b8e8ae9e7feb184bc4ac6c))
+* wip graph ([cc71364](https://github.com/sanriodev/aandm/commit/cc713648cdeb35764dc89ed87c308c11011e43d7))
+
 ## [3.6.0](https://github.com/sanriodev/aandm/compare/v3.5.1...v3.6.0) (2025-10-22)
 
 
