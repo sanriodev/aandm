@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:aandm/backend/abstract/backend_abstract.dart';
 import 'package:aandm/models/activity/activity_model.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/task/dto/create_task_dto.dart';
@@ -12,6 +11,7 @@ import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
 import 'package:aandm/models/tasklist/dto/create_task_list_dto.dart';
 import 'package:aandm/models/note/dto/update_note_dto.dart';
+import 'package:blvckleg_dart_core/abstract/backend_abstract.dart';
 
 class Backend extends ABackend {
   static final Backend _instance = Backend._privateConstructor();
@@ -263,8 +263,11 @@ class Backend extends ABackend {
   }
 
   Future<void> setActivityPrivacy(bool publicActivity) async {
-    final res =
-        await get('activity/public-activity?publicActivity=$publicActivity');
+    final body = '';
+    final res = await patch(
+      body,
+      'activity/public-activity?publicActivity=$publicActivity',
+    );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       return;

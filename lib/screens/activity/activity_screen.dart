@@ -2,13 +2,13 @@
 
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/models/activity/activity_model.dart';
-import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/activity/activity_graph_widget.dart';
 import 'package:aandm/widgets/activity/activity_history_widget.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
+import 'package:blvckleg_dart_core/exception/session_expired.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -24,7 +24,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
   bool isLoading = true;
   String selectedFilterMode = 'own';
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<EventlogMessage<dynamic>> activities = [];
+  List<EventlogMessage<dynamic>> ownActivites = [];
+  List<EventlogMessage<dynamic>> allActivites = [];
 
   @override
   void initState() {
@@ -38,11 +39,22 @@ class _ActivityScreenState extends State<ActivityScreen> {
     });
     try {
       final backend = Backend();
-      final res = await backend.getActivity(selectedFilterMode);
-      setState(() {
-        activities = res;
-        isLoading = false;
-      });
+      if (selectedFilterMode == 'any') {
+        final resAll = await backend.getActivity(selectedFilterMode);
+        final res = await backend.getActivity('own');
+        setState(() {
+          ownActivites = res;
+          allActivites = resAll;
+          isLoading = false;
+        });
+      } else {
+        final res = await backend.getActivity(selectedFilterMode);
+        setState(() {
+          ownActivites = res;
+          allActivites = res;
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         isLoading = false;
@@ -119,22 +131,51 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: ActivityGraphWidget(activities: activities),
+                            child:
+                                ActivityGraphWidget(activities: ownActivites),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
-                            child: Text(
-                              "Letzte Aktivitäten",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleMedium,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Letzte Aktivitäten",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .titleMedium,
+                                ),
+                                DropdownButton<String>(
+                                  value: selectedFilterMode,
+                                  underline: Container(),
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: 'own',
+                                      child: Text('Eigene'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 'any',
+                                      child: Text('Alle'),
+                                    ),
+                                  ],
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null &&
+                                        newValue != selectedFilterMode) {
+                                      setState(() {
+                                        selectedFilterMode = newValue;
+                                      });
+                                      getActivity();
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: ActivityHistoryWidget(
-                              activities: activities,
+                              activities: allActivites,
                               maxItems: 20,
                             ),
                           ),

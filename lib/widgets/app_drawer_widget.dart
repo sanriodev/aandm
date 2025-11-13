@@ -1,7 +1,11 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
-import 'package:aandm/models/user/user_model.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:blvckleg_dart_core/exception/session_expired.dart';
+import 'package:blvckleg_dart_core/models/user/user_model.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -42,6 +46,27 @@ class _AppDrawerState extends State<AppDrawer> {
     setState(() {
       _packageInfo = info;
     });
+  }
+
+  Future<void> _changeActivityPrivacy() async {
+    final backend = Backend();
+    if (_ownUser != null && _ownUser!.publicActivity != null) {
+      await backend.setActivityPrivacy(!_ownUser!.publicActivity!);
+    }
+    try {
+      final backend = Backend();
+      if (_ownUser != null && _ownUser!.publicActivity != null) {
+        await backend.setActivityPrivacy(!_ownUser!.publicActivity!);
+      }
+    } catch (e) {
+      if (e is SessionExpiredException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bitte melde dich erneut an.')),
+        );
+
+        await deleteBoxAndNavigateToLogin(context);
+      }
+    }
   }
 
   @override
@@ -100,13 +125,55 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                final isCurrentlyPublic = _ownUser != null &&
+                    _ownUser!.publicActivity != null &&
+                    _ownUser!.publicActivity!;
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(
+                        isCurrentlyPublic
+                            ? 'Aktivitäten nicht teilen?'
+                            : 'Aktivitäten teilen?',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      content: Text(
+                        isCurrentlyPublic
+                            ? 'Aktivitäten werden nicht länger geteilt.'
+                            : 'Andere Benutzer können sehen wenn Sie Einträge erstellen, aktualisieren oder löschen',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Abbrechen'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await _changeActivityPrivacy();
+                            await _getOwnUser();
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text('Bestätigen'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
               leading: PhosphorIcon(
                 PhosphorIcons.pulse(),
                 color: Theme.of(context).primaryIconTheme.color,
               ),
               title: Text(
-                'Aktivität - ${_ownUser != null && _ownUser!.publicActivity ? 'Öffentlich' : 'Privat'}',
+                'Aktivität - ${_ownUser != null && _ownUser!.publicActivity != null && _ownUser!.publicActivity! ? 'Öffentlich' : 'Privat'}',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
