@@ -1,6 +1,6 @@
 import 'package:aandm/models/base/base_user_relation.dart';
-import 'package:aandm/models/user/user_model.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
+import 'package:blvckleg_dart_core/models/user/user_model.dart';
 
 class Note extends BaseUserRelation {
   int id;

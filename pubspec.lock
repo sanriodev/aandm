@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+  blvckleg_dart_core:
+    dependency: "direct main"
+    description:
+      name: blvckleg_dart_core
+      sha256: "1c45659737972f98174d6f8d8e14ee3af87e2c4639fcdd90603a6bc3dbc8ceee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -630,5 +638,5 @@ packages:
     source: hosted
     version: "6.6.1"
 sdks:
-  dart: ">=3.9.0 <4.0.0"
+  dart: ">=3.9.2 <4.0.0"
   flutter: ">=3.35.0"

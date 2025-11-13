@@ -1,9 +1,9 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/tasklist/task_list_api_model.dart';
 import 'package:aandm/util/helpers.dart';
 import 'package:aandm/widgets/accordion/accordion_section.dart';
 import 'package:aandm/widgets/accordion/task_list_accordion.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';

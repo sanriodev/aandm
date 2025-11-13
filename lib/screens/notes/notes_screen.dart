@@ -1,9 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/backend/service/backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
-import 'package:aandm/models/exception/session_expired.dart';
 import 'package:aandm/models/note/dto/update_note_dto.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/models/note/dto/create_note_dto.dart';
@@ -12,6 +10,8 @@ import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/navigation/bottom_menu.dart';
 import 'package:aandm/widgets/note_widget.dart';
 import 'package:aandm/widgets/skeleton/skeleton_card.dart';
+import 'package:blvckleg_dart_core/exception/session_expired.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';

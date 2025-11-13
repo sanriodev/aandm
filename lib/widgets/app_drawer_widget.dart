@@ -1,7 +1,7 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
-import 'package:aandm/models/user/user_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:blvckleg_dart_core/models/user/user_model.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -106,7 +106,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 color: Theme.of(context).primaryIconTheme.color,
               ),
               title: Text(
-                'Aktivität - ${_ownUser != null && _ownUser!.publicActivity ? 'Öffentlich' : 'Privat'}',
+                'Aktivität - ${_ownUser != null && _ownUser!.publicActivity != null && _ownUser!.publicActivity! ? 'Öffentlich' : 'Privat'}',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),

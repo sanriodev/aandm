@@ -1,7 +1,7 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
 import 'package:aandm/models/note/note_api_model.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';

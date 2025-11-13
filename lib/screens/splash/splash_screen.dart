@@ -1,5 +1,5 @@
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

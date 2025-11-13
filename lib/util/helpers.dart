@@ -1,9 +1,6 @@
-import 'dart:convert';
-
-import 'package:aandm/backend/service/auth_backend_service.dart';
 import 'package:aandm/enum/privacy_mode_enum.dart';
-import 'package:aandm/models/base/login_response_model.dart';
-import 'package:aandm/models/hive_interface.dart';
+import 'package:blvckleg_dart_core/models/auth/login_response_model.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
@@ -23,52 +20,6 @@ void navigateToRoute(
       context.goNamed(routeName, extra: extra);
     }
   }
-}
-
-int getIncrement<T extends HiveModel>(List<T> list) {
-  var max = 0;
-  if (list.isEmpty) {
-    return 1;
-  }
-  for (var i = 0; i < list.length; i++) {
-    if (list[i].id > max) {
-      max = list[i].id;
-    }
-  }
-  return max + 1;
-}
-
-dynamic decodeJwt(String jwtString) {
-  final parts = jwtString.split('.');
-
-  //final encodedPayload = addPadding(parts[1]);
-  final payload = _decodeBase64(parts[1]);
-  final payloadMap = json.decode(payload);
-
-  return payloadMap;
-}
-
-String _decodeBase64(String str) {
-  String output = str.replaceAll('-', '+').replaceAll('_', '/');
-
-  switch (output.length % 4) {
-    case 0:
-      break;
-    case 2:
-      output += '==';
-    case 3:
-      output += '=';
-    default:
-      throw Exception('Illegal base64url string!');
-  }
-
-  return utf8.decode(base64Url.decode(output));
-}
-
-bool jwtIsExpired(String rawJwtString) {
-  final Map<String, dynamic> json =
-      decodeJwt(rawJwtString) as Map<String, dynamic>;
-  return DateTime.now().millisecondsSinceEpoch > (json['exp'] as int) * 1000;
 }
 
 Future<void> launchUrlInBrowser(Uri url) async {
