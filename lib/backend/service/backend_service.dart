@@ -263,8 +263,11 @@ class Backend extends ABackend {
   }
 
   Future<void> setActivityPrivacy(bool publicActivity) async {
-    final res =
-        await get('activity/public-activity?publicActivity=$publicActivity');
+    final body = '';
+    final res = await patch(
+      body,
+      'activity/public-activity?publicActivity=$publicActivity',
+    );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       return;
