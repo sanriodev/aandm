@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.8.0](https://github.com/sanriodev/aandm/compare/v3.7.0...v3.8.0) (2025-11-13)
+
+
+### Features
+
+* change activity privacy mode and filtermode ([be6a563](https://github.com/sanriodev/aandm/commit/be6a56313c2a917dcc8f225544c7cdc2a308f995))
+
+
+### Bug Fixes
+
+* undo server url change ([78c8480](https://github.com/sanriodev/aandm/commit/78c8480065894e767d7fe45d7a966d8fa2458aec))
+
 ## [3.7.0](https://github.com/sanriodev/aandm/compare/v3.6.0...v3.7.0) (2025-11-12)
 
 
