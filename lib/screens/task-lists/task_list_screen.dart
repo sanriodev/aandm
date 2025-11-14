@@ -176,22 +176,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
       key: _scaffoldKey,
       bottomNavigationBar: const BottomMenu(),
       appBar: AppBar(
-        title: Text("AufgabenListen",
+        title: Text("Aufgabenlisten",
             style: Theme.of(context).primaryTextTheme.titleMedium),
-        // leading: Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: IconButton(
-        //     icon: Icon(
-        //       Icons.arrow_back_rounded,
-        //       color: Theme.of(context).primaryIconTheme.color,
-        //     ),
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //     color: Theme.of(context).primaryIconTheme.color,
-        //     tooltip: "I love my gf",
-        //   ),
-        // ),
         actions: [
           IconButton(
             color: Theme.of(context).primaryIconTheme.color,
