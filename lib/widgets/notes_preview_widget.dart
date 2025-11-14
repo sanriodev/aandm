@@ -66,8 +66,13 @@ class _NotesPreviewWidgetState extends State<NotesPreviewWidget> {
                       decoration: BoxDecoration(
                         color: Theme.of(context)
                             .secondaryHeaderColor
-                            .withValues(alpha: 0.3),
+                            .withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .secondaryHeaderColor
+                              .withValues(alpha: 0.3),
+                        ),
                       ),
                       child: Icon(
                         Icons.note_alt,

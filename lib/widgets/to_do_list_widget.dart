@@ -66,8 +66,13 @@ class _TodoPreviewWidgetState extends State<TodoPreviewWidget> {
                       decoration: BoxDecoration(
                         color: Theme.of(context)
                             .primaryColor
-                            .withValues(alpha: 0.1),
+                            .withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .primaryColor
+                              .withValues(alpha: 0.3),
+                        ),
                       ),
                       child: Icon(
                         Icons.checklist,
