@@ -1,3 +1,6 @@
+import 'package:aandm/backend/service/backend_service.dart';
+import 'package:aandm/models/note/note_api_model.dart';
+import 'package:blvckleg_dart_core/service/auth_backend_service.dart';
 import 'package:flutter/material.dart';
 
 class NotesPreviewWidget extends StatefulWidget {
@@ -11,81 +14,142 @@ class NotesPreviewWidget extends StatefulWidget {
 }
 
 class _NotesPreviewWidgetState extends State<NotesPreviewWidget> {
-  final List<String> _mockNotes = [
-    "Coole Date Ideen...",
-    "Netflix need to watch...",
-    "Die besten Sachen die ich mit Matteo gekocht habe...",
-    "Mimi's Lieblingsspielzeuge 2025...",
-  ];
+  List<Note> _notes = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _getNotes();
+  }
+
+  Future<void> _getNotes() async {
+    try {
+      final backend = Backend();
+      final res = await backend.getAllNotes();
+      final own = res
+          .where((element) =>
+              element.user!.username ==
+              AuthBackend().loggedInUser?.user?.username)
+          .toList();
+      setState(() {
+        _notes = own;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.all(8.0),
+      elevation: 2.0,
+      margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(12.0),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _mockNotes
-                  .take(3) // Show a preview of up to 3 notes
-                  .map((note) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.sticky_note_2_outlined,
-                              size: 18, color: Colors.grey),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              note,
-                              style: TextStyle(
-                                color: widget.themeMode == ThemeMode.light
-                                    ? Colors.black87
-                                    : Colors.white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .secondaryHeaderColor
+                            .withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.note_alt,
+                        color: Theme.of(context).secondaryHeaderColor,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Notizen',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      )))
-                  .toList(),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .secondaryHeaderColor
+                        .withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${_notes.length}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).secondaryHeaderColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 35,
-            margin: EdgeInsets.zero,
-            padding: EdgeInsets.zero,
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
+            const SizedBox(height: 16),
+            if (_isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (_notes.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: Text(
+                  'Keine Notizen vorhanden',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey,
+                      ),
+                ),
+              )
+            else
+              ..._notes.take(5).map((note) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.sticky_note_2_outlined,
+                            size: 20, color: Colors.grey.shade400),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            note.title,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: widget.onPressed,
+                child: Text(
+                  'Mehr anzeigen',
+                  style: TextStyle(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              onPressed: widget.onPressed,
-              label: Text(
-                'Notes',
-                style: Theme.of(context).primaryTextTheme.titleSmall,
-              ),
-              icon: Icon(
-                Icons.note_alt,
-                color: Theme.of(context).primaryIconTheme.color,
-              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

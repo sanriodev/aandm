@@ -3,6 +3,7 @@ import 'package:aandm/models/cat/cat_facts_api_model.dart';
 import 'package:aandm/models/cat/cat_picture_api_model.dart';
 import 'package:aandm/screens/home/main_app_screen.dart';
 import 'package:aandm/util/helpers.dart';
+import 'package:aandm/widgets/activity_preview_widget.dart';
 import 'package:aandm/widgets/app_drawer_widget.dart';
 import 'package:aandm/widgets/cat_facts_widget.dart';
 import 'package:aandm/widgets/navigation/bottom_menu.dart';
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         key: _scaffoldKey,
         bottomNavigationBar: const BottomMenu(),
         appBar: AppBar(
-          title: Text("Home - I love Alina",
+          title: Text("Home",
               style: Theme.of(context).primaryTextTheme.titleMedium),
           actions: [
             IconButton(
@@ -82,31 +83,44 @@ class _HomeScreenState extends State<HomeScreen> {
               return getCatData();
             },
             child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Text(
+                    "Guten Morgen",
+                    style: Theme.of(context).primaryTextTheme.displayLarge,
+                  ),
+                  const SizedBox(height: 24),
                   TimerPreviewWidget(
                     themeMode: MainAppScreen.of(context)!.currentTheme!,
                     onPressed: () {
                       navigateToRoute(context, 'timer');
                     },
                   ),
+                  const SizedBox(height: 16),
                   TodoPreviewWidget(
                     themeMode: MainAppScreen.of(context)!.currentTheme!,
                     onPressed: () {
                       navigateToRoute(context, 'task-lists');
                     },
                   ),
+                  const SizedBox(height: 16),
                   NotesPreviewWidget(
                       themeMode: MainAppScreen.of(context)!.currentTheme!,
                       onPressed: () {
                         navigateToRoute(context, 'notes');
                       }),
+                  const SizedBox(height: 16),
+                  ActivityPreviewWidget(
+                    onPressed: () {
+                      navigateToRoute(context, 'activity');
+                    },
+                  ),
+                  const SizedBox(height: 16),
                   CatPreviewWidget(
                       catFacts: catFacts, catPictures: catPictures),
-                  SizedBox(
-                    height: 25,
-                  )
+                  const SizedBox(height: 24),
                 ],
               ),
             )));
