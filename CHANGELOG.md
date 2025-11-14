@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.8.1](https://github.com/sanriodev/aandm/compare/v3.8.0...v3.8.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* header ([6cb1a55](https://github.com/sanriodev/aandm/commit/6cb1a55f9a965e79d05cc7319851255df98e325c))
+* lock files and flutter version ([76f8242](https://github.com/sanriodev/aandm/commit/76f824201e1ea25d5f06322c963fd3d373a23521))
+
 ## [3.8.0](https://github.com/sanriodev/aandm/compare/v3.7.0...v3.8.0) (2025-11-13)
 
 
