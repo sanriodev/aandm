@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.9.0](https://github.com/sanriodev/aandm/compare/v3.8.1...v3.9.0) (2025-11-14)
+
+
+### Features
+
+* new homepage ([4e7a0ac](https://github.com/sanriodev/aandm/commit/4e7a0acf3163eea197a30aaefd8233a5207d2641))
+* ui changes ([f464602](https://github.com/sanriodev/aandm/commit/f464602848c69d800a252eb3499218b595e0c2ef))
+
+
+### Bug Fixes
+
+* remove settings ([3525ad0](https://github.com/sanriodev/aandm/commit/3525ad045da67471aeaeeaa3bdb27b16f7772df0))
+
 ## [3.8.1](https://github.com/sanriodev/aandm/compare/v3.8.0...v3.8.1) (2025-11-14)
 
 
